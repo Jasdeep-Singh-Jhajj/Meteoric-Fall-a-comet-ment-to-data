@@ -21,7 +21,14 @@ execute:
 ```{r}
 #| label: load-pkgs
 #| message: false
-library(tidyverse)
+#| echo: false
+
+if (!require("pacman")) 
+  install.packages("pacman")
+# load packages
+
+pacman::p_load(tidyverse,
+               kableExtra) 
 ```
 
 ## Dataset
@@ -34,8 +41,52 @@ library(tidyverse)
 ## Description and Motivation:
 
 The data set Meteorite_Landings.csv, which will be used for this project has been sourced from the official website of the United States Government that provides open data. The dimensions of the data set include 10 variables totally which consist of 6 numerical and 4 categorical variables. The reason why this data set was chosen was because of the opportunity to scientifically explore all the factors that go into studying how and why meteorites land on specific parts of the Earth. Using this data set, the project could explain the reasons behind certain historical events and predict the most vulnerable places for meteorite crashes which could help in their scientific study and research in fields such as astrology, data analysis and geology.
+=======
 
-Make sure to load the data and use inline code for some of this information.
+### Metadata
+
+The data includes 10 variables- 6 numerical and 4 categorical. The metadata is shown down below, with a sample of the individual variable as well. The descriptions of what each variable represents is shown as well.
+
+```{r}
+#| code-fold: TRUE
+
+meteorite_data <- read.csv("data/Meteorite_Landings.csv")
+
+metadata_meteorite <- tibble(
+  Column = names(meteorite_data),
+  DataType = sapply(meteorite_data, class),
+  SampleData = sapply(meteorite_data, function(column) {
+    first_non_na <- column[!is.na(column)][1]
+    if (is.numeric(first_non_na)) {
+      return(format(first_non_na, nsmall = 2))
+    } else {
+      return(as.character(first_non_na))
+    }
+  })
+)
+
+metadata_meteorite %>%
+  kable("html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F) %>%
+  column_spec(1, bold = T)
+
+```
+
+**Description of the metadata**
+
+-   **name**: The name of the meteorite (usually the location of the meteorite landing)
+-   **id**: The unique identifier number assigned to the meteorite.
+-   **nametype**: Can be one of two different categories:
+    -   *valid*: A regular meteorite.
+    -   *relict*: A meteorite that has been degraded over the years due to weather.
+-   **recclass**: The recommended class of the meteorite; that is classified based on certain characteristics of the meteorite such as, chemical, isotopic, and mineralogical properties.
+-   **mass(g)**: The mass of the meteorite, given in grams.
+-   **fall**: Can be one of two different categories:
+    -   *fell*: Classified as fell when the fall of the meteorite is observed.
+    -   *found*: Classified as found when the fall of the meteorite is not observed, but the meteorite was found later.
+-   **reclat**: The latitude of the meteorite's landing.
+-   **reclong**: The longitude of the meteorite's landing.
+-   **GeoLocation**: Combination of the latitude and longitude of the meteorite's landing.
 
 ## Questions
 
