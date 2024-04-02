@@ -2,7 +2,7 @@
 title: "Proposal title"
 subtitle: "Proposal"
 author: 
-  - name: "Viz Wizards - Nick Ferrante, Jeremiah Gaiser, Tanya Evita George, Mrunal Jadhav, Jasdeep Singh Jhajj, Gillian Aine McGinnis, Agastya Deshraju"
+  - name: "Viz Wizards - Nick Ferrante, Jeremiah Gaiser, Tanya Evita George, Mrunal Jadhav, Jasdeep Singh Jhajj, Gillian McGinnis, Agastya Deshraju"
     affiliations:
       - name: "School of Information, University of Arizona"
 description: "Project description"
@@ -99,3 +99,21 @@ metadata_meteorite %>%
 ## Analysis plan
 
 -   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
+
+## Repository organization
+
+- Main/root: All relevant Quarto markdown code, YAML settings, and folders.
+  - `.gitignore`: List of files or file types to not track via version control.
+  - `README.md`: Brief project description, viewable for the [repository landing page](https://github.com/INFO-526-S24/project-final-VizWizards).
+  - `*.qmd`: Quarto markdown files for the publication of the GitHub website, including the main landing page to contain the final report (`index.qmd`), the project proposal (`proposal.qmd`), a list of project members (`about.qmd`), and the slidedeck for the final presentation (`presentation.qmd`).
+- `/data` folder:
+  - `Meteorite_Landings.csv`: Raw data file
+  - `README.md`: Data dictionary for meteors.csv
+- `/images` folder: Any images to be added for the presentation.qmd or GitHub website.
+- `/shiny` folder: 
+  - `app.R`: All R code for both the Shiny UI and server. To be independent from the main folder to allow for publication on a separate Shiny server.
+  - `README.md`: Description of the folder
+- Other:
+  - `/.github` folder: For automated workflows.
+  - `/_extra` folder: For any drafting work or notes not to be included in the final project.
+  - `/freeze` folder: Automatically-generated GitHub website publication code.
