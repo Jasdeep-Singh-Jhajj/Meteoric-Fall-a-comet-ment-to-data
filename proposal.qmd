@@ -36,18 +36,6 @@ pacman::p_load(tidyverse,
 ```{r}
 #| label: load-dataset
 #| message: false
-```
-
-## Description and Motivation:
-
-The data set Meteorite_Landings.csv, which will be used for this project has been sourced from the official website of the United States Government that provides open data. The dimensions of the data set include 10 variables totally which consist of 6 numerical and 4 categorical variables. The reason why this data set was chosen was because of the opportunity to scientifically explore all the factors that go into studying how and why meteorites land on specific parts of the Earth. Using this data set, the project could explain the reasons behind certain historical events and predict the most vulnerable places for meteorite crashes which could help in their scientific study and research in fields such as astrology, data analysis and geology.
-
-### Metadata
-
-The data includes 10 variables- 6 numerical and 4 categorical. The metadata is shown down below, with a sample of the individual variable as well. The descriptions of what each variable represents is shown as well.
-
-```{r}
-#| code-fold: TRUE
 
 meteorite_data <- read.csv("data/Meteorite_Landings.csv")
 
@@ -63,7 +51,19 @@ metadata_meteorite <- tibble(
     }
   })
 )
+```
 
+## Description and Motivation:
+
+The data set `Meteorite_Landings.csv`, which will be used for this project has been sourced from [NASA's Open Data Portal](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh/about_data). It contains the complete set of information of all known meteorite landings on Earth. The dimensions of the data set include 10 variables total which consist of 6 numerical and 4 categorical variables, across `r nrow(meteorite_data)` observations. The reason why this data set was chosen was because of the opportunity to scientifically explore all the factors that go into studying how and why meteorites land on specific parts of the Earth. Using this data set, the project could explain the reasons behind certain historical events and predict the most vulnerable places for meteorite crashes which could help in their scientific study and research in fields such as astrology, data analysis and geology.
+
+### Metadata
+
+The data includes 10 variables- 6 numerical and 4 categorical. The metadata is shown down below, with a sample of the individual variable as well. The descriptions of what each variable represents is shown as well.
+
+```{r}
+#| label: dataset-explore
+#| code-fold: TRUE
 
 metadata_meteorite %>%
   kable("html") %>%
