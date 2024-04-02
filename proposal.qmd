@@ -90,7 +90,11 @@ metadata_meteorite %>%
 
 ## Questions
 
-The two questions you want to answer.
+-   What does the distribution of meteor impacts look like across the earth?
+
+    -   Which continents have accumulated the most total mass of meteors?
+
+-   How do historical events relate to the observations and discoveries of meteors?
 
 ## Analysis plan
 
