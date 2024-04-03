@@ -2,7 +2,7 @@
 title: "Proposal title"
 subtitle: "Proposal"
 author: 
-  - name: "Viz Wizards - Nick Ferrante, Jeremiah Gaiser, Tanya Evita George, Mrunal Jadhav, Jasdeep Singh Jhajj, Gillian McGinnis, Agastya Deshraju"
+  - name: "**Viz Wizards** - Nick Ferrante, Jeremiah Gaiser, Tanya Evita George, Mrunal Jadhav, Jasdeep Singh Jhajj, Gillian McGinnis, Agastya Deshraju"
     affiliations:
       - name: "School of Information, University of Arizona"
 description: "Project description"
@@ -16,35 +16,40 @@ editor: visual
 code-annotations: hover
 execute:
   warning: false
+  message: false
+code-fold: true
 ---
 
-```{r}
+```{r load-pkgs}
 #| label: load-pkgs
 #| message: false
 #| echo: false
+#| code-summary: "Install Packages"
 
 if (!require("pacman")) 
   install.packages("pacman")
-# load packages
 
+# Loading the packages
 pacman::p_load(tidyverse,
-               kableExtra) 
+               kableExtra,
+               DT) 
 ```
 
-## High-Level Goal:-
+## High-Level Goal
 
-The high-level goal for using Shiny app in the Meteorite_Landings dataset is to create an interactive platform that allows users to explore and analyze meteorite landings data through dynamic visualizations.
+The Goal of the Project is to make use of Shiny app on the Meteorite Landings dataset to create an interactive platform that allows users to explore and analyze meteorite landings data through dynamic visualizations.
 
-## Introduction:-
+## Introduction
 
 The proposed project aims to create an interactive platform using Shiny app to explore and analyze meteorite landings data. This platform will allow users to delve into the data through dynamic visualizations, enhancing their understanding of meteorite landings on Earth. The project seeks to answer key questions about the distribution of meteor impacts across the earth, the continents with the most accumulated total mass of meteors, and the relationship between historical events and the observations and discoveries of meteors. By analyzing this data, we hope to explain the reasons behind certain historical events and predict the most vulnerable places for future meteorite crashes. Such insights could significantly contribute to scientific research in fields such as astrology, data analysis, and geology.
 
-## Dataset:-
+## Dataset
 
-```{r}
+```{r load-dataset}
 #| label: load-dataset
-#| message: false
+#| code-summary: "Load the Meteorite Landings data"
 
+# Loading the data
 meteorite_data <- read.csv("data/Meteorite_Landings.csv")
 
 metadata_meteorite <- tibble(
@@ -61,17 +66,17 @@ metadata_meteorite <- tibble(
 )
 ```
 
-## Description and Motivation:-
+## Dataset Description and Motivation
 
 The data set `Meteorite_Landings.csv`, which will be used for this project has been sourced from [NASA's Open Data Portal](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh/about_data). It contains the complete set of information of all known meteorite landings on Earth. The dimensions of the data set include 10 variables total which consist of 6 numerical and 4 categorical variables, across `r nrow(meteorite_data)` observations. The reason why this data set was chosen was because of the opportunity to scientifically explore all the factors that go into studying how and why meteorites land on specific parts of the Earth. Using this data set, the project could explain the reasons behind certain historical events and predict the most vulnerable places for meteorite crashes which could help in their scientific study and research in fields such as astrology, data analysis and geology.
 
-### Metadata:-
+### Metadata
 
 The data includes 10 variables- 6 numerical and 4 categorical. The metadata is shown down below, with a sample of the individual variable as well. The descriptions of what each variable represents is shown as well.
 
-```{r}
+```{r dataset-explore}
 #| label: dataset-explore
-#| code-fold: TRUE
+#| code-summary: "Exploration of Dataset"
 
 metadata_meteorite %>%
   kable("html") %>%
@@ -80,7 +85,7 @@ metadata_meteorite %>%
 
 ```
 
-**Description of the metadata:-**
+**Description of the metadata**
 
 -   **name**: The name of the meteorite (usually the location of the meteorite landing)
 -   **id**: The unique identifier number assigned to the meteorite.
@@ -96,36 +101,116 @@ metadata_meteorite %>%
 -   **reclong**: The longitude of the meteorite's landing.
 -   **GeoLocation**: Combination of the latitude and longitude of the meteorite's landing.
 
-## Questions:-
+## Questions
 
--   What does the distribution of meteor impacts look like across the earth?
+**Question 1**- What does the distribution of meteor impacts look like across the earth?
 
-    -   Which continents have accumulated the most total mass of meteors?
+-   Which continents have accumulated the most total mass of meteors?
 
--   How do historical events relate to the observations and discoveries of meteors?
+**Question 2**- How do historical events relate to the observations and discoveries of meteors?
 
--   What trends may be observed in frequency, type, or location of meteors, and can they be related to known celestial events? 
+**Question 3**- What trends may be observed in frequency, type, or location of meteors, and can they be related to known celestial events?
 
-    Meteor crashes may be unpredictable, but they are not simply random events. Meteors are often determined to be the stray ejecta of debris from other celestial bodies. Therefore, we expect trends in observed meteor falls to correspond to notable celestial events, such as earth's passing by different celestial bodies, including comets, planets, and the moon.
+Meteor crashes may be unpredictable, but they are not simply random events. Meteors are often determined to be the stray ejecta of debris from other celestial bodies. Therefore, we expect trends in observed meteor falls to correspond to notable celestial events, such as earth's passing by different celestial bodies, including comets, planets, and the moon.
 
-    Therefore, we are interested in identifying statistically significant trends in the meteor data and attributing these data to specific events in time and space. For example, clusters of small but frequent meteor crashes may be observed during regular meteor-shower events like the Lyrids, which is a consequence of earth's passing through the debris trail of the Comet Thatcher. 
+Therefore, we are interested in identifying statistically significant trends in the meteor data and attributing these data to specific events in time and space. For example, clusters of small but frequent meteor crashes may be observed during regular meteor-shower events like the Lyrids, which is a consequence of earth's passing through the debris trail of the Comet Thatcher. 
 
-    Integrating this information with meteor impact visualizations will offer our audience a  rich model of earth's place in the solar system, and its myriad interactions with other celestial bodies.
+Integrating this information with meteor impact visualizations will offer our audience a  rich model of earth's place in the solar system, and its myriad interactions with other celestial bodies.
 
-## Analysis plan:-
-### Question 1
+## Analysis plan
+
+### Approach for Question 1
 
 To display the distribution of meteor impacts on earth we are going to implement an interactive leaflet map allowing the user to navigate and explore specific regions of the world and the meteors in those regions. We will use the `reclat` and `reclong` variables as the latitude and longitude to plot the locations of these meteors.
 
-### Question 2
+### Approach for Question 2
 
 To answer the question of which continents have accumulated the most total mass of meteors, we will use the `mass..g.` variable along with the frequency of meteor observations in each continent to determine the total mass to then create a density map displaying these densities for each continent.
 
-### Question 3
+### Approach for Question 3
 
 To answer the question, "How do historical events relate to the observations and discoveries of meteors?", we are going to create a line graph of the amount of meteor observations per year and add annotations representing major historical events, thus allowing for the analysis of the frequency of meteor observations and their related historical events. The main variables here will be the `year` variable along with an external reference to historical events.
 
-## Repository organization:-
+## Timeline - Weekly Plan of Attack
+
+```{r timeline}
+#| label: timeline
+#| code-summary: "Project Timeline"
+#| echo: false
+
+# Create the df for timeline tasks
+task_data <- data.frame(
+  Task_Name = c("Idea brainstorm and Data exploration", 
+                "Introduction and Goals description", 
+                "Dataset Description and Motivation", 
+                "Research Q1 and Analysis Plan", 
+                "Research Q2 and Analysis Plan", 
+                "Timeline and workflow", 
+                "Repository organization", 
+                "Peer Review1", 
+                "Peer Review2",
+                "Data cleaning/wrangling",
+                "Shiny app Setup",
+                "Plot Creation for Q1",
+                "Plot Creation for Q2",
+                "Writeup content for index",
+                "Presentation Writeup",
+                "Add Plot 1 to presentation",
+                "Add Plot 2 to presentation"),
+  Status = c("Done", "Done", "Done", "Ongoing",
+             "Ongoing", "Done", "Done",
+             "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"),
+  Assignee = c("Everyone",
+               "Mrunal",
+               "Agastya / Tanya",
+               "Nick / Jeremiah", 
+               "Nick / Jeremiah",
+               "Jasdeep",
+               "Gillian",
+               "Everyone",
+               "Everyone", "-",
+               "Gillian",
+               "Agastya / Jasdeep", "-", "-", "-", "-", "-"),
+  Due = c("04/03/24", "04/03/24", "04/03/24", "04/03/24",
+          "04/03/24", "04/03/24", "04/03/24", "04/08/24",
+          "04/08/24", "04/15/24", "04/16/24", "04/18/24",
+          "04/20/24", "04/23/24", "04/30/24", "05/02/24",
+          "05/04/24"),
+  Priority = c("High", "High", "Medium", "High",
+               "High", "Medium", "Medium", "High",
+               "High", "Medium", "Medium", "High",
+               "High", "Medium", "Medium", "High", "High"),
+  Summary = c("Look for project Ideas along with relevant Dataset", 
+              "Explain Goals of the Project", 
+              "Describe variables and columns in dataset", 
+              "Analyze and frame Q1 & Plan for Implementation", 
+              "Analyze and frame Q2 & Plan for Implementation", 
+              "Create Plan of Attack template", 
+              "Explain the Repository structure", 
+              "-", "-", "-", "-", "-", "-", "-", "-", "-", "-")
+)
+
+# Add headers for major checkpoints during Project
+task_data <- rbind(c("Proposal", "", "", "", "", ""),
+                   task_data[1:7, ],
+                   c("Peer Review", "", "", "", "", ""),
+                   task_data[8:9, ],
+                   c("Write-Up", "", "", "", "", ""),
+                   task_data[10:14, ],
+                   c("Presentation", "", "", "", "", ""),
+                   task_data[15:nrow(task_data), ])
+
+# Display table
+datatable(task_data, 
+          options = list(dom = 't', paging = FALSE),
+          rownames = FALSE,
+          colnames = c('Task Name', 'Status', 'Assignee',
+                       'Due', 'Priority', 'Summary'),
+          class = 'display nowrap compact',
+          escape = FALSE)
+```
+
+## Repository organization
 
 -   Main/root: All relevant Quarto markdown code, YAML settings, and folders.
     -   `.gitignore`: List of files or file types to not track via version control.
