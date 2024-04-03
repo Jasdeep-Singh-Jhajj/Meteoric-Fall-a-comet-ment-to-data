@@ -31,15 +31,15 @@ pacman::p_load(tidyverse,
                kableExtra) 
 ```
 
-## High-Level Goal:
+## High-Level Goal:-
 
 The high-level goal for using Shiny app in the Meteorite_Landings dataset is to create an interactive platform that allows users to explore and analyze meteorite landings data through dynamic visualizations.
 
-## Introduction:
+## Introduction:-
 
 The proposed project aims to create an interactive platform using Shiny app to explore and analyze meteorite landings data. This platform will allow users to delve into the data through dynamic visualizations, enhancing their understanding of meteorite landings on Earth. The project seeks to answer key questions about the distribution of meteor impacts across the earth, the continents with the most accumulated total mass of meteors, and the relationship between historical events and the observations and discoveries of meteors. By analyzing this data, we hope to explain the reasons behind certain historical events and predict the most vulnerable places for future meteorite crashes. Such insights could significantly contribute to scientific research in fields such as astrology, data analysis, and geology.
 
-## Dataset
+## Dataset:-
 
 ```{r}
 #| label: load-dataset
@@ -61,11 +61,11 @@ metadata_meteorite <- tibble(
 )
 ```
 
-## Description and Motivation:
+## Description and Motivation:-
 
 The data set `Meteorite_Landings.csv`, which will be used for this project has been sourced from [NASA's Open Data Portal](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh/about_data). It contains the complete set of information of all known meteorite landings on Earth. The dimensions of the data set include 10 variables total which consist of 6 numerical and 4 categorical variables, across `r nrow(meteorite_data)` observations. The reason why this data set was chosen was because of the opportunity to scientifically explore all the factors that go into studying how and why meteorites land on specific parts of the Earth. Using this data set, the project could explain the reasons behind certain historical events and predict the most vulnerable places for meteorite crashes which could help in their scientific study and research in fields such as astrology, data analysis and geology.
 
-### Metadata
+### Metadata:-
 
 The data includes 10 variables- 6 numerical and 4 categorical. The metadata is shown down below, with a sample of the individual variable as well. The descriptions of what each variable represents is shown as well.
 
@@ -80,7 +80,7 @@ metadata_meteorite %>%
 
 ```
 
-**Description of the metadata**
+**Description of the metadata:-**
 
 -   **name**: The name of the meteorite (usually the location of the meteorite landing)
 -   **id**: The unique identifier number assigned to the meteorite.
@@ -96,7 +96,7 @@ metadata_meteorite %>%
 -   **reclong**: The longitude of the meteorite's landing.
 -   **GeoLocation**: Combination of the latitude and longitude of the meteorite's landing.
 
-## Questions
+## Questions:-
 
 -   What does the distribution of meteor impacts look like across the earth?
 
@@ -112,11 +112,11 @@ metadata_meteorite %>%
 
     Integrating this information with meteor impact visualizations will offer our audience a  rich model of earth's place in the solar system, and its myriad interactions with other celestial bodies.
 
-## Analysis plan
+## Analysis plan:-
 
 -   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
 
-## Repository organization
+## Repository organization:-
 
 -   Main/root: All relevant Quarto markdown code, YAML settings, and folders.
     -   `.gitignore`: List of files or file types to not track via version control.
