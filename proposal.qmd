@@ -104,6 +104,14 @@ metadata_meteorite %>%
 
 -   How do historical events relate to the observations and discoveries of meteors?
 
+-   What trends may be observed in frequency, type, or location of meteors, and can they be related to known celestial events? 
+
+    Meteor crashes may be unpredictable, but they are not simply random events. Meteors are often determined to be the stray ejecta of debris from other celestial bodies. Therefore, we expect trends in observed meteor falls to correspond to notable celestial events, such as earth's passing by different celestial bodies, including comets, planets, and the moon.
+
+    Therefore, we are interested in identifying statistically significant trends in the meteor data and attributing these data to specific events in time and space. For example, clusters of small but frequent meteor crashes may be observed during regular meteor-shower events like the Lyrids, which is a consequence of earth's passing through the debris trail of the Comet Thatcher. 
+
+    Integrating this information with meteor impact visualizations will offer our audience a  rich model of earth's place in the solar system, and its myriad interactions with other celestial bodies.
+
 ## Analysis plan
 
 -   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
