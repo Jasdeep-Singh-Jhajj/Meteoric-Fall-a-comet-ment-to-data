@@ -1,11 +1,11 @@
 ---
-title: "Proposal title"
+title: "Meteoric Fall: a comet-ment to data"
 subtitle: "Proposal"
 author: 
-  - name: "**Viz Wizards** - Nick Ferrante, Jeremiah Gaiser, Tanya Evita George, Mrunal Jadhav, Jasdeep Singh Jhajj, Gillian McGinnis, Agastya Deshraju"
+  - name: "**Viz Wizards**: Nick Ferrante, Jeremiah Gaiser, Tanya Evita George,<br> Mrunal Jadhav, Jasdeep Singh Jhajj, Gillian McGinnis, Agastya Deshraju"
     affiliations:
       - name: "School of Information, University of Arizona"
-description: "Project description"
+description: "Developing a Shiny app to explore and analyze meteorite landings data, unraveling patterns and insights into meteor impact distribution and historical events"
 format:
   html:
     code-tools: true
@@ -35,7 +35,7 @@ pacman::p_load(tidyverse,
                DT) 
 ```
 
-## High-Level Goal
+## Project Goal
 
 The Goal of the Project is to make use of Shiny app on the Meteorite Landings dataset to create an interactive platform that allows users to explore and analyze meteorite landings data through dynamic visualizations.
 

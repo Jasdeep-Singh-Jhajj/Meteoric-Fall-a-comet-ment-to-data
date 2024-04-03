@@ -1,7 +1,7 @@
 ---
-title: "Project title"
-subtitle: "INFO 526 - Fall 2023 - Project Final"
-author: "Author names"
+title: "Meteoric Fall: a comet-ment to data"
+subtitle: "INFO 526 - Spring 2024 - Project Final"
+author: "**Viz Wizards** - Nick Ferrante, Jeremiah Gaiser, Tanya Evita George, Mrunal Jadhav, Jasdeep Singh Jhajj, Gillian McGinnis, Agastya Deshraju"
 title-slide-attributes:
   data-background-image: images/watercolour_sys02_img34_teacup-ocean.jpg
   data-background-size: stretch

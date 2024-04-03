@@ -1,11 +1,11 @@
 ---
-title: "Project Title"
+title: "Meteoric Fall: a comet-ment to data"
 subtitle: "INFO 526 - Project Final"
 author: 
-  - name: "Team name - Team member 1, Team member 2,..."
+  - name: "**Viz Wizards** - Nick Ferrante, Jeremiah Gaiser, Tanya Evita George, Mrunal Jadhav, Jasdeep Singh Jhajj, Gillian McGinnis, Agastya Deshraju"
     affiliations:
       - name: "School of Information, University of Arizona"
-description: "Project description"
+description: "Developing a Shiny app to explore and analyze meteorite landings data, unraveling patterns and insights into meteor impact distribution and historical events"
 format:
    html:
     code-tools: true

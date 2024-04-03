@@ -4,12 +4,18 @@ format: html
 editor: visual
 ---
 
-This project was developed by **\[Team Name\]** For [INFO 526 - Data Analysis & Visualization](https://datavizaz.org/) at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.
+This project was developed by **\[Team Viz Wizards\]** For [INFO 526 - Data Analysis & Visualization](https://datavizaz.org/) at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.
 
--   Team member 1: One sentence description of Team member 1 (e.g., year, major, etc.).
+-   Team member 1: Jasdeep Singh Jhajj, is a 1st year graduate student in the Data Science program with the School of Information.
 
--   Team member 2: One sentence description of Team member 2 (e.g., year, major, etc.).
+-   Team member 2: Agastya Deshraju, is a 1st year graduate student in the Data Science program with the School of Information.
 
--   Team member 3: One sentence description of Team member 3 (e.g., year, major, etc.).
+-   Team member 3: Gillian McGinnis, is a _ student in the _ program with the School of _.
 
--   Team member 4: One sentence description of Team member 4 (e.g., year, major, etc.).
+-   Team member 4: Tanya Evita George, is a 1st year graduate student in the Data Science program with the School of Information.
+
+-   Team member 5: Nick Ferrante, is a _ student in the _ program with the School of _.
+
+-   Team member 6: Jeremiah Gaiser, is a _ student in the _ program with the School of _.
+
+-   Team member 7: Mrunal Jadhav, is a 1st year graduate student in the Data Science program with the School of Information.

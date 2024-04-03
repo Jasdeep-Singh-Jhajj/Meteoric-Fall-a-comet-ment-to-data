@@ -2,11 +2,11 @@ project:
   type: website
 
 website:
-  title: Project Title
+  title: "<img src='/images/meteor_logo.png' alt='Meteor Logo' style='width: 2.7em; height: 2.3em; border-radius: 20%;'> <b> Meteoric Fall: a comet-ment to data</b>"
   navbar:
     right:
       - icon: github
-        href: https://github.com/INFO-526-S24/project-final # Needs to be changed to your project repo
+        href: https://info-526-s24.github.io/project-final-VizWizards/
     left:
       - text: Project
         href: index.qmd
@@ -20,7 +20,7 @@ website:
 format:
   html:
     theme:
-      light: flatly
+      light: lumen
       dark: darkly
     toc: true
 
