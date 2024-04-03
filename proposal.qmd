@@ -14,6 +14,8 @@ format:
     embed-resources: true
 editor: visual
 code-annotations: hover
+categories: 
+  - Data visualization
 execute:
   warning: false
   message: false
@@ -111,8 +113,6 @@ metadata_meteorite %>%
 
 **Question 3**- What trends may be observed in frequency, type, or location of meteors, and can they be related to known celestial events?
 
-
-
 ## Analysis plan
 
 ### Approach for Question 1
@@ -142,65 +142,66 @@ Integrating this information with meteor impact visualizations will offer our au
 
 # Create the df for timeline tasks
 task_data <- data.frame(
-  Task_Name = c("Idea brainstorm and Data exploration", 
-                "Introduction and Goals description", 
-                "Dataset Description and Motivation", 
-                "Research Q1 and Analysis Plan", 
-                "Research Q2 and Analysis Plan", 
-                "Timeline and workflow", 
-                "Repository organization", 
-                "Peer Review1", 
+  Task_Name = c("Dataset exploration", 
+                "Introduction & Goals<br>description", 
+                "Dataset Description &<br>Motivation", 
+                "Research & Analysis Plan", 
+                "Timeline & workflow", 
+                "Repository organization",
+                "Peer Review1",
                 "Peer Review2",
-                "Data cleaning/wrangling",
+                "Finalize Proposal",
+                "Initial Data cleaning",
                 "Shiny app Setup",
-                "Plot Creation for Q1",
-                "Plot Creation for Q2",
+                "Plot Development for Q1",
+                "Plot Development for Q2",
+                "Plot Development for Q3",
+                "Shiny app Frontend",
                 "Writeup content for index",
                 "Presentation Writeup",
                 "Add Plot 1 to presentation",
                 "Add Plot 2 to presentation"),
-  Status = c("Done", "Done", "Done", "Ongoing",
-             "Ongoing", "Done", "Done",
-             "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"),
-  Assignee = c("Everyone",
-               "Mrunal",
-               "Agastya / Tanya",
+  Status = c("Done", "Done", "Done", "In-Progress",
+             "Done", "Done", "-", "-", "-", "-", "-",
+             "-", "-", "-", "-", "-", "-", "-", "-"),
+  Assignee = c("Everyone", 
+               "Mrunal", 
+               "Agastya / Tanya", 
                "Nick / Jeremiah", 
-               "Nick / Jeremiah",
-               "Jasdeep",
-               "Gillian",
-               "Everyone",
-               "Everyone", "-",
-               "Gillian",
-               "Agastya / Jasdeep", "-", "-", "-", "-", "-"),
+               "Jasdeep", "Gillian",
+               "Everyone", "Everyone", 
+               "Everyone", "", 
+               "Gillian", 
+               "Agastya / Jasdeep", 
+               "", "", "", "", "", "", ""),
   Due = c("04/03/24", "04/03/24", "04/03/24", "04/03/24",
-          "04/03/24", "04/03/24", "04/03/24", "04/08/24",
+          "04/03/24", "04/03/24", "04/08/24", "04/08/24",
           "04/08/24", "04/15/24", "04/16/24", "04/18/24",
-          "04/20/24", "04/23/24", "04/30/24", "05/02/24",
-          "05/04/24"),
-  Priority = c("High", "High", "Medium", "High",
-               "High", "Medium", "Medium", "High",
-               "High", "Medium", "Medium", "High",
-               "High", "Medium", "Medium", "High", "High"),
-  Summary = c("Look for project Ideas along with relevant Dataset", 
-              "Explain Goals of the Project", 
-              "Describe variables and columns in dataset", 
-              "Analyze and frame Q1 & Plan for Implementation", 
-              "Analyze and frame Q2 & Plan for Implementation", 
-              "Create Plan of Attack template", 
-              "Explain the Repository structure", 
-              "-", "-", "-", "-", "-", "-", "-", "-", "-", "-")
+          "04/20/24", "04/22/24", "04/24/24", "04/26/24",
+          "04/30/24", "05/02/24", "05/04/24"),
+  Priority = c("High", "High", "Medium", "High", "Medium",
+               "Medium", "High", "High", "High", "Medium",
+               "Medium", "High", "High", "High", "Medium",
+               "Medium", "Medium", "High", "High"),
+  Summary = c("Explore Ideas along<br>with relevant Dataset", 
+              "Explain Goals of<br>the Project", 
+              "Describe variables &<br>columns in dataset", 
+              "Analysis Q1 & Plan<br>for Implementation",
+              "Create Plan of<br>Attack template",
+              "Explain Repository<br>structure",
+              "-", "-", "-","-", "-", "-", "-",
+              "-", "-", "-", "-", "-", "-")
 )
 
 # Add headers for major checkpoints during Project
 task_data <- rbind(c("Proposal", "", "", "", "", ""),
-                   task_data[1:7, ],
+                   task_data[1:6, ],
                    c("Peer Review", "", "", "", "", ""),
-                   task_data[8:9, ],
-                   c("Write-Up", "", "", "", "", ""),
-                   task_data[10:14, ],
+                   task_data[7:9, ],
+                   c("Write-up", "", "", "", "", ""),
+                   task_data[10:16, ],
                    c("Presentation", "", "", "", "", ""),
-                   task_data[15:nrow(task_data), ])
+                   task_data[17:nrow(task_data), ])
 
 # Display table
 datatable(task_data, 

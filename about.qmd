@@ -10,11 +10,11 @@ This project was developed by **\[Team Viz Wizards\]** For [INFO 526 - Data Anal
 
 -   Team member 2: Agastya Deshraju, is a 1st year graduate student in the Data Science program with the School of Information.
 
--   Team member 3: Gillian McGinnis, is a 1st year graduate student student in the Information Science - Machine Learning program with the School of Information.
+-   Team member 3: Gillian McGinnis, is a 1st year graduate student in the Information Science - Machine Learning program with the School of Information.
 
 -   Team member 4: Tanya Evita George, is a 1st year graduate student in the Data Science program with the School of Information.
 
--   Team member 5: Nick Ferrante, is a \_ student in the \_ program with the School of \_.
+-   Team member 5: Nick Ferrante, is a 1st year graduate student in the Data Science program with the School of Information.
 
 -   Team member 6: Jeremiah Gaiser, is a \_ student in the \_ program with the School of \_.
 

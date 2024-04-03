@@ -6,7 +6,7 @@ website:
   navbar:
     right:
       - icon: github
-        href: https://info-526-s24.github.io/project-final-VizWizards/
+        href: https://github.com/INFO-526-S24/project-final-VizWizards/
     left:
       - text: Project
         href: index.qmd
