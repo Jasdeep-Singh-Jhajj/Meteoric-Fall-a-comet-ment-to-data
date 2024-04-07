@@ -1,0 +1,135 @@
+[
+  {
+    "objectID": "proposal.html",
+    "href": "proposal.html",
+    "title": "Proposal title",
+    "section": "",
+    "text": "meteorite_data &lt;- read.csv(\"data/Meteorite_Landings.csv\")\n\nmetadata_meteorite &lt;- tibble(\n  Column = names(meteorite_data),\n  DataType = sapply(meteorite_data, class),\n  SampleData = sapply(meteorite_data, function(column) {\n    first_non_na &lt;- column[!is.na(column)][1]\n    if (is.numeric(first_non_na)) {\n      return(format(first_non_na, nsmall = 2))\n    } else {\n      return(as.character(first_non_na))\n    }\n  })\n)"
+  },
+  {
+    "objectID": "proposal.html#dataset",
+    "href": "proposal.html#dataset",
+    "title": "Proposal title",
+    "section": "",
+    "text": "meteorite_data &lt;- read.csv(\"data/Meteorite_Landings.csv\")\n\nmetadata_meteorite &lt;- tibble(\n  Column = names(meteorite_data),\n  DataType = sapply(meteorite_data, class),\n  SampleData = sapply(meteorite_data, function(column) {\n    first_non_na &lt;- column[!is.na(column)][1]\n    if (is.numeric(first_non_na)) {\n      return(format(first_non_na, nsmall = 2))\n    } else {\n      return(as.character(first_non_na))\n    }\n  })\n)"
+  },
+  {
+    "objectID": "proposal.html#high-level-goal",
+    "href": "proposal.html#high-level-goal",
+    "title": "Proposal title",
+    "section": "High-Level Goal:",
+    "text": "High-Level Goal:\nThe high-level goal for using Shiny app in the Meteorite_Landings dataset is to create an interactive platform that allows users to explore and analyze meteorite landings data through dynamic visualizations."
+  },
+  {
+    "objectID": "proposal.html#description-and-motivation",
+    "href": "proposal.html#description-and-motivation",
+    "title": "Proposal title",
+    "section": "Description and Motivation:",
+    "text": "Description and Motivation:\nThe data set Meteorite_Landings.csv, which will be used for this project has been sourced from NASA’s Open Data Portal. It contains the complete set of information of all known meteorite landings on Earth. The dimensions of the data set include 10 variables total which consist of 6 numerical and 4 categorical variables, across 45716 observations. The reason why this data set was chosen was because of the opportunity to scientifically explore all the factors that go into studying how and why meteorites land on specific parts of the Earth. Using this data set, the project could explain the reasons behind certain historical events and predict the most vulnerable places for meteorite crashes which could help in their scientific study and research in fields such as astrology, data analysis and geology.\n\nMetadata\nThe data includes 10 variables- 6 numerical and 4 categorical. The metadata is shown down below, with a sample of the individual variable as well. The descriptions of what each variable represents is shown as well.\n\n\nCode\nmetadata_meteorite %&gt;%\n  kable(\"html\") %&gt;%\n  kable_styling(bootstrap_options = c(\"striped\", \"hover\"), full_width = F) %&gt;%\n  column_spec(1, bold = T)\n\n\n\n\n\nColumn\nDataType\nSampleData\n\n\n\n\nname\ncharacter\nAachen\n\n\nid\ninteger\n1\n\n\nnametype\ncharacter\nValid\n\n\nrecclass\ncharacter\nL5\n\n\nmass..g.\nnumeric\n21.00\n\n\nfall\ncharacter\nFell\n\n\nyear\ninteger\n1880\n\n\nreclat\nnumeric\n50.775\n\n\nreclong\nnumeric\n6.08333\n\n\nGeoLocation\ncharacter\n(50.775, 6.08333)\n\n\n\n\n\n\n\nDescription of the metadata\n\nname: The name of the meteorite (usually the location of the meteorite landing)\nid: The unique identifier number assigned to the meteorite.\nnametype: Can be one of two different categories:\n\nvalid: A regular meteorite.\nrelict: A meteorite that has been degraded over the years due to weather.\n\nrecclass: The recommended class of the meteorite; that is classified based on certain characteristics of the meteorite such as, chemical, isotopic, and mineralogical properties.\nmass(g): The mass of the meteorite, given in grams.\nfall: Can be one of two different categories:\n\nfell: Classified as fell when the fall of the meteorite is observed.\nfound: Classified as found when the fall of the meteorite is not observed, but the meteorite was found later.\n\nreclat: The latitude of the meteorite’s landing.\nreclong: The longitude of the meteorite’s landing.\nGeoLocation: Combination of the latitude and longitude of the meteorite’s landing."
+  },
+  {
+    "objectID": "proposal.html#questions",
+    "href": "proposal.html#questions",
+    "title": "Proposal title",
+    "section": "Questions",
+    "text": "Questions\n\nWhat does the distribution of meteor impacts look like across the earth?\n\nWhich continents have accumulated the most total mass of meteors?\n\nHow do historical events relate to the observations and discoveries of meteors?\nWhat trends may be observed in frequency, type, or location of meteors, and can they be related to known celestial events? \nMeteor crashes may be unpredictable, but they are not simply random events. Meteors are often determined to be the stray ejecta of debris from other celestial bodies. Therefore, we expect trends in observed meteor falls to correspond to notable celestial events, such as earth’s passing by different celestial bodies, including comets, planets, and the moon.\nTherefore, we are interested in identifying statistically significant trends in the meteor data and attributing these data to specific events in time and space. For example, clusters of small but frequent meteor crashes may be observed during regular meteor-shower events like the Lyrids, which is a consequence of earth’s passing through the debris trail of the Comet Thatcher. \nIntegrating this information with meteor impact visualizations will offer our audience a  rich model of earth’s place in the solar system, and its myriad interactions with other celestial bodies."
+  },
+  {
+    "objectID": "proposal.html#analysis-plan",
+    "href": "proposal.html#analysis-plan",
+    "title": "Proposal title",
+    "section": "Analysis plan",
+    "text": "Analysis plan\n\nA plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any)."
+  },
+  {
+    "objectID": "proposal.html#repository-organization",
+    "href": "proposal.html#repository-organization",
+    "title": "Proposal title",
+    "section": "Repository organization",
+    "text": "Repository organization\n\nMain/root: All relevant Quarto markdown code, YAML settings, and folders.\n\n.gitignore: List of files or file types to not track via version control.\nREADME.md: Brief project description, viewable for the repository landing page.\n*.qmd: Quarto markdown files for the publication of the GitHub website, including the main landing page to contain the final report (index.qmd), the project proposal (proposal.qmd), a list of project members (about.qmd), and the slidedeck for the final presentation (presentation.qmd).\n\n/data folder:\n\nMeteorite_Landings.csv: Raw data file\nREADME.md: Data dictionary for meteors.csv\n\n/images folder: Any images to be added for the presentation.qmd or GitHub website.\n/shiny folder:\n\napp.R: All R code for both the Shiny UI and server. To be independent from the main folder to allow for publication on a separate Shiny server.\nREADME.md: Description of the folder\n\nOther:\n\n/.github folder: For automated workflows.\n/_extra folder: For any drafting work or notes not to be included in the final project.\n/freeze folder: Automatically-generated GitHub website publication code."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Project Title",
+    "section": "",
+    "text": "Add project abstract here."
+  },
+  {
+    "objectID": "index.html#abstract",
+    "href": "index.html#abstract",
+    "title": "Project Title",
+    "section": "",
+    "text": "Add project abstract here."
+  },
+  {
+    "objectID": "presentation.html#quarto",
+    "href": "presentation.html#quarto",
+    "title": "Project title",
+    "section": "Quarto",
+    "text": "Quarto\n\nThe presentation is created using the Quarto CLI\n## sets the start of a new slide"
+  },
+  {
+    "objectID": "presentation.html#layouts",
+    "href": "presentation.html#layouts",
+    "title": "Project title",
+    "section": "Layouts",
+    "text": "Layouts\nYou can use plain text\n\n\n\nor bullet points1\n\n\nor in two columns\n\n\n\nlike\nthis\n\nAnd add footnotes"
+  },
+  {
+    "objectID": "presentation.html#code",
+    "href": "presentation.html#code",
+    "title": "Project title",
+    "section": "Code",
+    "text": "Code\n\n\n# A tibble: 2 × 5\n  term        estimate std.error statistic       p.value\n  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;\n1 (Intercept)   25.3      3.08        8.22 0.00000000358\n2 speed         -0.116    0.0642     -1.81 0.0806       \n\n\n# A tibble: 1 × 12\n  r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC\n      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1    0.0983        0.0682  5.82      3.27  0.0806     1  -101.  207.  212.\n# ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;"
+  },
+  {
+    "objectID": "presentation.html#plots",
+    "href": "presentation.html#plots",
+    "title": "Project title",
+    "section": "Plots",
+    "text": "Plots"
+  },
+  {
+    "objectID": "presentation.html#plot-and-text",
+    "href": "presentation.html#plot-and-text",
+    "title": "Project title",
+    "section": "Plot and text",
+    "text": "Plot and text\n\n\n\nSome text\ngoes here"
+  },
+  {
+    "objectID": "presentation.html#tables",
+    "href": "presentation.html#tables",
+    "title": "Project title",
+    "section": "Tables",
+    "text": "Tables\nIf you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,\n\n\n\n\n\nspecies\nisland\nbill_length_mm\nbill_depth_mm\nflipper_length_mm\nbody_mass_g\nsex\n\n\n\n\nAdelie\nTorgersen\n39.1\n18.7\n181\n3750\nmale\n\n\nAdelie\nTorgersen\n39.5\n17.4\n186\n3800\nfemale\n\n\nAdelie\nTorgersen\n40.3\n18.0\n195\n3250\nfemale\n\n\nAdelie\nTorgersen\nNA\nNA\nNA\nNA\nNA\n\n\nAdelie\nTorgersen\n36.7\n19.3\n193\n3450\nfemale\n\n\nAdelie\nTorgersen\n39.3\n20.6\n190\n3650\nmale"
+  },
+  {
+    "objectID": "presentation.html#images",
+    "href": "presentation.html#images",
+    "title": "Project title",
+    "section": "Images",
+    "text": "Images\n\nImage credit: Danielle Navarro, Percolate."
+  },
+  {
+    "objectID": "presentation.html#math-expressions",
+    "href": "presentation.html#math-expressions",
+    "title": "Project title",
+    "section": "Math Expressions",
+    "text": "Math Expressions\nYou can write LaTeX math expressions inside a pair of dollar signs, e.g. $\\alpha+\\beta$ renders \\(\\alpha + \\beta\\). You can use the display style with double dollar signs:\n$$\\bar{X}=\\frac{1}{n}\\sum_{i=1}^nX_i$$\n\\[\n\\bar{X}=\\frac{1}{n}\\sum_{i=1}^nX_i\n\\]\nLimitations:\n\nThe source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting $$ must appear in the very beginning of a line, followed immediately by a non-space character, and the ending $$ must be at the end of a line, led by a non-space character;\nThere should not be spaces after the opening $ or before the closing $."
+  },
+  {
+    "objectID": "presentation.html#feeling-adventurous",
+    "href": "presentation.html#feeling-adventurous",
+    "title": "Project title",
+    "section": "Feeling adventurous?",
+    "text": "Feeling adventurous?\n\nYou are welcomed to use the default styling of the slides. In fact, that’s what I expect majority of you will do. You will differentiate yourself with the content of your presentation.\nBut some of you might want to play around with slide styling. Some solutions for this can be found at https://quarto.org/docs/presentations/revealjs."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "This project was developed by [Team Name] For INFO 526 - Data Analysis & Visualization at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.\n\nTeam member 1: One sentence description of Team member 1 (e.g., year, major, etc.).\nTeam member 2: One sentence description of Team member 2 (e.g., year, major, etc.).\nTeam member 3: One sentence description of Team member 3 (e.g., year, major, etc.).\nTeam member 4: One sentence description of Team member 4 (e.g., year, major, etc.)."
+  }
+]

@@ -111,7 +111,7 @@ metadata_meteorite %>%
 
 **Question 2**- How do historical events relate to the observations and discoveries of meteors?
 
-**Question 3**- What trends may be observed in frequency, type, or location of meteors, and can they be related to known celestial events?
+**Question 3**- Are trends observed in frequency, type, or location of meteors, relateded to known celestial events?
 
 ## Analysis plan
 
@@ -127,13 +127,17 @@ To answer the question, "How do historical events relate to the observations and
 
 ### Approach for Question 3
 
-Meteor crashes may be unpredictable, but they are not simply random events. Meteors are often determined to be the stray ejecta of debris from other celestial bodies. Therefore, we expect trends in observed meteor falls to correspond to notable celestial events, such as earth's passing by different celestial bodies, including comets, planets, and the moon.
+Meteors are stray particles and debris ejected from neighboring celestial bodies within our solar system. We anticipate that patterns in meteor falls will align with Earth's proximity to astronomical objects like comets, planets, and the moon.
 
-Therefore, we are interested in identifying statistically significant trends in the meteor data and attributing these data to specific events in time and space. For example, clusters of small but frequent meteor crashes may be observed during regular meteor-shower events like the Lyrids, which is a consequence of earth's passing through the debris trail of the Comet Thatcher. 
+Our goal is to pinpoint statistically significant patterns in meteor data and link these to specific celestial occurrences. For instance, the annual Lyrids meteor shower is the consequence of Earth's passing through the debris path of Comet Thatcher. As a result, we observe more frequent meteor impacts on the surface of the moon.
 
-Integrating this information with meteor impact visualizations will offer our audience a  rich model of earth's place in the solar system, and its myriad interactions with other celestial bodies.
+To identify such events, we will analyze meteor data over time to spot any activity clusters that significantly vary from average observations. Next, we will consult external data sources, such as NASA.gov, to check if these periods of heightened activity coincide with known astronomical events, such as annual meteor showers or close encounters with other planets.
 
-## Timeline - Weekly Plan of Attack
+We plan to incorporate these findings into our meteor impact visualizations. This could involve color-coding individual meteors to show which celestial event triggered them, or adding a basic map of the solar system to show Earth's position relative to these events.
+
+By embedding this information into our visualizations, we aim to provide a deeper understanding of Earth's role in the solar system and illustrate how meteor falls are interconnected with the dynamic cycles of space.
+
+Timeline - Weekly Plan of Attack
 
 ```{r timeline}
 #| label: timeline
