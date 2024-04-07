@@ -117,13 +117,13 @@ metadata_meteorite %>%
 
 ### Approach for Question 1
 
-To display the distribution of meteor impacts on earth we are going to implement an interactive leaflet map allowing the user to navigate and explore specific regions of the world and the meteors in those regions. We will use the `reclat` and `reclong` variables as the latitude and longitude to plot the locations of these meteors.
+To display the distribution of meteor impacts on earth we are going to implement an interactive leaflet map allowing the user to navigate and explore specific regions of the world and the meteors in those regions. We will use the `reclat` and `reclong` variables as the latitude and longitude to plot the locations of these meteors. The interactive aspect of the map will allow users to explore specific observations including the year the meteor fell or the year that it was found, the mass of the meteor, and this could also potentially allow for information regarding the classification of the meteor's characteristics. The interactive portion of the plot will be implemented using the variables `fall`, `year`, and `recclass`.
 
 To answer the question of which continents have accumulated the most total mass of meteors, we will use the `mass..g.` variable along with the frequency of meteor observations in each continent to determine the total mass to then create a density map displaying these densities for each continent.
 
 ### Approach for Question 2
 
-To answer the question, "How do historical events relate to the observations and discoveries of meteors?", we are going to create a line graph of the amount of meteor observations per year and add annotations representing major historical events, thus allowing for the analysis of the frequency of meteor observations and their related historical events. The main variables here will be the `year` variable along with an external reference to historical events.
+To answer the question, "How do historical events relate to the observations and discoveries of meteors?", we are going to create an animated line graph of the amount of meteor observations per year and add annotations representing major historical events, thus allowing for the analysis of the frequency of meteor observations and their relation to historical events. The animation will display the progression of meteor observations over time with relevant historical events appearing as they are reached on the timeline (x axis). This investigation will allow us to see if there were any historical events that sparked increased activity in the study of meteors, such as an increase in meteor findings after the space race. The main variables here will be the `year` variable, a meteor frequency variable that will be created through data wrangling, along with an external reference to historical events.
 
 ### Approach for Question 3
 
