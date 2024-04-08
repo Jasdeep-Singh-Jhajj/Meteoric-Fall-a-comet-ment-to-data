@@ -79,6 +79,7 @@ The data includes 10 variables- 6 numerical and 4 categorical. The metadata is s
 ```{r dataset-explore}
 #| label: dataset-explore
 #| code-summary: "Exploration of Dataset"
+#| echo: false
 
 metadata_meteorite %>%
   kable("html") %>%
@@ -113,6 +114,36 @@ metadata_meteorite %>%
 
 **Question 3**- Are trends observed in frequency, type, or location of meteors, relateded to known celestial events?
 
+
+## Data Cleaning
+
+```{r}
+#| echo: false
+#| warning: false
+
+investigate <- dlookr::diagnose(meteorite_data)
+
+colnames(investigate) <- c("Variables", "Data Type", "Number of missing values", "Percentage of missing values", "Number of unique values", "Rate of unique values")
+
+
+table <- kable(investigate, "html") |>
+  kable_styling(full_width = FALSE)
+
+table
+```
+
+The above table shows the number of missing values from each column, as well as the number of unique values present in the dataset.
+
+
+- The first step that will be taken to clean the data, includes filtering out all the values in the `year` column. All years before '860 CE' and after '2016 CE' are incorrect and can be discarded.
+
+- Then, all longitude and latitude values, from the `reclong` and `reclat` columns respectively, greater than '180°' and less than '-180°' can be filtered out.
+
+- All the reportings at (0°N, 0°E) can be treated as 'NULL' values as these reportings didn't have an exact location when they were sighted, or they were found in areas such as Antartica where reporting on the exact locations would present some challenges.
+
+- All 'NULL' values would be ignored for Question 1, which deals with plotting the locations of each reporting on an interactive map. But these values could prove valuable for Questions 2 & 3 and will therefore be left in the dataset for them.
+
+
 ## Analysis plan
 
 ### Approach for Question 1
@@ -137,7 +168,7 @@ We plan to incorporate these findings into our meteor impact visualizations. Thi
 
 By embedding this information into our visualizations, we aim to provide a deeper understanding of Earth's role in the solar system and illustrate how meteor falls are interconnected with the dynamic cycles of space.
 
-Timeline - Weekly Plan of Attack
+## Timeline - Weekly Plan of Attack
 
 ```{r timeline}
 #| label: timeline
