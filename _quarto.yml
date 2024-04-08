@@ -16,6 +16,7 @@ website:
         href: presentation.qmd
       - text: About
         href: about.qmd
+  favicon: images/meteor_logo.png
 
 format:
   html:

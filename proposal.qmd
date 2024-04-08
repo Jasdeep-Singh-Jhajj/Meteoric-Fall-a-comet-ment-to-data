@@ -114,7 +114,6 @@ metadata_meteorite %>%
 
 **Question 3**- Are trends observed in frequency, type, or location of meteors, relateded to known celestial events?
 
-
 ## Data Cleaning
 
 ```{r}
@@ -142,7 +141,6 @@ The above table shows the number of missing values from each column, as well as 
 - All the reportings at (0°N, 0°E) can be treated as 'NULL' values as these reportings didn't have an exact location when they were sighted, or they were found in areas such as Antartica where reporting on the exact locations would present some challenges.
 
 - All 'NULL' values would be ignored for Question 1, which deals with plotting the locations of each reporting on an interactive map. But these values could prove valuable for Questions 2 & 3 and will therefore be left in the dataset for them.
-
 
 ## Analysis plan
 
@@ -196,22 +194,23 @@ task_data <- data.frame(
                 "Presentation Writeup",
                 "Add Plot 1 to presentation",
                 "Add Plot 2 to presentation"),
-  Status = c("Done", "Done", "Done", "In-Progress",
-             "Done", "Done", "-", "-", "-", "-", "-",
-             "-", "-", "-", "-", "-", "-", "-", "-"),
+  Status = c("Done", "Done", "Done", "Done",
+             "Done", "Done", "Done", "Done", "Done",
+             "In-Progress", "In-Progress", "In-Progress",
+             "In-Progress", "In-Progress", "-", "-", "-", "-", "-"),
   Assignee = c("Everyone", 
                "Mrunal", 
                "Agastya / Tanya", 
                "Nick / Jeremiah", 
                "Jasdeep", "Gillian",
                "Everyone", "Everyone", 
-               "Everyone", "", 
+               "Everyone", "Agastya", 
                "Gillian", 
                "Agastya / Jasdeep", 
-               "", "", "", "", "", "", ""),
+               "Nick", "Jeremiah", "", "", "", "", ""),
   Due = c("04/03/24", "04/03/24", "04/03/24", "04/03/24",
           "04/03/24", "04/03/24", "04/08/24", "04/08/24",
-          "04/08/24", "04/15/24", "04/16/24", "04/18/24",
+          "04/08/24", "04/11/24", "04/15/24", "04/18/24",
           "04/20/24", "04/22/24", "04/24/24", "04/26/24",
           "04/30/24", "05/02/24", "05/04/24"),
   Priority = c("High", "High", "Medium", "High", "Medium",
@@ -221,21 +220,23 @@ task_data <- data.frame(
   Summary = c("Explore Ideas along<br>with relevant Dataset", 
               "Explain Goals of<br>the Project", 
               "Describe variables &<br>columns in dataset", 
-              "Analysis Q1 & Plan<br>for Implementation",
+              "Analysis & Plan<br>for Implementation",
               "Create Plan of<br>Attack template",
               "Explain Repository<br>structure",
-              "-", "-", "-","-", "-", "-", "-",
-              "-", "-", "-", "-", "-", "-")
+              "Fix suggestions<br>by Peer-Review1",
+              "Fix suggestions<br>by Peer-Review2",
+              "Proposal Final<br>Changes",
+              "-", "-", "-", "-", "-", "-", "-", "-", "-", "-")
 )
 
 # Add headers for major checkpoints during Project
-task_data <- rbind(c("Proposal", "", "", "", "", ""),
+task_data <- rbind(c("<b>Proposal</b>", "", "", "", "", ""),
                    task_data[1:6, ],
-                   c("Peer Review", "", "", "", "", ""),
+                   c("<b>Peer Review</b>", "", "", "", "", ""),
                    task_data[7:9, ],
-                   c("Write-up", "", "", "", "", ""),
+                   c("<b>Implementation & Write-up</b>", "", "", "", "", ""),
                    task_data[10:16, ],
-                   c("Presentation", "", "", "", "", ""),
+                   c("<b>Presentation</b>", "", "", "", "", ""),
                    task_data[17:nrow(task_data), ])
 
 # Display table
@@ -264,4 +265,4 @@ datatable(task_data,
 -   Other:
     -   `/.github` folder: For automated workflows.
     -   `/_extra` folder: For any drafting work or notes not to be included in the final project.
-    -   `/freeze` folder: Automatically-generated GitHub website publication code.
+    -   `/_freeze` folder: Automatically-generated GitHub website publication code.
