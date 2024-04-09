@@ -133,14 +133,15 @@ table
 
 The above table shows the number of missing values from each column, as well as the number of unique values present in the dataset.
 
+-   The first step that will be taken to clean the data, includes filtering out all the values in the `year` column. All years before '860 CE' and after '2016 CE' are incorrect and can be discarded.
 
-- The first step that will be taken to clean the data, includes filtering out all the values in the `year` column. All years before '860 CE' and after '2016 CE' are incorrect and can be discarded.
+-   Then, all longitude and latitude values, from the `reclong` and `reclat` columns respectively, greater than '180°' and less than '-180°' can be filtered out.
 
-- Then, all longitude and latitude values, from the `reclong` and `reclat` columns respectively, greater than '180°' and less than '-180°' can be filtered out.
+-   All the reportings at (0°N, 0°E) can be treated as 'NULL' values as these reportings didn't have an exact location when they were sighted, or they were found in areas such as Antartica where reporting on the exact locations would present some challenges.
 
-- All the reportings at (0°N, 0°E) can be treated as 'NULL' values as these reportings didn't have an exact location when they were sighted, or they were found in areas such as Antartica where reporting on the exact locations would present some challenges.
+-   All 'NULL' values would be ignored for Question 1, which deals with plotting the locations of each reporting on an interactive map. 
 
-- All 'NULL' values would be ignored for Question 1, which deals with plotting the locations of each reporting on an interactive map. But these values could prove valuable for Questions 2 & 3 and will therefore be left in the dataset for them.
+- These values could however prove valuable for Questions 2 & 3 and will therefore be left in the dataset for them.
 
 ## Analysis plan
 
