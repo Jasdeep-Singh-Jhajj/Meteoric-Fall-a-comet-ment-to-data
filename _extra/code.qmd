@@ -1,9 +1,8 @@
-
-
-```{r}
-#| label: load-pkgs
+```{r load_pkgs}
+#| label: load_pkgs
 #| message: false
-
+#| warning: false
+#| code-summary: "Load Packages"
 
 if (!require("pacman")) 
   install.packages("pacman")
@@ -20,14 +19,23 @@ pacman::p_load(tidyverse,
 ```
 
 ## Dataset Setup
-```{r}
+```{r load_dataset}
+#| label: load_dataset
+#| message: false
+#| warning: false
+#| code-summary: "Load Dataset"
 # Read the CSV file
 meteorite_data <- read_csv(here("data/Meteorite_Landings.csv"))
 ```
 
 ## Data Cleaning
 
-```{r}
+```{r data_cleaning}
+#| label: data_cleaning
+#| message: false
+#| warning: false
+#| code-summary: "Data Cleaning"
+
 meteorite_data <- meteorite_data |> 
   na.omit(year)
 
@@ -48,11 +56,13 @@ meteorite_data_filtered <- meteorite_data_filtered %>%
 
 ## Static Plot to visualize meteorites that were recorded before falling.
 
-```{r}
-filtered_data
-```
 
-```{r filter for size, warning=FALSE, fig.alt= "World map showing the different recorded locations where meteorites fell to Earth"}
+```{r filter_meteorites, warning=FALSE, fig.alt= "World map showing the different recorded locations where meteorites fell to Earth"}
+#| label: filter_meteorites
+#| message: false
+#| warning: false
+#| code-summary: "Filtering meteorites"
+
 
 # Adding a filter to classify the size of the meteorites
 filtered_data <- subset(meteorite_data_filtered, `mass (g)` > 1000 & fall == "Fell")
@@ -72,7 +82,6 @@ world_map <- ggplot() +
 # Show the plot
 print(world_map)
 
-
 ```
 
 
@@ -80,7 +89,11 @@ print(world_map)
 
 ## Static Plot to visualize meteorites recorded after falling. 
 
-```{r warning=FALSE, fig.alt= "World map showing the different recorded locations of meteorites before falling"}
+```{r meteorite_found, fig.alt= "World map showing the different recorded locations of meteorites before falling"}
+#| label: meteorite_found
+#| message: false
+#| warning: false
+#| code-summary: "Plotting Found meteorites"
 
 # Filter the data for meteorites that have not fallen and classify mass
 filtered_data_not_fallen <- subset(meteorite_data_filtered, `mass (g)` > 1000 & fall == "Found")
@@ -107,16 +120,19 @@ print(world_map_not_fallen)
 
 ## Leaflet plot
 
-```{r}
+```{r leaflet_plot}
+#| label: leaflet_plot
+#| message: false
+#| warning: false
+#| code-summary: "Leaflet Plot for Fallen Meteorites"
+
+# Filtered Meteorite data for Fallen, Not Found
 meteorite_data_filtered_fell <- meteorite_data_filtered |>
   filter(meteorite_data_filtered$fall == "Fell")
 
 
 map_plot <- leaflet(data = meteorite_data_filtered_fell) |>
-  addTiles() 
-
-
-map_plot <- map_plot |>
+  addTiles() |>
   addCircleMarkers(lat = ~reclat, lng = ~reclong,  popup = ~fall, color = "#51EE00", stroke = FALSE, fillOpacity = 0.8, radius = 1.5)
 
 map_plot
@@ -125,7 +141,11 @@ map_plot
 
 ## Time series plot
 
-```{r}
+```{r timeseries_plot}
+#| label: timeseries_plot
+#| message: false
+#| warning: false
+#| code-summary: "Meteorites Time series Plot"
 
 # Load Google font
 font_add_google(name = "Lato", family = "Lato")
