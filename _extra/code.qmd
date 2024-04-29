@@ -4,23 +4,47 @@
 #| label: load-pkgs
 #| message: false
 
-suppressWarnings(library(tidyverse))
-# Load required libraries
-library(ggplot2)
-library(readr)
 
+if (!require("pacman")) 
+  install.packages("pacman")
+
+pacman::p_load(tidyverse,
+               readr,
+               leaflet,
+               here) 
 ```
 
 ## Dataset Setup
 ```{r}
 # Read the CSV file
-meteorite_data <- read_csv("data/Meteorite_Landings.csv")
+meteorite_data <- read_csv(here("data/Meteorite_Landings.csv"))
 ```
+
+## Data Cleaning
+
+```{r}
+meteorite_data <- meteorite_data |> 
+  na.omit(year)
+
+meteorite_data$year <- as.numeric(meteorite_data$year)
+
+meteorite_data_filtered <- meteorite_data |>
+                            filter(year > 860 & year < 2100)
+
+meteorite_data_filtered$reclong[meteorite_data_filtered$reclat == 0 & meteorite_data_filtered$reclong == 0] <- NA
+meteorite_data_filtered$reclat[meteorite_data_filtered$reclat == 0 & meteorite_data_filtered$reclong == 0] <- NA
+
+
+meteorite_data_filtered <- meteorite_data_filtered %>%
+                            filter(!is.na(reclong) & !is.na(reclat))
+```
+
+
 
 ## Plots
 ```{r warning=FALSE}
 # Filter the data based on criteria
-filtered_data <- subset(meteorite_data, `mass (g)` > 1000 & fall == "Fell")
+filtered_data <- subset(meteorite_data_filtered, `mass (g)` > 1000 & fall == "Fell")
 # Plot the world map
 world_map <- ggplot() +
   geom_polygon(data = map_data("world"), aes(x = long, y = lat, group = group), fill = "lightblue", color = "black", size = 0.25) +
@@ -36,7 +60,7 @@ print(world_map)
 ## Plots
 ```{r warning=FALSE}
 # Filter the data for meteorites that have not fallen
-filtered_data_not_fallen <- subset(meteorite_data, `mass (g)` > 1000 & fall == "Found")
+filtered_data_not_fallen <- subset(meteorite_data_filtered, `mass (g)` > 1000 & fall == "Found")
 
 # Plot the world map for meteorites that have not fallen
 world_map_not_fallen <- ggplot() +
@@ -48,3 +72,23 @@ world_map_not_fallen <- ggplot() +
 # Show the plot
 print(world_map_not_fallen)
 ```
+
+
+
+## Leaflet plot
+
+```{r}
+meteorite_data_filtered_fell <- meteorite_data_filtered |>
+  filter(meteorite_data_filtered$fall == "Fell")
+
+
+map_plot <- leaflet(data = meteorite_data_filtered_fell) |>
+  addTiles() 
+
+
+map_plot <- map_plot |>
+  addCircleMarkers(lat = ~reclat, lng = ~reclong,  popup = ~fall, color = "#51EE00", stroke = FALSE, fillOpacity = 0.8, radius = 1.5)
+
+map_plot
+```
+
