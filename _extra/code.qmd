@@ -138,6 +138,12 @@ linePlot <- meteorite_data |>
            y = 0,
            yend = 3500,
            linetype = "dotted") +
+  annotate("segment",
+           x = 1955,
+           xend = 1955,
+           y = 0,
+           yend = 3500,
+           linetype = "dotted") +
   annotate("text", 
            x = 1975, 
            y = 3700, 
@@ -147,6 +153,11 @@ linePlot <- meteorite_data |>
            x = 2000, 
            y = 3650, 
            label = "Last Leonid Showers",
+           family = "Lato") +
+  annotate("text", 
+           x = 1955, 
+           y = 3700, 
+           label = "Start of the\nSpace race",
            family = "Lato") +
   coord_cartesian(ylim = c(150,3820)) +
   labs(x = "Year", 
