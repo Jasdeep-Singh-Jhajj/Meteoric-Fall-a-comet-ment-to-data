@@ -15,7 +15,8 @@ pacman::p_load(tidyverse,
                gganimate,
                magick,
                sysfonts,
-               showtext) 
+               showtext,
+               DT) 
 ```
 
 ## Dataset Setup
