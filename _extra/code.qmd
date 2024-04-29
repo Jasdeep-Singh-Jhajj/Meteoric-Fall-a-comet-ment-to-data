@@ -61,6 +61,33 @@ print(world_map)
 
 ```
 
+```{r}
+filtered_data
+```
+
+```{r filter for size}
+
+# Filter the data based on criteria and classify mass
+filtered_data <- subset(meteorite_data_filtered, `mass (g)` > 1000 & fall == "Fell")
+filtered_data$meteor_size <- cut(filtered_data$`mass (g)`, breaks = c(0, 10000, 100000, Inf), labels = c("light", "average mass", "heavy"))
+
+# Plot the world map
+world_map <- ggplot() +
+  geom_polygon(data = map_data("world"), aes(x = long, y = lat, group = group), fill = "lightblue", color = "black", size = 0.25) +
+  geom_point(data = filtered_data, aes(x = reclong, y = reclat, color = meteor_size), size = 1.5) +
+  labs(title = "Meteorite Landings") +
+  scale_color_manual(values = c("light" = "yellow", "average mass" = "orange", "heavy" = "red")) +
+  theme_minimal()
+
+# Show the plot
+print(world_map)
+
+
+```
+
+
+
+
 ## Plots
 ```{r warning=FALSE}
 # Filter the data for meteorites that have not fallen
