@@ -44,11 +44,13 @@ meteorite_data$year <- as.numeric(meteorite_data$year)
 meteorite_data_filtered <- meteorite_data |>
                             filter(year > 860 & year < 2100)
 
-meteorite_data_filtered$reclong[meteorite_data_filtered$reclat == 0 & meteorite_data_filtered$reclong == 0] <- NA
-meteorite_data_filtered$reclat[meteorite_data_filtered$reclat == 0 & meteorite_data_filtered$reclong == 0] <- NA
+meteorite_data_filtered$reclong[meteorite_data_filtered$reclat == 0 &
+                                meteorite_data_filtered$reclong == 0] <- NA
+meteorite_data_filtered$reclat[meteorite_data_filtered$reclat == 0 & 
+                               meteorite_data_filtered$reclong == 0] <- NA
 
 
-meteorite_data_filtered <- meteorite_data_filtered %>%
+meteorite_data_filtered <- meteorite_data_filtered |>
                             filter(!is.na(reclong) & !is.na(reclat))
 ```
 
@@ -57,7 +59,7 @@ meteorite_data_filtered <- meteorite_data_filtered %>%
 ## Static Plot to visualize meteorites that were recorded before falling.
 
 
-```{r filter_meteorites, warning=FALSE, fig.alt= "World map showing the different recorded locations where meteorites fell to Earth"}
+```{r filter_meteorites, fig.alt= "World map showing the different recorded locations where meteorites fell to Earth"}
 #| label: filter_meteorites
 #| message: false
 #| warning: false
@@ -66,15 +68,32 @@ meteorite_data_filtered <- meteorite_data_filtered %>%
 
 # Adding a filter to classify the size of the meteorites
 filtered_data <- subset(meteorite_data_filtered, `mass (g)` > 1000 & fall == "Fell")
-filtered_data$meteor_size <- cut(filtered_data$`mass (g)`, breaks = c(0, 10000, 100000, Inf), labels = c("light", "average mass", "heavy"))
+filtered_data$meteor_size <- cut(filtered_data$`mass (g)`,
+                                 breaks = c(0, 10000, 100000, Inf),
+                                 labels = c("light", "average mass", "heavy"))
 
 # Plot the world map
 world_map <- ggplot() +
-  geom_polygon(data = map_data("world"), aes(x = long, y = lat, group = group), fill = "lightblue", color = "black", size = 0.25) +
-  geom_point(data = filtered_data, aes(x = reclong, y = reclat, color = meteor_size), size = 1.5) +
+  geom_polygon(data = map_data("world"),
+               aes(x = long,
+                   y = lat,
+                   group = group),
+               fill = "lightblue",
+               color = "black",
+               size = 0.25) +
+  geom_point(data = filtered_data,
+             aes(x = reclong,
+                 y = reclat,
+                 color = meteor_size),
+             size = 1.5) +
   labs(title = "Meteorite Landings (Fallen)") +
-  scale_color_manual(values = c("light" = "yellow", "average mass" = "orange", "heavy" = "red")) +
+  scale_color_manual(values = c("light" = "yellow",
+                                "average mass" = "orange",
+                                "heavy" = "red")) +
   theme_minimal() +
+  labs(x = "Longitutde",
+       y = "Latitutde",
+       color = "Meteor Size") +
   theme(
     legend.position = "bottom"
   )
@@ -97,15 +116,32 @@ print(world_map)
 
 # Filter the data for meteorites that have not fallen and classify mass
 filtered_data_not_fallen <- subset(meteorite_data_filtered, `mass (g)` > 1000 & fall == "Found")
-filtered_data_not_fallen$meteor_size <- cut(filtered_data_not_fallen$`mass (g)`, breaks = c(0, 10000, 100000, Inf), labels = c("light", "average mass", "heavy"))
+filtered_data_not_fallen$meteor_size <- cut(filtered_data_not_fallen$`mass (g)`,
+                                            breaks = c(0, 10000, 100000, Inf), 
+                                            labels = c("light", "average mass", "heavy"))
 
 # Plot the world map for meteorites that have not fallen
 world_map_not_fallen <- ggplot() +
-  geom_polygon(data = map_data("world"), aes(x = long, y = lat, group = group), fill = "lightblue", color = "black", size = 0.25) +
-  geom_point(data = filtered_data_not_fallen, aes(x = reclong, y = reclat, color = meteor_size), size = 1.5) +
+  geom_polygon(data = map_data("world"),
+               aes(x = long,
+                   y = lat,
+                   group = group),
+               fill = "lightblue",
+               color = "black",
+               size = 0.25) +
+  geom_point(data = filtered_data_not_fallen,
+             aes(x = reclong,
+                 y = reclat,
+                 color = meteor_size),
+             size = 1.5) +
   labs(title = "Meteorite Landings (Not Fallen)") +
-  scale_color_manual(values = c("light" = "yellow", "average mass" = "orange", "heavy" = "red")) +
+  scale_color_manual(values = c("light" = "yellow",
+                                "average mass" = "orange",
+                                "heavy" = "red")) +
   theme_minimal() +
+  labs(x = "Longitutde",
+       y = "Latitutde",
+       color = "Meteor Size") +
   theme(
     legend.position = "bottom"
   )
