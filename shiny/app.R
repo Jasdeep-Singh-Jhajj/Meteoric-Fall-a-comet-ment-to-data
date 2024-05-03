@@ -15,7 +15,8 @@ pacman::p_load(
   # shinydashboard,
   bslib,
   DT,
-  viridis
+  viridis,
+  mapproj
   # janitor
 )
 
@@ -43,19 +44,17 @@ meteorite_data <- meteorite_data_raw |>
       `mass (g)` > 1000000 ~ "large"
     ),
     mass_cat = factor(mass_cat,
-                      levels = c("x_small", "small", "medium", "large")),
-    mass_color = case_when(
-      mass_cat == "x_small" ~ "purple",
-      mass_cat == "small" ~ "forestgreen",
-      mass_cat == "medium" ~ "royalblue2",
-      mass_cat == "large" ~ "red"
+                      levels = c("x_small",
+                                 "small",
+                                 "medium",
+                                 "large"))
     # ),
     # mass_size = case_when(
     #   mass_cat == "x_small" ~ 1,
     #   mass_cat == "small" ~ 1.5,
     #   mass_cat == "medium" ~ 2,
     #   mass_cat == "large" ~ 2.5
-    )
+    # )
     # log_mass = log10(`mass (g)`),
     # log_mass = ifelse(log_mass==-Inf, NA, log_mass)
   )
@@ -67,6 +66,14 @@ yr_most <- meteorite_data |>
   arrange(desc(count)) |> 
   slice(1) |> 
   pull(year)
+
+# Cleaner world map
+world_data <- map_data("world") |> 
+  as_tibble() |> 
+  filter(
+    between(lat, -90, 90),
+    between(long, -180, 180)
+  )
 
 ## User Interface  ---------------------------
 ui <- fluidPage(
@@ -203,6 +210,16 @@ ui <- fluidPage(
         max = 100,
         step = 5,
         post = "%"
+      ),
+      selectInput(
+        "input_projection",
+        label = "Map projection",
+        choices = list("Mercator" = "mercator",
+                       "Guyou (hemisphere-in-a-square)" = "guyou",
+                       "Gilbert (two-world)" = "gilbert",
+                       "Mollweide (pseudocylindrical)" = "mollweide",
+                       "Lee (conformal world in a tetrahedron)" = "tetra"),
+        selected = "mercator"
       ),
       #### Prompts  ---------------------------
       tags$hr(),
@@ -376,12 +393,13 @@ server <- function(input, output, session){
   output$plot_geo <- renderPlot({
     ggplot(meteorite_data_filtered(), aes(x = reclong, y = reclat)) +
       geom_polygon(
-        data = as_tibble(map_data("world")),
+        data = world_data,
         aes(x = long, y = lat, group = group),
         inherit.aes=F,
         fill = "white"
       ) +
-      coord_quickmap() +
+      # coord_quickmap() +
+      coord_map(projection = input$input_projection) +
       geom_point(
         aes(color = mass_cat),
             # size = mass_size),
