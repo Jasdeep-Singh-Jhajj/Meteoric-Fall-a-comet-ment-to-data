@@ -174,7 +174,7 @@ finalPlot <- image_append(c(wmMGif[1], lpMGif[1]),
 for (i in 2:100){
   combined <- image_append(c(wmMGif[i], lpMGif[i]),
                            stack = TRUE)
-  finalPlot <- c(newGif, combined)
+  finalPlot <- c(finalPlot, combined)
 }
 
 ```
