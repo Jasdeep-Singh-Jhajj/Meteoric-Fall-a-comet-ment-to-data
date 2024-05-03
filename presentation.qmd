@@ -3,13 +3,15 @@ title: "Meteoric Fall: a comet-ment to data"
 subtitle: "INFO 526 - Spring 2024 - Project Final"
 author: "**Viz Wizards** - Nick Ferrante, Jeremiah Gaiser, Tanya Evita George, Mrunal Jadhav, Jasdeep Singh Jhajj, Gillian McGinnis, Agastya Deshraju"
 title-slide-attributes:
-  data-background-image: images/watercolour_sys02_img34_teacup-ocean.jpg
+  data-background-image: images/meteor_bg1.png
   data-background-size: stretch
   data-background-opacity: "0.7"
   data-slide-number: none
 format:
   revealjs:
     theme:  ['data/customtheming.scss']
+    transition: concave
+    background-transition: fade
   
 editor: visual
 execute:
@@ -51,6 +53,33 @@ mtcars$speed <- mtcars$hp / mtcars$wt
 
 data("penguins")
 ```
+
+
+# Understanding the Dataset
+
+#
+
+-   
+-   
+-   
+-   
+
+## Question 1:
+
+What does the distribution of meteor impacts look like across the earth?
+
+Which continents have accumulated the most total mass of meteors?
+
+## Question 1 - Plots 
+
+#
+
+### Insights
+
+
+## Question 2:
+
+How do historical events relate to the observations and discoveries of meteors?
 
 # Using Quarto for presentations
 
