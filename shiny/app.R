@@ -33,6 +33,10 @@ meteorite_data <- meteorite_data_raw |>
     between(reclong, -180, 180),
     # Removing lazy/unclear records
     reclat != 0 & reclong!= 0
+  # ) |> 
+  # mutate(
+  #   log_mass = log10(`mass (g)`),
+  #   log_mass = ifelse(log_mass==-Inf, NA, log_mass)
   )
 
 # Finding year with the most falls
@@ -61,7 +65,7 @@ ui <- fluidPage(
       checkboxInput(
         "input_years_full",
         label = "Include pre-1800",
-        value = TRUE
+        value = FALSE
       ),
       sliderInput(
         "input_years",
@@ -96,35 +100,64 @@ ui <- fluidPage(
       #   ),
       #   selected = 3
       # ),
+      ##### Type  ---------------------------
+      tags$hr(),
+      checkboxGroupInput(
+        "input_type",
+        label = "Dominant composition",
+        choices = list(
+          "Stony (rocky material)" = "Stony",
+          "Iron (metallic)" = "Iron",
+          "Stony-iron (mixtures)" = "Stony-iron",
+          "Unspecified" = ""
+        ),
+        selected = c("Stony", "Iron", "Stony-iron", "")
+      ),
       ##### Mass  ---------------------------
       tags$hr(),
-      sliderInput(
-        "input_mass",
-        label = "Mass (g)",
-        value = c(0, 1000),
-        min = 0,
-        max = 1000,
-        step = 1,
-        # sep = NULL,
-        round = 0
-      ),
-      checkboxInput(
-        "input_mass_full",
-        label = "Include meteorites >1 kg (2 lb 3.274 oz)",
-        value = TRUE
-      ),
+      # sliderInput(
+      #   "input_mass",
+      #   label = "Mass (g)",
+      #   value = c(0, 1000),
+      #   min = 0,
+      #   max = 1000,
+      #   step = 1,
+      #   # sep = NULL,
+      #   round = 0
+      # ),
+      # checkboxInput(
+      #   "input_mass_full",
+      #   label = "Include meteorites >1 kg (2 lb 3.274 oz)",
+      #   value = TRUE
+      # ),
       # TBD... Not sure if should include.
       # A log scale version would filter better but isn't readable
       # Alt: t/f button for if >1kg?
       # sliderInput(
       #   "input_size",
       #   label = "Size (log scale)",
-      #   value = c(yr_most, 1999),
-      #   min = 1900,
-      #   max = max(meteorite_data$year, na.rm = T),
-      #   step = 1,
-      #   sep = NULL,
-      #   round = 0
+      #   value = c(min(meteorite_data$log_mass, na.rm = T),
+      #             max(meteorite_data$log_mass, na.rm = T)),
+      #   # value = c(yr_most, 1999),
+      #   min = min(meteorite_data$log_mass, na.rm = T),
+      #   max = max(meteorite_data$log_mass, na.rm = T)
+      #   # step = 1,
+      #   # sep = NULL,
+      #   # round = 0
+      # ),
+    #   breaks = c(0, 10000, 100000, Inf), 
+    #   labels = c("light", "average mass", "heavy")) ("light" = "yellow",
+    #                                                  "average mass" = "orange",
+    #                                                  "heavy" = "red")) +
+      # checkboxGroupInput(
+      #   "input_mass_checks",
+      #   label = "Mass of metorite",
+      #   choices = list(
+      #     "Less than or equal to 1 g" = "x_light",
+      #     "Between 1 g and 1 kg" = "light",
+      #     "Between 1 kg and 1 metric ton" = "med",
+      #     "At least 1 metric ton" = "large"
+      #   )
       # ),
       #### Prompts  ---------------------------
       tags$hr(),
@@ -171,8 +204,8 @@ ui <- fluidPage(
     ### Main panel  ---------------------------
     mainPanel(
       #### Outputs
-      plotOutput("plot_geo"),
-      tags$em("Note: filters applied to the table will not apply to the map."),
+      plotOutput("plot_geo", height = "500px"),
+      tags$em("Note: filter settings applied to the table below will not modify the map."),
       dataTableOutput("table_filtered")
     )
   )
@@ -181,15 +214,32 @@ ui <- fluidPage(
 ## Server  ---------------------------
 
 server <- function(input, output, session){
+  ### Force
+  observe({
+    if(input$input_years_full == TRUE){
+      updateSliderInput(
+        inputId = "input_years",
+        value = c(1800, input$input_years[2])
+      )
+    }
+    
+  })
+  
   ### Filtering the data  ---------------------------
   meteorite_data_filtered <- reactive({
-    meteorite_data |> 
+    # meteorite_data |> 
+    #   filter(
+    #     between(year, input$input_years[1], input$input_years[2]),
+    #     fall %in% input$input_observed,
+    #     between(`mass (g)`, input$input_mass[1], input$input_mass[2])
+    #   )
+    meteorite_data |>
       filter(
         between(year, input$input_years[1], input$input_years[2]),
-        fall %in% input$input_observed,
-        between(`mass (g)`, input$input_mass[1], input$input_mass[2])
+        # between(`mass (g)`, input$input_mass[1], input$input_mass[2]),
+        fall %in% input$input_observed
       )
-      # filter(year == input$input_years)
+      # filter(year == input$input_years) input_years_full, input_mass_full
   })
   
   #### Count  ---------------------------
@@ -251,7 +301,7 @@ server <- function(input, output, session){
         fill = "white"
       ) +
       coord_quickmap() +
-      geom_point() +
+      geom_point(size = 1.5) +
       theme_void() +
       theme(panel.background = element_rect(fill = "skyblue"))
   })
