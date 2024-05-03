@@ -14,7 +14,8 @@ pacman::p_load(
   # shinythemes,
   # shinydashboard,
   bslib,
-  DT
+  DT,
+  viridis
   # janitor
 )
 
@@ -33,10 +34,30 @@ meteorite_data <- meteorite_data_raw |>
     between(reclong, -180, 180),
     # Removing lazy/unclear records
     reclat != 0 & reclong!= 0
-  # ) |> 
-  # mutate(
-  #   log_mass = log10(`mass (g)`),
-  #   log_mass = ifelse(log_mass==-Inf, NA, log_mass)
+  ) |>
+  mutate(
+    mass_cat = case_when(
+      `mass (g)` < 1 ~ "x_small",
+      between(`mass (g)`, 1, 999.999) ~ "small",
+      between(`mass (g)`, 1000, 999999.999) ~ "medium",
+      `mass (g)` > 1000000 ~ "large"
+    ),
+    mass_cat = factor(mass_cat,
+                      levels = c("x_small", "small", "medium", "large")),
+    mass_color = case_when(
+      mass_cat == "x_small" ~ "purple",
+      mass_cat == "small" ~ "forestgreen",
+      mass_cat == "medium" ~ "royalblue2",
+      mass_cat == "large" ~ "red"
+    # ),
+    # mass_size = case_when(
+    #   mass_cat == "x_small" ~ 1,
+    #   mass_cat == "small" ~ 1.5,
+    #   mass_cat == "medium" ~ 2,
+    #   mass_cat == "large" ~ 2.5
+    )
+    # log_mass = log10(`mass (g)`),
+    # log_mass = ifelse(log_mass==-Inf, NA, log_mass)
   )
 
 # Finding year with the most falls
@@ -60,8 +81,21 @@ ui <- fluidPage(
       tags$hr(),
       tags$h3(icon("filter"), "Data selection inputs"),
       htmlOutput("filtered_count"),
+      ##### Fell  ---------------------------
+      tags$hr(),
+      checkboxGroupInput(
+        "input_observed",
+        label = NULL,
+        # "How it was observed",
+        choices = list(
+          "Fall was witnessed" = "Fell",
+          "Found after arrival" = "Found"
+        ),
+        selected = c("Fell", "Found")
+      ),
       ##### Year  ---------------------------
       tags$hr(),
+      "Time range (years CE)",
       checkboxInput(
         "input_years_full",
         label = "Include pre-1800",
@@ -77,18 +111,6 @@ ui <- fluidPage(
         sep = NULL,
         round = 0
       ),
-      ##### Fell  ---------------------------
-      tags$hr(),
-      checkboxGroupInput(
-        "input_observed",
-        label = NULL,
-        # "How it was observed",
-        choices = list(
-          "Fall was witnessed" = "Fell",
-          "Found after arrival" = "Found"
-        ),
-        selected = c("Fell", "Found")
-      ),
       # radioButtons(
       #   "input_observed",
       #   label = NULL,
@@ -100,19 +122,6 @@ ui <- fluidPage(
       #   ),
       #   selected = 3
       # ),
-      ##### Type  ---------------------------
-      tags$hr(),
-      checkboxGroupInput(
-        "input_type",
-        label = "Dominant composition",
-        choices = list(
-          "Stony (rocky material)" = "Stony",
-          "Iron (metallic)" = "Iron",
-          "Stony-iron (mixtures)" = "Stony-iron",
-          "Unspecified" = ""
-        ),
-        selected = c("Stony", "Iron", "Stony-iron", "")
-      ),
       ##### Mass  ---------------------------
       tags$hr(),
       # sliderInput(
@@ -149,16 +158,52 @@ ui <- fluidPage(
     #   labels = c("light", "average mass", "heavy")) ("light" = "yellow",
     #                                                  "average mass" = "orange",
     #                                                  "heavy" = "red")) +
-      # checkboxGroupInput(
-      #   "input_mass_checks",
-      #   label = "Mass of metorite",
-      #   choices = list(
-      #     "Less than or equal to 1 g" = "x_light",
-      #     "Between 1 g and 1 kg" = "light",
-      #     "Between 1 kg and 1 metric ton" = "med",
-      #     "At least 1 metric ton" = "large"
-      #   )
-      # ),
+      checkboxGroupInput(
+        "input_mass_checks",
+        label = "Mass of meteorite",
+        choices = list(
+          "Less than 1 gram" = "x_small",
+          "Between 1 gram and 1 kilogram" = "small",
+          "Between 1 kilogram and 1 metric ton" = "medium",
+          "At least 1 metric ton" = "large"
+        ),
+        selected = c("x_small", "small", "medium", "large")
+      ),
+      ##### Type  ---------------------------
+      tags$hr(),
+      "Dominant composition",
+      tags$a(href = "https://en.wikipedia.org/wiki/Meteorite_classification#Traditional_classification_scheme", "(what's this?)"),
+      checkboxGroupInput(
+        "input_type",
+        label = NULL,
+        # label = "Dominant composition",
+        choices = list(
+          "Stony (rocky material)" = "Stony",
+          "Iron (metallic)" = "Iron",
+          "Stony-iron (mixtures)" = "Stony-iron",
+          "Unspecified" = ""
+        ),
+        selected = c("Stony", "Iron", "Stony-iron", "")
+      ),
+      #### Plot customization  ---------------------------
+      tags$hr(),
+      sliderInput(
+        "input_pointsize",
+        label = "Size of plot points",
+        value = 1.5,
+        min = 0.1,
+        max = 5,
+        step = 0.1
+      ),
+      sliderInput(
+        "input_alpha",
+        label = "Transparency of plot points",
+        value = 75,
+        min = 5,
+        max = 100,
+        step = 5,
+        post = "%"
+      ),
       #### Prompts  ---------------------------
       tags$hr(),
       tags$hr(),
@@ -183,7 +228,7 @@ ui <- fluidPage(
       tags$br(),
       tags$div(
         icon("wand-magic-sparkles"),
-        "This dashbaord was created in April 2024 by",
+        "This dashbaord was created in April-May 2024 by",
         tags$a(href = "https://info-526-s24.github.io/project-final-VizWizards/", "Team Viz Wizards"),
         "as part of a final project for",
         tags$a(href = "https://datavizaz.org/", "INFO 526"),
@@ -214,16 +259,37 @@ ui <- fluidPage(
 ## Server  ---------------------------
 
 server <- function(input, output, session){
-  ### Force
+  ### Force year slider to 1800  ---------------------------
+  # observe({
+  #   if(input$input_years_full == TRUE){
+  #     updateSliderInput(
+  #       inputId = "input_years",
+  #       value = c(1800, input$input_years[2])
+  #     )
+  #   }
+  # })
   observe({
-    if(input$input_years_full == TRUE){
+    if(input$input_years_full == TRUE & input$input_years[1] != 1800){
       updateSliderInput(
         inputId = "input_years",
         value = c(1800, input$input_years[2])
       )
+    # } else if(input$input_years_full == TRUE & input$input_years[1] > 1800){
+    #     updateCheckboxInput(
+    #       inputId = "input_years_full",
+    #       value = FALSE
+    #     )
     }
-    
   })
+  
+  # observe({
+  #   if(input$input_years_full == TRUE & input$input_years[1] != 1800){
+  #     updateCheckboxInput(
+  #       inputId = "input_years_full",
+  #       value = FALSE
+  #     )
+  #   }
+  # })
   
   ### Filtering the data  ---------------------------
   meteorite_data_filtered <- reactive({
@@ -233,13 +299,28 @@ server <- function(input, output, session){
     #     fall %in% input$input_observed,
     #     between(`mass (g)`, input$input_mass[1], input$input_mass[2])
     #   )
-    meteorite_data |>
-      filter(
-        between(year, input$input_years[1], input$input_years[2]),
-        # between(`mass (g)`, input$input_mass[1], input$input_mass[2]),
-        fall %in% input$input_observed
-      )
-      # filter(year == input$input_years) input_years_full, input_mass_full
+    if(input$input_years_full == TRUE){
+      meteorite_data |> 
+        filter(
+          year <= input$input_years[2],
+          fall %in% input$input_observed,
+          mass_cat %in% input$input_mass_checks
+        )
+    } else {
+      meteorite_data |>
+        filter(
+          between(year, input$input_years[1], input$input_years[2]),
+          fall %in% input$input_observed,
+          mass_cat %in% input$input_mass_checks
+        )
+    }
+    # meteorite_data |>
+    #   filter(
+    #     between(year, input$input_years[1], input$input_years[2]),
+    #     # between(`mass (g)`, input$input_mass[1], input$input_mass[2]),
+    #     fall %in% input$input_observed
+    #   )
+    #   # filter(year == input$input_years) input_years_full, input_mass_full
   })
   
   #### Count  ---------------------------
@@ -301,7 +382,58 @@ server <- function(input, output, session){
         fill = "white"
       ) +
       coord_quickmap() +
-      geom_point(size = 1.5) +
+      geom_point(
+        aes(color = mass_cat),
+            # size = mass_size),
+        size = input$input_pointsize,
+        alpha = input$input_alpha/100
+        # size = 1,
+        # alpha = 0.85
+      ) +
+    #   mass_cat == "x_small" ~ "purple",
+    # mass_cat == "small" ~ "forestgreen",
+    # mass_cat == "medium" ~ "royalblue2",
+    # mass_cat == "large" ~ "red"
+      scale_color_manual(
+        name = "Mass",
+        values = c("x_small" = "purple",
+                   "small" = "forestgreen",
+                   "medium" = "royalblue2",
+                   "large" = "red"),
+        labels = c("< 1 g",
+                   "≥ 1 g & < 1 kg",
+                   "≥ 1 kg & < 1 t",
+                   "≥ 1 t"
+                   )
+      ) +
+      # scale_color_identity(
+      #   guide = "legend"
+      #   # labels = levels(meteorite_data_filtered()$mass_cat),
+      #   # breaks = levels(meteorite_data_filtered()$mass_cat)
+      #   # breaks = meteorite_data_filtered()$mass_cat
+      # ) +
+      # guide_legend(
+      #   position = "bottom"
+      # ) +
+      # scale_color_viridis(
+      #   option = "rocket",
+      #   discrete = TRUE,
+      #   direction = -1,
+      #   # begin = 0.15,
+      #   end = 0.85
+      # ) +
+      # scale_color_brewer(palette = "Set1") +
+      # scale_color_identity() +
+      # scale_color_manual(
+      #   breaks = c("x_small", "small", "medium", "large"),
+      #   labels = c("Less than 1 g", "Between 1 g & 1 kg", "Between 1 kg & 1 t", "At least 1 t"),
+      #   values = c("gold", "darkgoldenrod", "sienna2", "firebrick")
+      #   #   breaks = c(0, 10000, 100000, Inf), 
+      #   #   labels = c("light", "average mass", "heavy")) ("light" = "yellow",
+      #   #                                                  "average mass" = "orange",
+      #   #                                                  "heavy" = "red")) +
+      # )
+      # geom_point(size = 1.5) +
       theme_void() +
       theme(panel.background = element_rect(fill = "skyblue"))
   })
