@@ -84,6 +84,30 @@ Which continents have accumulated the most total mass of meteors?
 
 How do historical events relate to the observations and discoveries of meteors?
 
+## Question 2 - Plots
+
+::: panel-tabset
+
+#### Plot A
+
+#### Insights
+
+:::
+
+## Question 3:
+
+Are trends observed in frequency, type, or location of meteors, relateded to known celestial events?
+
+## Question 3 - Plots
+
+::: panel-tabset
+
+#### Plot A
+
+#### Insights
+
+:::
+
 # Using Quarto for presentations
 
 ## Quarto
