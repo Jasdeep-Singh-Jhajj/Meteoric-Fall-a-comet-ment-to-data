@@ -3,6 +3,9 @@
 ## Setup  ---------------------------
 
 ### Libraries  ---------------------------
+if (!require("pacman")) 
+  install.packages("pacman")
+
 pacman::p_load(
   tidyverse,
   rsconnect,
@@ -54,11 +57,12 @@ ui <- fluidPage(
       tags$h3(icon("filter"), "Data selection inputs"),
       htmlOutput("filtered_count"),
       ##### Year  ---------------------------
-      # checkboxInput(
-      #   "input_years_full",
-      #   label = "Include pre-1800",
-      #   value = TRUE
-      # ),
+      tags$hr(),
+      checkboxInput(
+        "input_years_full",
+        label = "Include pre-1800",
+        value = TRUE
+      ),
       sliderInput(
         "input_years",
         label = NULL,
@@ -70,6 +74,7 @@ ui <- fluidPage(
         round = 0
       ),
       ##### Fell  ---------------------------
+      tags$hr(),
       checkboxGroupInput(
         "input_observed",
         label = NULL,
@@ -80,22 +85,34 @@ ui <- fluidPage(
         ),
         selected = c("Fell", "Found")
       ),
+      # radioButtons(
+      #   "input_observed",
+      #   label = NULL,
+      #   # "How it was observed",
+      #   choices = list(
+      #     "Fall was witnessed" = "Fell",
+      #     "Found after arrival" = "Found",
+      #     "Both" = c("Fell", "Found")
+      #   ),
+      #   selected = 3
+      # ),
       ##### Mass  ---------------------------
-      # checkboxInput(
-      #   "input_mass_full",
-      #   label = "Include meteorites >1 kg (2 lb 3.274 oz)",
-      #   value = TRUE
-      # ),
-      # sliderInput(
-      #   "input_mass",
-      #   label = "Mass (g)",
-      #   value = c(0, 1000),
-      #   min = 0,
-      #   max = 1000,
-      #   step = 1,
-      #   # sep = NULL,
-      #   round = 0
-      # ),
+      tags$hr(),
+      sliderInput(
+        "input_mass",
+        label = "Mass (g)",
+        value = c(0, 1000),
+        min = 0,
+        max = 1000,
+        step = 1,
+        # sep = NULL,
+        round = 0
+      ),
+      checkboxInput(
+        "input_mass_full",
+        label = "Include meteorites >1 kg (2 lb 3.274 oz)",
+        value = TRUE
+      ),
       # TBD... Not sure if should include.
       # A log scale version would filter better but isn't readable
       # Alt: t/f button for if >1kg?
@@ -110,6 +127,7 @@ ui <- fluidPage(
       #   round = 0
       # ),
       #### Prompts  ---------------------------
+      tags$hr(),
       tags$hr(),
       tags$h5(icon("lightbulb", class = "fa-solid"), "Here are some prompts to consider exploring!"),
       tags$div(
@@ -168,7 +186,8 @@ server <- function(input, output, session){
     meteorite_data |> 
       filter(
         between(year, input$input_years[1], input$input_years[2]),
-        fall %in% input$input_observed
+        fall %in% input$input_observed,
+        between(`mass (g)`, input$input_mass[1], input$input_mass[2])
       )
       # filter(year == input$input_years)
   })
