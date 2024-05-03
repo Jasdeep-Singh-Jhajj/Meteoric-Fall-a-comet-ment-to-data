@@ -17,6 +17,173 @@ execute:
   echo: false
 ---
 
+```{r load_pkgs}
+#| label: load_pkgs
+#| echo: false
+#| message: false
+#| warning: false
+#| code-summary: "Load Packages"
+
+if (!require("pacman")) 
+  install.packages("pacman")
+
+pacman::p_load(tidyverse,
+               readr,
+               leaflet,
+               here,
+               gganimate,
+               magick,
+               sysfonts,
+               showtext,
+               DT) 
+```
+
 ## Abstract
 
 Add project abstract here.
+
+
+
+
+
+## Question 2: How do historical events relate to the observations and discoveries of meteors?
+
+```{r}
+#| label: Creation of time series plot and world map
+#| eval: false
+
+# # Load Google font
+font_add_google(name = "Lato", family = "Lato")
+showtext_auto()
+
+# Create line plot
+linePlot <- meteorite_data |>
+  group_by(year) |>
+  summarise(count = n()) |>
+  filter(year > 1950 & year < 2100) |>
+  ggplot(aes(x = year, y = count)) +
+  geom_line(linewidth = 1,
+            color = "#607D8B") +
+  annotate("segment",
+           x = 1975,
+           xend = 1975,
+           y = 0,
+           yend = 3500,
+           linetype = "dotted") +
+  annotate("segment",
+           x = 1999,
+           xend = 1999,
+           y = 0,
+           yend = 3500,
+           linetype = "dotted") +
+  annotate("segment",
+           x = 2001,
+           xend = 2001,
+           y = 0,
+           yend = 3500,
+           linetype = "dotted") +
+  annotate("segment",
+           x = 2002,
+           xend = 2002,
+           y = 0,
+           yend = 3500,
+           linetype = "dotted") +
+  annotate("segment",
+           x = 1955,
+           xend = 1955,
+           y = 0,
+           yend = 3500,
+           linetype = "dotted") +
+  annotate("text",
+           x = 1975,
+           y = 3700,
+           label = "End of the\nSpace race",
+           family = "Lato") +
+  annotate("text",
+           x = 2000,
+           y = 3650,
+           label = "Last Leonid Showers",
+           family = "Lato") +
+  annotate("text",
+           x = 1955,
+           y = 3700,
+           label = "Start of the\nSpace race",
+           family = "Lato") +
+  coord_cartesian(ylim = c(150,3820)) +
+  labs(x = "Year",
+       y = "Number of Observations") +
+  theme_classic() +
+  theme(plot.title.position = "plot",
+        panel.grid.major.y = element_line()) +
+  transition_reveal(year)
+
+# Animate Line plot
+linePlotGif <- animate(linePlot,
+                       fps = 4,
+                       nframes = 100,
+                       width = 600,
+                       height = 400)
+
+# Create world map
+worldMap <- meteorite_data |>
+  group_by(year) |>
+  filter(year > 1950 & year < 2100,
+         !is.na(reclat),
+         !is.na(reclong),
+         reclong < 350) |>
+  ggplot(aes(x = reclong, y = reclat)) +
+  geom_polygon(data = as_tibble(map_data("world")),
+               aes(x = long, y = lat, group = group),
+               inherit.aes=F,
+               fill = "white") +
+  coord_quickmap() +
+  geom_point() +
+  labs(title = "Time Series of Meteor Observations by Year",
+       subtitle = "Current Year: {closest_state}") +
+  theme_void() +
+  theme(panel.background = element_rect(fill = "skyblue"),
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)) +
+  transition_states(year,
+                    transition_length = 1,
+                    state_length = 1) +
+  shadow_wake(wake_length = 0.25) +
+  enter_fade()
+
+# Animate world map
+worldMapGif <- animate(worldMap,
+        fps = 4,
+        nframes = 100,
+        width = 600,
+        height = 1100)
+
+
+
+### Putting animations together
+
+# Modify white space margins around plots
+linePlotGifImg <- image_read(here("images", "linePlotGif.gif"))
+worldMapGifImg <- image_read(here("images", "worldMapGif.gif"))
+
+lpMGif <- image_border(image_trim(linePlotGifImg), "white", "20x20")
+wmMGif <- image_border(image_trim(worldMapGifImg), "white", "20x20")
+
+# Arrange plots on top of each other
+finalPlot <- image_append(c(wmMGif[1], lpMGif[1]),
+                       stack = TRUE)
+for (i in 2:100){
+  combined <- image_append(c(wmMGif[i], lpMGif[i]),
+                           stack = TRUE)
+  newGif <- c(newGif, combined)
+}
+
+```
+
+```{r}
+#| label: Display question 2 plot
+
+historyPlot <- image_read(here("images", "historyOfEvents.gif"))
+
+historyPlot
+
+```
