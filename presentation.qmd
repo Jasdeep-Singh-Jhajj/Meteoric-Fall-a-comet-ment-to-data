@@ -72,10 +72,13 @@ Which continents have accumulated the most total mass of meteors?
 
 ## Question 1 - Plots 
 
-#
+::: panel-tabset
 
-### Insights
+#### Plot A
 
+#### Insights
+
+:::
 
 ## Question 2:
 
