@@ -79,10 +79,8 @@ ui <- fluidPage(
       width = 3,
       # tags$em(tags$a(href = "https://info-526-s24.github.io/project-final-VizWizards/", "What's this?")),
       #### Inputs  ---------------------------
-      # tags$hr(),
       tags$h5(icon("filter"), "Data selection inputs"),
       ##### Fell  ---------------------------
-      # tags$hr(),
       checkboxGroupInput(
         "input_observed",
         label = "Observation",
@@ -124,7 +122,6 @@ ui <- fluidPage(
       ),
       ##### Type  ---------------------------
       ## Only add if this is finalized.
-      # tags$hr(),
       # "Dominant composition",
       # tags$a(href = "https://en.wikipedia.org/wiki/Meteorite_classification#Traditional_classification_scheme", "(what's this?)"),
       # checkboxGroupInput(
@@ -178,7 +175,7 @@ ui <- fluidPage(
       ),
       #### Prompts  ---------------------------
       tags$hr(),
-      tags$h5(icon("lightbulb", class = "fa-solid"), "Here are some prompts to consider exploring!"),
+      tags$h5(icon("lightbulb", class = "fa-solid"), "Prompts to consider exploring"),
       tags$div(
         tags$ul(
           tags$li("What areas of the planet have the highest concentration of meteorites?"),
