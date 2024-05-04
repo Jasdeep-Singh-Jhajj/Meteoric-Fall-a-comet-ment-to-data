@@ -44,7 +44,12 @@ meteorite_data <- meteorite_data_raw |>
                       levels = c("x_small",
                                  "small",
                                  "medium",
-                                 "large"))
+                                 "large")),
+    mass_lab = recode_factor(mass_cat,
+                             "x_small" = "< 1 g",
+                             "small" = "≥ 1 g & < 1 kg",
+                             "medium" = "≥ 1 kg & < 1 t",
+                             "large" = "≥ 1 t")
   )
 
 # Finding year with the most falls
@@ -77,7 +82,7 @@ ui <- fluidPage(
       tags$h3(icon("filter"), "Data selection inputs"),
       # htmlOutput("filtered_count"),
       ##### Fell  ---------------------------
-      tags$hr(),
+      # tags$hr(),
       checkboxGroupInput(
         "input_observed",
         label = NULL,
@@ -85,10 +90,11 @@ ui <- fluidPage(
           "Fall was witnessed" = "Fell",
           "Found after arrival" = "Found"
         ),
-        selected = c("Fell", "Found")
+        selected = "Fell"
+        # selected = c("Fell", "Found")
       ),
       ##### Year  ---------------------------
-      tags$hr(),
+      # tags$hr(),
       "Time range (years CE)",
       checkboxInput(
         "input_years_full",
@@ -106,7 +112,7 @@ ui <- fluidPage(
         round = 0
       ),
       ##### Mass  ---------------------------
-      tags$hr(),
+      # tags$hr(),
       checkboxGroupInput(
         "input_mass_checks",
         label = "Mass of meteorite",
@@ -141,10 +147,15 @@ ui <- fluidPage(
       selectInput(
         "input_projection",
         label = "Map projection",
-        choices = list("Mercator (conformal cylindrical)" = "mercator",
-                       "Guyou (hemisphere-in-a-square)" = "guyou",
-                       "Gilbert (two-world)" = "gilbert",
-                       "Mollweide (pseudocylindrical)" = "mollweide"),
+        choices = list(
+          "Guyou (hemisphere-in-a-square)" = "guyou",
+          "Mercator (conformal cylindrical)" = "mercator",
+          "Mollweide (pseudocylindrical)" = "mollweide",
+          "Aitoff (azimuthal)" = "aitoff",
+          "Gilbert (two-world)" = "gilbert",
+          "Lagrange (polyconic)" = "lagrange"
+          # "Sinusoidal (pseudocylindrical, equal-area)" = "sinusoidal"
+        ),
         selected = "mercator"
       ),
       sliderInput(
@@ -166,7 +177,7 @@ ui <- fluidPage(
       ),
       #### Prompts  ---------------------------
       tags$hr(),
-      tags$hr(),
+      # tags$hr(),
       tags$h5(icon("lightbulb", class = "fa-solid"), "Here are some prompts to consider exploring!"),
       tags$div(
         tags$ul(
@@ -176,7 +187,7 @@ ui <- fluidPage(
       ),
       #### General info  ---------------------------
       tags$hr(),
-      tags$hr(),
+      # tags$hr(),
       tags$h3(icon("meteor"), "Project information"),
       tags$div(
         icon("hand-point-right", class = "fa-solid"),
@@ -188,7 +199,7 @@ ui <- fluidPage(
       tags$br(),
       tags$div(
         icon("wand-magic-sparkles"),
-        "This dashbaord was created in April-May 2024 by",
+        "This dashbaord was created in April & May 2024 for",
         tags$a(href = "https://info-526-s24.github.io/project-final-VizWizards/", "Team Viz Wizards"),
         "as part of a final project for",
         tags$a(href = "https://datavizaz.org/", "INFO 526"),
@@ -196,7 +207,7 @@ ui <- fluidPage(
         tags$br(),
         tags$br(),
         icon("hat-wizard"),
-        "The team was comprised of: Agastya Deshraju, Nick Ferrante, Jeremiah Gaiser, Tanya Evita George, Mrunal Jadhav, Jasdeep Singh Jhajj, & Gillian McGinnis (app lead).",
+        "The team was comprised of: Agastya Deshraju, Nick Ferrante, Jeremiah Gaiser, Tanya Evita George, Mrunal Jadhav, Jasdeep Singh Jhajj, & Gillian McGinnis (app author).",
         tags$br(),
         tags$br(),
         icon("github"),
@@ -238,14 +249,16 @@ server <- function(input, output, session){
           year <= input$input_years[2],
           fall %in% input$input_observed,
           mass_cat %in% input$input_mass_checks
-        )
+        ) |> 
+        mutate(mass_lab = fct_drop(mass_lab))
     } else {
       meteorite_data |>
         filter(
           between(year, input$input_years[1], input$input_years[2]),
           fall %in% input$input_observed,
           mass_cat %in% input$input_mass_checks
-        )
+        ) |> 
+        mutate(mass_lab = fct_drop(mass_lab))
     }
   })
   
@@ -297,13 +310,12 @@ server <- function(input, output, session){
   
   
   ### Plot creation  ---------------------------
-  # To be updated with final map
   output$plot_geo <- renderPlot({
     ggplot(meteorite_data_filtered(), aes(x = reclong, y = reclat)) +
       geom_polygon(
         data = world_data,
         aes(x = long, y = lat, group = group),
-        inherit.aes=F,
+        inherit.aes = FALSE,
         fill = "white"
       ) +
       coord_map(projection = input$input_projection) +
@@ -313,19 +325,28 @@ server <- function(input, output, session){
         alpha = input$input_alpha/100
       ) +
       scale_color_manual(
-        name = "Mass",
+        name = "Meteorite mass",
         values = c("x_small" = "purple",
                    "small" = "forestgreen",
                    "medium" = "royalblue2",
                    "large" = "red"),
-        labels = c("< 1 g",
-                   "≥ 1 g & < 1 kg",
-                   "≥ 1 kg & < 1 t",
-                   "≥ 1 t"
-                   )
+        labels = levels(meteorite_data_filtered()$mass_lab)
+        # limits = force,
+        # limits = c("x_small", "small", "medium", "large"),
+        # labels = c("< 1 g",
+        #            "≥ 1 g & < 1 kg",
+        #            "≥ 1 kg & < 1 t",
+        #            "≥ 1 t")
       ) +
+      guides(color = guide_legend(override.aes = list(alpha = 1))) +
       theme_void() +
-      theme(panel.background = element_rect(fill = "skyblue"))
+      theme(
+        panel.background = element_rect(fill = "skyblue"),
+        # legend.position = "bottom",
+        # legend.text.position = "bottom",
+        legend.key = element_blank()
+        # legend.key = element_rect(fill = "white", color = "black")
+      )
   })
 }
 
