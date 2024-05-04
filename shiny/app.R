@@ -77,25 +77,24 @@ ui <- fluidPage(
     ### Sidebar  ---------------------------
     sidebarPanel(
       width = 3,
+      # tags$em(tags$a(href = "https://info-526-s24.github.io/project-final-VizWizards/", "What's this?")),
       #### Inputs  ---------------------------
-      tags$hr(),
-      tags$h3(icon("filter"), "Data selection inputs"),
-      # htmlOutput("filtered_count"),
+      # tags$hr(),
+      tags$h5(icon("filter"), "Data selection inputs"),
       ##### Fell  ---------------------------
       # tags$hr(),
       checkboxGroupInput(
         "input_observed",
-        label = NULL,
+        label = "Observation",
+        # label = NULL,
         choices = list(
           "Fall was witnessed" = "Fell",
           "Found after arrival" = "Found"
         ),
-        selected = "Fell"
-        # selected = c("Fell", "Found")
+        selected = c("Fell", "Found")
       ),
       ##### Year  ---------------------------
-      # tags$hr(),
-      "Time range (years CE)",
+      "Time range (in years CE)",
       checkboxInput(
         "input_years_full",
         label = "Include pre-1800",
@@ -112,10 +111,9 @@ ui <- fluidPage(
         round = 0
       ),
       ##### Mass  ---------------------------
-      # tags$hr(),
       checkboxGroupInput(
         "input_mass_checks",
-        label = "Mass of meteorite",
+        label = "Mass of meteorites",
         choices = list(
           "Less than 1 gram" = "x_small",
           "Between 1 gram and 1 kilogram" = "small",
@@ -143,7 +141,8 @@ ui <- fluidPage(
       # ),
       #### Plot customization  ---------------------------
       tags$hr(),
-      tags$h5("Plot customization options"),
+      tags$h5(icon("globe"), "Plot customization options"),
+      ##### Map projection  ---------------------------
       selectInput(
         "input_projection",
         label = "Map projection",
@@ -158,6 +157,7 @@ ui <- fluidPage(
         ),
         selected = "mercator"
       ),
+      ##### Point size  ---------------------------
       sliderInput(
         "input_pointsize",
         label = "Size of plot points",
@@ -166,6 +166,7 @@ ui <- fluidPage(
         max = 5,
         step = 0.1
       ),
+      ##### Point alpha  ---------------------------
       sliderInput(
         "input_alpha",
         label = "Transparency of plot points",
@@ -177,18 +178,17 @@ ui <- fluidPage(
       ),
       #### Prompts  ---------------------------
       tags$hr(),
-      # tags$hr(),
       tags$h5(icon("lightbulb", class = "fa-solid"), "Here are some prompts to consider exploring!"),
       tags$div(
         tags$ul(
           tags$li("What areas of the planet have the highest concentration of meteorites?"),
-          tags$li("When was there a significant increase in the number of reported metorites?")
+          tags$li("When was there a significant increase in the number of reported metorites?"),
+          tags$li("Are massive meteorites more likely to be witnessed falling, or found later?")
         ),
       ),
       #### General info  ---------------------------
       tags$hr(),
-      # tags$hr(),
-      tags$h3(icon("meteor"), "Project information"),
+      tags$h5(icon("meteor"), "Project information"),
       tags$div(
         icon("hand-point-right", class = "fa-solid"),
         "Please see",
@@ -212,8 +212,7 @@ ui <- fluidPage(
         tags$br(),
         icon("github"),
         " The source code is available on the",
-        tags$a(href = "https://github.com/INFO-526-S24/project-final-VizWizards/blob/main/shiny/app.R", "project repository"),
-        "."
+        tags$a(href = "https://github.com/INFO-526-S24/project-final-VizWizards/blob/main/shiny/app.R", "project repository.")
       ),
       tags$hr()
     ),
@@ -243,6 +242,7 @@ server <- function(input, output, session){
   
   ### Filtering the data  ---------------------------
   meteorite_data_filtered <- reactive({
+    #### If selecting pre-1800, only filter by max date
     if(input$input_years_full == TRUE){
       meteorite_data |> 
         filter(
@@ -260,7 +260,7 @@ server <- function(input, output, session){
         ) |> 
         mutate(mass_lab = fct_drop(mass_lab))
     }
-  })
+  }) |> debounce(500)
   
   #### Count  ---------------------------
   output$filtered_count <- renderText({
@@ -280,21 +280,21 @@ server <- function(input, output, session){
     # Else; exclude it (redundant)
     if(length(input$input_observed) == 2){
       c("ID" = "id",
+        "Year" = "year",
         "Name" = "name",
         "Class" = "recclass",
         "Mass (g)" = "mass (g)",
         "Latitude" = "reclat",
         "Longitude" = "reclong",
-        "Year" = "year",
         "Observed" = "fall")
     } else {
       c("ID" = "id",
+        "Year" = "year",
         "Name" = "name",
         "Class" = "recclass",
         "Mass (g)" = "mass (g)",
         "Latitude" = "reclat",
-        "Longitude" = "reclong",
-        "Year" = "year")
+        "Longitude" = "reclong")
     }
   })
   
@@ -307,7 +307,6 @@ server <- function(input, output, session){
         select(col_list())
     )
   })
-  
   
   ### Plot creation  ---------------------------
   output$plot_geo <- renderPlot({
@@ -331,21 +330,13 @@ server <- function(input, output, session){
                    "medium" = "royalblue2",
                    "large" = "red"),
         labels = levels(meteorite_data_filtered()$mass_lab)
-        # limits = force,
-        # limits = c("x_small", "small", "medium", "large"),
-        # labels = c("< 1 g",
-        #            "≥ 1 g & < 1 kg",
-        #            "≥ 1 kg & < 1 t",
-        #            "≥ 1 t")
       ) +
       guides(color = guide_legend(override.aes = list(alpha = 1))) +
       theme_void() +
       theme(
         panel.background = element_rect(fill = "skyblue"),
-        # legend.position = "bottom",
-        # legend.text.position = "bottom",
+        # plot.background = element_rect(fill = "#1A0833"),
         legend.key = element_blank()
-        # legend.key = element_rect(fill = "white", color = "black")
       )
   })
 }
