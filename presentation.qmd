@@ -111,20 +111,18 @@ meteorite_data_filtered <- meteorite_data_filtered |>
 
 #
 
--   
--   
--   
+-   The data set Meteorite_Landings.csv, has been sourced from NASA's Open Data Portal.
+-   The dimensions include 10 variables i.e. 6 numerical and 4 categorical variables.
 -   
 
 ## Question 1:
 
 What does the distribution of meteor impacts look like across the earth?
+-   Which continents have accumulated the most total mass of meteors?
 
-Which continents have accumulated the most total mass of meteors?
 
-#
 
-### Static Plots to visualize meteorites recorded before and after falling: 
+# Static Plots to visualize meteorites recorded before and after falling: 
 
 #
 ::: panel-tabset
@@ -234,9 +232,14 @@ print(world_map_not_fallen)
 
 :::
 
+# Leaflet Plot to visualize the distribution of meteor sightings across the world.
+
+#
+
 ::: panel-tabset
 
-#### Plot C - Leaflet Plot
+#### Plot C 
+
 
 ```{r leaflet_plot}
 #| label: leaflet_plot
@@ -256,9 +259,10 @@ map_plot <- leaflet(data = meteorite_data_filtered_fell) |>
 map_plot
 ```
 
+
 #### Insights from the Leaflet Plot
 
--   The continents that have accumulated the most total mass of meteors are South America and Europe.
+-   The continents that have accumulated the most total mass of meteors are Europe and North America.
 
 :::
 
@@ -278,7 +282,7 @@ How do historical events relate to the observations and discoveries of meteors?
 
 ## Question 3:
 
-Are trends observed in frequency, type, or location of meteors, relateded to known celestial events?
+Are trends observed in frequency, type, or location of meteors, related to known celestial events?
 
 ## Question 3 - Plots
 
