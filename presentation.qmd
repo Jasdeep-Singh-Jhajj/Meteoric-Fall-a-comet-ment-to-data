@@ -18,15 +18,6 @@ execute:
   echo: false
 ---
 
-```{r}
-#| label: load-packages
-#| include: false
-
-# Load packages here
-pacman::p_load(tidymodels,
-               tidyverse)
-
-```
 
 ```{r}
 #| label: setup
@@ -71,7 +62,8 @@ pacman::p_load(tidyverse,
                magick,
                sysfonts,
                showtext,
-               DT) 
+               DT,
+               maps) 
 ```
 
 ```{r load_dataset}
@@ -336,10 +328,10 @@ or in two columns
 ## Plots
 
 ```{r}
-penguins |>
-  mutate(species = ifelse(species == "Adelie", "Adelie", "Other")) |>
-  ggplot(aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
-  geom_point()
+#penguins |>
+ # mutate(species = ifelse(species == "Adelie", "Adelie", "Other")) |>
+  #ggplot(aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+  #geom_point()
 ```
 
 ## Plot and text
@@ -353,12 +345,12 @@ penguins |>
 
 ::: {.column width="50%"}
 ```{r, warning=FALSE, fig.width=5.5}
-penguins |>
-  ggplot(aes(x = bill_length_mm, y = species, color = species)) +
-  geom_boxplot(linewidth = 0.75,
-               outlier.size = 2.5) +
-  theme_minimal(base_size = 15) +
-  theme(legend.key.size = unit(0.8, "cm"))
+#penguins |>
+ # ggplot(aes(x = bill_length_mm, y = species, color = species)) +
+  #geom_boxplot(linewidth = 0.75,
+   #            outlier.size = 2.5) +
+  #theme_minimal(base_size = 15) +
+  #theme(legend.key.size = unit(0.8, "cm"))
 ```
 :::
 :::
@@ -370,10 +362,10 @@ penguins |>
 If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
 
 ```{r}
-penguins |> 
-  head() |>
-  kableExtra::kable() |>
-  kableExtra::kable_styling()
+#penguins |> 
+ # head() |>
+  #kableExtra::kable() |>
+  #kableExtra::kable_styling()
 ```
 
 ## Images
