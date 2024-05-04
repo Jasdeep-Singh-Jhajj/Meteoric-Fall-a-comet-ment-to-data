@@ -3,16 +3,18 @@
 ## Setup  ---------------------------
 
 ### Libraries  ---------------------------
+if (!require("pacman")) 
+  install.packages("pacman")
+
 pacman::p_load(
   tidyverse,
   rsconnect,
   quarto,
   shiny,
-  # shinythemes,
-  # shinydashboard,
   bslib,
-  DT
-  # janitor
+  DT,
+  viridis,
+  mapproj
 )
 
 ### Data  ---------------------------
@@ -30,6 +32,19 @@ meteorite_data <- meteorite_data_raw |>
     between(reclong, -180, 180),
     # Removing lazy/unclear records
     reclat != 0 & reclong!= 0
+  ) |>
+  mutate(
+    mass_cat = case_when(
+      `mass (g)` < 1 ~ "x_small",
+      between(`mass (g)`, 1, 999.999) ~ "small",
+      between(`mass (g)`, 1000, 999999.999) ~ "medium",
+      `mass (g)` > 1000000 ~ "large"
+    ),
+    mass_cat = factor(mass_cat,
+                      levels = c("x_small",
+                                 "small",
+                                 "medium",
+                                 "large"))
   )
 
 # Finding year with the most falls
@@ -39,6 +54,14 @@ yr_most <- meteorite_data |>
   arrange(desc(count)) |> 
   slice(1) |> 
   pull(year)
+
+# Cleaner world map
+world_data <- map_data("world") |> 
+  as_tibble() |> 
+  filter(
+    between(lat, -90, 90),
+    between(long, -180, 180)
+  )
 
 ## User Interface  ---------------------------
 ui <- fluidPage(
@@ -52,13 +75,26 @@ ui <- fluidPage(
       #### Inputs  ---------------------------
       tags$hr(),
       tags$h3(icon("filter"), "Data selection inputs"),
-      htmlOutput("filtered_count"),
+      # htmlOutput("filtered_count"),
+      ##### Fell  ---------------------------
+      tags$hr(),
+      checkboxGroupInput(
+        "input_observed",
+        label = NULL,
+        choices = list(
+          "Fall was witnessed" = "Fell",
+          "Found after arrival" = "Found"
+        ),
+        selected = c("Fell", "Found")
+      ),
       ##### Year  ---------------------------
-      # checkboxInput(
-      #   "input_years_full",
-      #   label = "Include pre-1800",
-      #   value = TRUE
-      # ),
+      tags$hr(),
+      "Time range (years CE)",
+      checkboxInput(
+        "input_years_full",
+        label = "Include pre-1800",
+        value = FALSE
+      ),
       sliderInput(
         "input_years",
         label = NULL,
@@ -69,53 +105,73 @@ ui <- fluidPage(
         sep = NULL,
         round = 0
       ),
-      ##### Fell  ---------------------------
-      checkboxGroupInput(
-        "input_observed",
-        label = NULL,
-        # "How it was observed",
-        choices = list(
-          "Fall was witnessed" = "Fell",
-          "Found after arrival" = "Found"
-        ),
-        selected = c("Fell", "Found")
-      ),
       ##### Mass  ---------------------------
-      # checkboxInput(
-      #   "input_mass_full",
-      #   label = "Include meteorites >1 kg (2 lb 3.274 oz)",
-      #   value = TRUE
+      tags$hr(),
+      checkboxGroupInput(
+        "input_mass_checks",
+        label = "Mass of meteorite",
+        choices = list(
+          "Less than 1 gram" = "x_small",
+          "Between 1 gram and 1 kilogram" = "small",
+          "Between 1 kilogram and 1 metric ton" = "medium",
+          "At least 1 metric ton" = "large"
+        ),
+        selected = c("x_small", "small", "medium", "large")
+      ),
+      ##### Type  ---------------------------
+      ## Only add if this is finalized.
+      # tags$hr(),
+      # "Dominant composition",
+      # tags$a(href = "https://en.wikipedia.org/wiki/Meteorite_classification#Traditional_classification_scheme", "(what's this?)"),
+      # checkboxGroupInput(
+      #   "input_type",
+      #   label = NULL,
+      #   # label = "Dominant composition",
+      #   choices = list(
+      #     "Stony (rocky material)" = "Stony",
+      #     "Iron (metallic)" = "Iron",
+      #     "Stony-iron (mixtures)" = "Stony-iron",
+      #     "Unspecified" = ""
+      #   ),
+      #   selected = c("Stony", "Iron", "Stony-iron", "")
       # ),
-      # sliderInput(
-      #   "input_mass",
-      #   label = "Mass (g)",
-      #   value = c(0, 1000),
-      #   min = 0,
-      #   max = 1000,
-      #   step = 1,
-      #   # sep = NULL,
-      #   round = 0
-      # ),
-      # TBD... Not sure if should include.
-      # A log scale version would filter better but isn't readable
-      # Alt: t/f button for if >1kg?
-      # sliderInput(
-      #   "input_size",
-      #   label = "Size (log scale)",
-      #   value = c(yr_most, 1999),
-      #   min = 1900,
-      #   max = max(meteorite_data$year, na.rm = T),
-      #   step = 1,
-      #   sep = NULL,
-      #   round = 0
-      # ),
+      #### Plot customization  ---------------------------
+      tags$hr(),
+      tags$h5("Plot customization options"),
+      selectInput(
+        "input_projection",
+        label = "Map projection",
+        choices = list("Mercator (conformal cylindrical)" = "mercator",
+                       "Guyou (hemisphere-in-a-square)" = "guyou",
+                       "Gilbert (two-world)" = "gilbert",
+                       "Mollweide (pseudocylindrical)" = "mollweide"),
+        selected = "mercator"
+      ),
+      sliderInput(
+        "input_pointsize",
+        label = "Size of plot points",
+        value = 1.5,
+        min = 0.1,
+        max = 5,
+        step = 0.1
+      ),
+      sliderInput(
+        "input_alpha",
+        label = "Transparency of plot points",
+        value = 75,
+        min = 5,
+        max = 100,
+        step = 5,
+        post = "%"
+      ),
       #### Prompts  ---------------------------
+      tags$hr(),
       tags$hr(),
       tags$h5(icon("lightbulb", class = "fa-solid"), "Here are some prompts to consider exploring!"),
       tags$div(
         tags$ul(
-          tags$li("First prompt"),
-          tags$li("Second prompt")
+          tags$li("What areas of the planet have the highest concentration of meteorites?"),
+          tags$li("When was there a significant increase in the number of reported metorites?")
         ),
       ),
       #### General info  ---------------------------
@@ -132,7 +188,7 @@ ui <- fluidPage(
       tags$br(),
       tags$div(
         icon("wand-magic-sparkles"),
-        "This dashbaord was created in April 2024 by",
+        "This dashbaord was created in April-May 2024 by",
         tags$a(href = "https://info-526-s24.github.io/project-final-VizWizards/", "Team Viz Wizards"),
         "as part of a final project for",
         tags$a(href = "https://datavizaz.org/", "INFO 526"),
@@ -152,9 +208,10 @@ ui <- fluidPage(
     ),
     ### Main panel  ---------------------------
     mainPanel(
+      htmlOutput("filtered_count"),
       #### Outputs
-      plotOutput("plot_geo"),
-      tags$em("Note: filters applied to the table will not apply to the map."),
+      plotOutput("plot_geo", height = "500px"),
+      tags$em("Note: filter settings applied to the table below will not modify the map."),
       dataTableOutput("table_filtered")
     )
   )
@@ -163,14 +220,33 @@ ui <- fluidPage(
 ## Server  ---------------------------
 
 server <- function(input, output, session){
+  ### Force year slider to 1800 if enabled  ---------------------------
+  observe({
+    if(input$input_years_full == TRUE & input$input_years[1] != 1800){
+      updateSliderInput(
+        inputId = "input_years",
+        value = c(1800, input$input_years[2])
+      )
+    }
+  })
+  
   ### Filtering the data  ---------------------------
   meteorite_data_filtered <- reactive({
-    meteorite_data |> 
-      filter(
-        between(year, input$input_years[1], input$input_years[2]),
-        fall %in% input$input_observed
-      )
-      # filter(year == input$input_years)
+    if(input$input_years_full == TRUE){
+      meteorite_data |> 
+        filter(
+          year <= input$input_years[2],
+          fall %in% input$input_observed,
+          mass_cat %in% input$input_mass_checks
+        )
+    } else {
+      meteorite_data |>
+        filter(
+          between(year, input$input_years[1], input$input_years[2]),
+          fall %in% input$input_observed,
+          mass_cat %in% input$input_mass_checks
+        )
+    }
   })
   
   #### Count  ---------------------------
@@ -214,7 +290,6 @@ server <- function(input, output, session){
     datatable(
       style = "bootstrap",
       filter = "top",
-      # options = list(pageLength = 5),
       meteorite_data_filtered() |> 
         select(col_list())
     )
@@ -226,13 +301,29 @@ server <- function(input, output, session){
   output$plot_geo <- renderPlot({
     ggplot(meteorite_data_filtered(), aes(x = reclong, y = reclat)) +
       geom_polygon(
-        data = as_tibble(map_data("world")),
+        data = world_data,
         aes(x = long, y = lat, group = group),
         inherit.aes=F,
         fill = "white"
       ) +
-      coord_quickmap() +
-      geom_point() +
+      coord_map(projection = input$input_projection) +
+      geom_point(
+        aes(color = mass_cat),
+        size = input$input_pointsize,
+        alpha = input$input_alpha/100
+      ) +
+      scale_color_manual(
+        name = "Mass",
+        values = c("x_small" = "purple",
+                   "small" = "forestgreen",
+                   "medium" = "royalblue2",
+                   "large" = "red"),
+        labels = c("< 1 g",
+                   "≥ 1 g & < 1 kg",
+                   "≥ 1 kg & < 1 t",
+                   "≥ 1 t"
+                   )
+      ) +
       theme_void() +
       theme(panel.background = element_rect(fill = "skyblue"))
   })
