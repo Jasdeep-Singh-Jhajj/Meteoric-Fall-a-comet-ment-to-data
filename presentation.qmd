@@ -18,7 +18,6 @@ execute:
   echo: false
 ---
 
-
 ```{r}
 #| label: setup
 #| include: false
@@ -97,11 +96,14 @@ meteorite_data_filtered$reclat[meteorite_data_filtered$reclat == 0 &
 
 meteorite_data_filtered <- meteorite_data_filtered |>
                             filter(!is.na(reclong) & !is.na(reclat))
+
+meteorite_data_filtered <- meteorite_data_filtered |>
+  rename(mass = `mass (g)`)
 ```
 
 # Understanding the Dataset
 
-#
+# 
 
 -   The data set Meteorite_Landings.csv, has been sourced from NASA's Open Data Portal.
 -   The dimensions include 10 variables i.e. 6 numerical and 4 categorical variables.
@@ -109,17 +111,15 @@ meteorite_data_filtered <- meteorite_data_filtered |>
 
 ## Question 1:
 
-What does the distribution of meteor impacts look like across the earth?
--   Which continents have accumulated the most total mass of meteors?
+What does the distribution of meteor impacts look like across the earth? - Which continents have accumulated the most total mass of meteors?
 
+# Static Plots to visualize meteorites recorded before and after falling:
 
+# 
 
-# Static Plots to visualize meteorites recorded before and after falling: 
-
-#
 ::: panel-tabset
-
 #### Plot A
+
 ```{r filter_meteorites, fig.alt= "World map showing the different recorded locations where meteorites fell to Earth"}
 #| label: filter_meteorites
 #| message: false
@@ -128,8 +128,8 @@ What does the distribution of meteor impacts look like across the earth?
 
 
 # Adding a filter to classify the size of the meteorites
-filtered_data <- subset(meteorite_data_filtered, `mass (g)` > 1000 & fall == "Fell")
-filtered_data$meteor_size <- cut(filtered_data$`mass (g)`,
+filtered_data <- subset(meteorite_data_filtered, mass > 1000 & fall == "Fell")
+filtered_data$meteor_size <- cut(filtered_data$mass,
                                  breaks = c(0, 10000, 100000, Inf),
                                  labels = c("light", "average mass", "heavy"))
 
@@ -164,7 +164,6 @@ print(world_map)
 
 ```
 
-
 #### Plot B
 
 ```{r meteorite_found, fig.alt= "World map showing the different recorded locations of meteorites before falling"}
@@ -174,8 +173,8 @@ print(world_map)
 #| code-summary: "Plotting Found meteorites"
 
 # Filter the data for meteorites that have not fallen and classify mass
-filtered_data_not_fallen <- subset(meteorite_data_filtered, `mass (g)` > 1000 & fall == "Found")
-filtered_data_not_fallen$meteor_size <- cut(filtered_data_not_fallen$`mass (g)`,
+filtered_data_not_fallen <- subset(meteorite_data_filtered, mass > 1000 & fall == "Found")
+filtered_data_not_fallen$meteor_size <- cut(filtered_data_not_fallen$mass,
                                             breaks = c(0, 10000, 100000, Inf), 
                                             labels = c("light", "average mass", "heavy"))
 
@@ -210,28 +209,23 @@ print(world_map_not_fallen)
 
 
 ```
-
 :::
 
 ## Insights
 
 ::: {#smallerTxt}
-
 -   The top 2 locations of the heaviest meteors that fell were reported to be near the Kazakhstan border along Russia and in parts of USA.
 -   Only the USA and a majority of Australia seem to have the maximum recorded visuals of meteors in the whole world.
 -   It is also surprising to note that while a lot of meteors were sighted in the USA, there was almost a negligible count of sightings recorded in its neighboring country, Canada.
 -   The country with the maximum number of sightings of fallen meteors is India and the continent with most sightings of meteors before falling is Europe.
-
 :::
 
 # Leaflet Plot to visualize the distribution of meteor sightings across the world.
 
-#
+# 
 
 ::: panel-tabset
-
-#### Plot C 
-
+#### Plot C
 
 ```{r leaflet_plot}
 #| label: leaflet_plot
@@ -246,16 +240,27 @@ meteorite_data_filtered_fell <- meteorite_data_filtered |>
 
 map_plot <- leaflet(data = meteorite_data_filtered_fell) |>
   addTiles() |>
-  addCircleMarkers(lat = ~reclat, lng = ~reclong,  popup = ~fall, color = "#51EE00", stroke = FALSE, fillOpacity = 0.8, radius = 1.5)
+  addMarkers(lat = ~reclat, 
+             lng = ~reclong,
+             clusterOptions = markerClusterOptions(), 
+             popup = ~paste("Name:", name,
+                            "<br>Class:", recclass,
+                            "<br>Mass:", mass, "g",
+                            "<br>Year:", year,
+                            "<br>Latitude:", reclat,
+                            "<br>Longitude:", reclong),
+             icon = makeIcon("images/meteorite.png", 
+                             iconWidth = 20, 
+                             iconHeight = 20)) |>
+  setMaxBounds(lng1 = -180, lng2 = 180, lat1 = 90, lat2 = -90)
+  
 
 map_plot
 ```
 
-
 #### Insights from the Leaflet Plot
 
 -   The continents that have accumulated the most total mass of meteors are Europe and North America.
-
 :::
 
 ## Question 2:
@@ -265,11 +270,9 @@ How do historical events relate to the observations and discoveries of meteors?
 ## Question 2 - Plots
 
 ::: panel-tabset
-
 #### Plot A
 
 #### Insights
-
 :::
 
 ## Question 3:
@@ -279,11 +282,9 @@ Are trends observed in frequency, type, or location of meteors, related to known
 ## Question 3 - Plots
 
 ::: panel-tabset
-
 #### Plot A
 
 #### Insights
-
 :::
 
 # Using Quarto for presentations

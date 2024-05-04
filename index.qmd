@@ -42,9 +42,67 @@ pacman::p_load(tidyverse,
 
 Add project abstract here.
 
+```{r load_dataset}
+#| label: load_dataset
+#| message: false
+#| warning: false
+#| code-summary: "Loading and cleaning the Dataset"
+#| echo: false
+#| output: false
 
 
+# Read the CSV file
+meteorite_data <- read_csv(here("data/Meteorite_Landings.csv"))
 
+
+meteorite_data <- meteorite_data |> 
+  na.omit(year)
+
+meteorite_data$year <- as.numeric(meteorite_data$year)
+
+meteorite_data_filtered <- meteorite_data |>
+                            filter(year > 860 & year < 2100)
+
+meteorite_data_filtered$reclong[meteorite_data_filtered$reclat == 0 &
+                                meteorite_data_filtered$reclong == 0] <- NA
+meteorite_data_filtered$reclat[meteorite_data_filtered$reclat == 0 & 
+                               meteorite_data_filtered$reclong == 0] <- NA
+
+
+meteorite_data_filtered <- meteorite_data_filtered |>
+                            filter(!is.na(reclong) & !is.na(reclat))
+
+meteorite_data_filtered <- meteorite_data_filtered |>
+  rename(mass = `mass (g)`)
+```
+
+## Question 1: What does the distribution of meteor impacts look like across the earth? - Which continents have accumulated the most total mass of meteors?
+
+```{r}
+meteorite_data_filtered_fell <- meteorite_data_filtered |>
+  filter(meteorite_data_filtered$fall == "Fell")
+
+
+map_plot <- leaflet(data = meteorite_data_filtered_fell) |>
+  addTiles() |>
+  addMarkers(lat = ~reclat, 
+             lng = ~reclong,
+             clusterOptions = markerClusterOptions(), 
+             popup = ~paste("Name:", name,
+                            "<br>Class:", recclass,
+                            "<br>Mass:", mass, "g",
+                            "<br>Year:", year,
+                            "<br>Latitude:", reclat,
+                            "<br>Longitude:", reclong),
+             icon = makeIcon("images/meteorite.png", 
+                             iconWidth = 12, 
+                             iconHeight = 12)) |>
+  setMaxBounds(lng1 = -160, lng2 = 160, lat1 = 90, lat2 = -90)
+  
+
+map_plot
+
+```
 
 ## Question 2: How do historical events relate to the observations and discoveries of meteors?
 
