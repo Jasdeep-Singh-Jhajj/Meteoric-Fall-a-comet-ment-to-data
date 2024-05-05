@@ -82,6 +82,8 @@ meteorite_data_filtered <- meteorite_data_filtered |>
 
 ## Question 1: What does the distribution of meteor impacts look like across the earth? - Which continents have accumulated the most total mass of meteors?
 
+### Leaflet
+
 ```{r}
 meteorite_data_filtered_fell <- meteorite_data_filtered |>
   filter(meteorite_data_filtered$fall == "Fell")
@@ -111,6 +113,14 @@ map_plot
 The distribution of meteor impacts across the Earth is depicted through an interactive leaflet map. This visualization allows users to navigate and explore specific regions of the world where meteorites have landed. By leveraging latitude and longitude coordinates, obtained from the reclat and reclog variables, the map accurately plots the locations of meteorite impacts. Users can interact with the map to retrieve detailed information about each meteor, including the year it fell or was found, its mass, and potentially its classification characteristics. This interactive approach provides users with a dynamic and engaging means of exploring the distribution of meteor impacts, enabling them to gain deeper insights into the spatial patterns of meteorite landings across the globe.\
 \
 To determine which continents have accumulated the most total mass of meteorites, we analyse the data by continent and consider both the frequency of meteor observations and the mass of each meteor. By aggregating the mass of meteorites on each continent, we create a density map that visually illustrates the distribution of total mass across continents. This density map enables us to identify continents with the highest accumulation of meteorite mass. By examining the density of meteorite mass across continents, we can discern patterns and trends regarding the geographical distribution of meteorite impacts. This analysis provides valuable insights into the relative significance of different continents in terms of meteorite accumulation, facilitating a better understanding of the global distribution of meteorite impacts and their implications for scientific research and exploration.
+
+### Shiny application
+
+To allow accessible exploration of the meteorite landing data, a Shiny application was also developed to visualize the geospatial values. The application can be accessed [here](https://gmcginnis.shinyapps.io/MeteoriteMap/).
+
+A sample is shown below; filters include the year range, mass of meteorite, and method of discovery. Furthermore, users can customize the map to better suit the data subset---point size, transparency, and even the map projection type may be selected.
+
+[![A screenshot of the meteorite landings map application, including a sidebar of filtering options, outputted map plot, and outputted table of results.](images/shiny_landings_sample.png)](https://gmcginnis.shinyapps.io/MeteoriteMap/)
 
 ## Question 2: How do historical events relate to the observations and discoveries of meteors?
 
@@ -271,14 +281,6 @@ To pinpoint such events, we analyse meteor data over time, identifying clusters 
 These findings are integrated into our meteor impact visualizations to provide a comprehensive understanding of the relationship between meteor falls and celestial events. This may involve color-coding individual meteors to indicate the celestial event that triggered them or incorporating a map of the solar system to illustrate Earth's position relative to these events.
 
 By embedding this contextual information into our visualizations, we aim to elucidate the dynamic interplay between Earth and its celestial surroundings, showcasing how meteor falls are intricately connected to the broader cycles of space. This approach not only enhances our understanding of meteor phenomena but also highlights Earth's role within the solar system.
-
-## Shiny application
-
-To allow accessible exploration of the meteorite landing data, a Shiny application was developed to visualize the geospatial values. The application can be accessed [here](https://gmcginnis.shinyapps.io/MeteoriteMap/).
-
-A sample is shown below; filters include the year range, mass of meteorite, and method of discovery. Furthermore, users can customize the map to better suit the data subset---point size, transparency, and even the map projection type may be selected.
-
-[![A screenshot of the meteorite landings map application, including a sidebar of filtering options, outputted map plot, and outputted table of results.](images/shiny_landings_sample.png)](https://gmcginnis.shinyapps.io/MeteoriteMap/)
 
 ## Conculsion
 
