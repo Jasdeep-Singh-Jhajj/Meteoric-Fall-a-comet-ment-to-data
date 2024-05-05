@@ -227,6 +227,7 @@ print(world_map_not_fallen)
 -   The country with the maximum number of sightings of fallen meteors is India and the continent with most sightings of meteors before falling is Europe.
 
 :::
+
 :::
 
 ## Leaflet Plot for Fallen Meteorites {.smaller transition="slide-in convex-out"}
