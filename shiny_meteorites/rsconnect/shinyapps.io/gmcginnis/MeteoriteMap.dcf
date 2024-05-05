@@ -1,0 +1,13 @@
+name: MeteoriteMap
+title: MeteoriteMap
+username: gmcginnis
+account: gmcginnis
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 11931956
+bundleId: 8576441
+url: https://gmcginnis.shinyapps.io/MeteoriteMap/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: README.md
