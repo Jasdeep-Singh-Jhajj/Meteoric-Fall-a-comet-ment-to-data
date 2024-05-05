@@ -91,7 +91,7 @@ map_plot <- leaflet(data = meteorite_data_filtered_fell) |>
   addTiles() |>
   addMarkers(lat = ~reclat, 
              lng = ~reclong,
-             clusterOptions = markerClusterOptions(), 
+             clusterOptions = markerClusterOptions(disableClusteringAtZoom = 3),
              popup = ~paste("Name:", name,
                             "<br>Class:", recclass,
                             "<br>Mass:", mass, "g",
@@ -101,7 +101,7 @@ map_plot <- leaflet(data = meteorite_data_filtered_fell) |>
              icon = makeIcon("images/meteorite.png", 
                              iconWidth = 12, 
                              iconHeight = 12)) |>
-  setMaxBounds(lng1 = -160, lng2 = 160, lat1 = 90, lat2 = -90)
+  setMaxBounds(lng1 = -180, lng2 = 180, lat1 = 90, lat2 = -90)
   
 
 map_plot
