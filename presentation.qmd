@@ -100,13 +100,15 @@ meteorite_data_filtered <- meteorite_data_filtered |>
   rename(mass = `mass (g)`)
 ```
 
+## Introduction:
+
+-   This project aims to understand how meteorites impact historical events and celestial phenomena using data visualizations.
+-   A Shiny app has been made to visualize data, focusing on animated timelines, static maps, leaflet maps, and custom maps to analyze where meteorites land and their historical and celestial contexts.
+
 ## Understanding the Dataset {transition="convex-in zoom-out"}
 
-::: {#smallerTxt}
--   Introduction points
 -   The data set Meteorite_Landings.csv, has been sourced from NASA's Open Data Portal.
 -   The dimensions include 10 variables i.e. 6 numerical and 4 categorical variables.
-:::
 
 # Question 1 {.smaller transition="zoom-in concave-out"}
 
@@ -304,6 +306,8 @@ Are trends observed in frequency, type, or location of meteors, related to known
 
 ## Conclusion:
 
+::: {smallerTxt}
+
 -   We've created an easy-to-use platform using Shiny app technology, making it simple for anyone to explore meteorite data.
 
 -   Our project helps uncover where meteorites land and what impact they have historically, providing clear insights into these phenomena.
@@ -312,6 +316,8 @@ Are trends observed in frequency, type, or location of meteors, related to known
 
 -   Our goal is to make meteorite research accessible to everyone, fostering curiosity and understanding in fields like geology and astronomy.
 
-## 
+:::
+
+## Thank you
 
 ![](images/thank-you.gif){fig-align="center"}
