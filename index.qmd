@@ -272,6 +272,14 @@ These findings are integrated into our meteor impact visualizations to provide a
 
 By embedding this contextual information into our visualizations, we aim to elucidate the dynamic interplay between Earth and its celestial surroundings, showcasing how meteor falls are intricately connected to the broader cycles of space. This approach not only enhances our understanding of meteor phenomena but also highlights Earth's role within the solar system.
 
+## Shiny application
+
+To allow accessible exploration of the meteorite landing data, a Shiny application was developed to visualize the geospatial values. The application can be accessed [here](https://gmcginnis.shinyapps.io/MeteoriteMap/).
+
+A sample is shown below; filters include the year range, mass of meteorite, and method of discovery. Furthermore, users can customize the map to better suit the data subset---point size, transparency, and even the map projection type may be selected.
+
+[![A screenshot of the meteorite landings map application, including a sidebar of filtering options, outputted map plot, and outputted table of results.](images/shiny_landings_sample.png)](https://gmcginnis.shinyapps.io/MeteoriteMap/)
+
 ## Conculsion
 
 "Meteoric Fall: A Comet-ment to Data" embarked on a journey to unravel the mysteries of meteorite impacts by employing various data visualization techniques. Our project sought to explore the intricate relationships between Earth and space through dynamic visualizations, delving into questions surrounding meteorite distribution, historical events, and celestial phenomena. By leveraging interactive tools like leaflet maps, animated timelines, and density maps, we unearthed captivating insights into the geographic distribution of meteor impacts and their correlation with historical occurrences and known celestial events. From identifying continents with the highest meteorite accumulation to elucidating the interplay between Earth's proximity to astronomical phenomena, our analysis offers a nuanced understanding of meteorites. Through user-friendly visualizations, we aspire to ignite curiosity and foster deeper exploration in fields such as geology, astronomy, and data analytics, paving the way for future discoveries and scientific advancements.
