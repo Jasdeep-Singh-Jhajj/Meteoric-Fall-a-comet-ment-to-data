@@ -1,0 +1,8 @@
+.shiny-input-container:not(.shiny-input-container-inline)    {
+    width: 90%;
+    margin-left: 5%;
+}
+
+canvas {
+    border: 2px solid;
+}
