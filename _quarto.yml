@@ -16,6 +16,8 @@ website:
         href: presentation.qmd
       - text: About
         href: about.qmd
+      - text: MeteoriteMap
+        href: https://gmcginnis.shinyapps.io/MeteoriteMap/
   favicon: images/meteor_logo.png
 
 format:
