@@ -283,6 +283,13 @@ How do historical events relate to the observations and discoveries of meteors?
 
 #### Plot A {.smaller}
 
+```{r time_series_plot}
+
+historyEvents <- image_read(here("images", "historyOfEventsHoriz.gif"))
+
+historyEvents
+```
+
 #### Insights {.smaller auto-animate="true"}
 
 :::
