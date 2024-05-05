@@ -40,7 +40,11 @@ pacman::p_load(tidyverse,
 
 ## Abstract
 
-Add project abstract here.
+The goal of "Meteoric Fall: A Comet-ment to Data" was to explore the complex relationships between meteorite impacts, historical events, and celestial phenomena through data visualization techniques. While the project utilized the capabilities of the Shiny app, the primary focus was on investigating geo-spatiotemporal relationships using various forms of visualization. These included animated timelines for spatiotemporal analysis, static maps for mass distribution, leaflet maps for user interactivity, and custom maps for data exploration. By addressing questions about meteorite distribution, historical events, and celestial correlations, our analysis aimed to deepen understanding in fields such as geology, astronomy, and data analytics. Through these visualizations, we aimed to offer insights that would spark further exploration and scientific discourse.
+
+## Introduction
+
+The suggested idea introduces an interactive platform powered by Shiny app in an effort to close the knowledge gap between meteorite landing data and perceptive analysis. Humanity has always been captivated by meteorite strikes, but little is known about their distribution and potential consequences. Users will have access to a dynamic environment through this effort, where visually appealing representations will allow them to navigate through meteorite landing data. This study aims to provide important insights by addressing important questions about the historical settings and geographical distribution of meteorite impacts. Moreover, the technology hopes to provide predictive skills for future meteorite impact sites by extrapolation from historical data. The expected results have the potential to inform decision-making processes in relevant disciplines and to enhance scientific discourse.
 
 ```{r load_dataset}
 #| label: load_dataset
@@ -103,6 +107,10 @@ map_plot <- leaflet(data = meteorite_data_filtered_fell) |>
 map_plot
 
 ```
+
+The distribution of meteor impacts across the Earth is depicted through an interactive leaflet map. This visualization allows users to navigate and explore specific regions of the world where meteorites have landed. By leveraging latitude and longitude coordinates, obtained from the reclat and reclog variables, the map accurately plots the locations of meteorite impacts. Users can interact with the map to retrieve detailed information about each meteor, including the year it fell or was found, its mass, and potentially its classification characteristics. This interactive approach provides users with a dynamic and engaging means of exploring the distribution of meteor impacts, enabling them to gain deeper insights into the spatial patterns of meteorite landings across the globe.\
+\
+To determine which continents have accumulated the most total mass of meteorites, we analyse the data by continent and consider both the frequency of meteor observations and the mass of each meteor. By aggregating the mass of meteorites on each continent, we create a density map that visually illustrates the distribution of total mass across continents. This density map enables us to identify continents with the highest accumulation of meteorite mass. By examining the density of meteorite mass across continents, we can discern patterns and trends regarding the geographical distribution of meteorite impacts. This analysis provides valuable insights into the relative significance of different continents in terms of meteorite accumulation, facilitating a better understanding of the global distribution of meteorite impacts and their implications for scientific research and exploration.
 
 ## Question 2: How do historical events relate to the observations and discoveries of meteors?
 
@@ -245,3 +253,25 @@ historyPlot <- image_read(here("images", "historyOfEvents.gif"))
 historyPlot
 
 ```
+
+To explore the relationship between historical events and the observations and discoveries of meteors, we employ an animated line graph showcasing the frequency of meteor observations per year. This dynamic visualization allows us to discern any correlations between significant historical events and spikes or dips in meteor observations over time. By incorporating annotations representing major historical events, we can examine whether certain events coincide with increased or decreased activity in the study of meteors.
+
+The animation illustrates the progression of meteor observations across different time periods, with historical events appearing on the timeline as they occur. This approach enables us to identify potential patterns or trends in meteor observation activity associated with specific historical events. For instance, we may observe a surge in meteor findings following significant milestones in space exploration, such as the space race era. By analysing the relationship between historical events and meteor observations, we aim to uncover insights into the societal and scientific factors influencing the study of meteors throughout history.
+
+This analysis not only enhances our understanding of the interplay between historical events and meteor observations but also sheds light on the broader context in which meteor studies have evolved. By contextualizing meteor observations within historical narratives, we can glean valuable insights into the motivations and influences driving scientific inquiry in the field of meteoritics.
+
+## Question 3: Are trends observed in frequency, type, or location of meteors, related to known celestial events?
+
+To investigate the relationship between trends in meteor frequency, type, or location and known celestial events, we adopt a multifaceted approach that integrates meteor data analysis with insights from astronomical occurrences. Meteors, originating from neighboring celestial bodies within our solar system, are expected to exhibit patterns influenced by Earth's proximity to astronomical phenomena such as comets, planets, and the moon.
+
+Our analysis aims to identify statistically significant patterns in meteor data that may correlate with specific celestial events. For example, we anticipate observing increased meteor activity during annual meteor showers, such as the Lyrids, which result from Earth passing through the debris path of comets. Additionally, close encounters with planets or other celestial bodies may also influence meteor activity.
+
+To pinpoint such events, we analyse meteor data over time, identifying clusters of activity that deviate significantly from typical observations. We then cross-reference these periods of heightened activity with external data sources, such as NASA.gov, to ascertain if they coincide with known astronomical events.
+
+These findings are integrated into our meteor impact visualizations to provide a comprehensive understanding of the relationship between meteor falls and celestial events. This may involve color-coding individual meteors to indicate the celestial event that triggered them or incorporating a map of the solar system to illustrate Earth's position relative to these events.
+
+By embedding this contextual information into our visualizations, we aim to elucidate the dynamic interplay between Earth and its celestial surroundings, showcasing how meteor falls are intricately connected to the broader cycles of space. This approach not only enhances our understanding of meteor phenomena but also highlights Earth's role within the solar system.
+
+## Conculsion
+
+"Meteoric Fall: A Comet-ment to Data" embarked on a journey to unravel the mysteries of meteorite impacts by employing various data visualization techniques. Our project sought to explore the intricate relationships between Earth and space through dynamic visualizations, delving into questions surrounding meteorite distribution, historical events, and celestial phenomena. By leveraging interactive tools like leaflet maps, animated timelines, and density maps, we unearthed captivating insights into the geographic distribution of meteor impacts and their correlation with historical occurrences and known celestial events. From identifying continents with the highest meteorite accumulation to elucidating the interplay between Earth's proximity to astronomical phenomena, our analysis offers a nuanced understanding of meteorites. Through user-friendly visualizations, we aspire to ignite curiosity and foster deeper exploration in fields such as geology, astronomy, and data analytics, paving the way for future discoveries and scientific advancements.
