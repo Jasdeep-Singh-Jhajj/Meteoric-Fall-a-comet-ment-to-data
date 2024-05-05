@@ -101,10 +101,15 @@ meteorite_data_filtered <- meteorite_data_filtered |>
   rename(mass = `mass (g)`)
 ```
 
-# Understanding the Dataset {transition="convex-in zoom-out"}
+## Understanding the Dataset {transition="convex-in zoom-out"}
+
+::: {#smallerTxt}
+
 -   Introduction points
 -   The data set Meteorite_Landings.csv, has been sourced from NASA's Open Data Portal.
 -   The dimensions include 10 variables i.e. 6 numerical and 4 categorical variables.
+
+:::
 
 # Question 1 {.smaller transition="zoom-in concave-out"}
 
