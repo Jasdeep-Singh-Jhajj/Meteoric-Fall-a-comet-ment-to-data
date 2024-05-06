@@ -18,6 +18,8 @@ website:
         href: about.qmd
       - text: MeteoriteMap
         href: https://gmcginnis.shinyapps.io/MeteoriteMap/
+      - text: AsteroidApp
+        href: https://jgaiser.shinyapps.io/app1/
   favicon: images/meteor_logo.png
 
 format:
