@@ -19,6 +19,7 @@ pacman::p_load(tidyverse,
 ```
 
 ## Dataset Setup
+
 ```{r load_dataset}
 #| label: load_dataset
 #| message: false
@@ -36,6 +37,7 @@ meteorite_data <- read_csv(here("data/Meteorite_Landings.csv"))
 #| warning: false
 #| code-summary: "Data Cleaning"
 
+# Cleaning meteorite_data(removing na, filtering year, long, lat)
 meteorite_data <- meteorite_data |> 
   na.omit(year)
 
@@ -54,17 +56,13 @@ meteorite_data_filtered <- meteorite_data_filtered |>
                             filter(!is.na(reclong) & !is.na(reclat))
 ```
 
+### Static Plot to visualize meteorites that were recorded before falling
 
-
-## Static Plot to visualize meteorites that were recorded before falling.
-
-
-```{r filter_meteorites, fig.alt= "World map showing the different recorded locations where meteorites fell to Earth"}
+```{r filter_meteorites, fig.align='center', fig.alt= "World map showing the different recorded locations where meteorites fell to Earth"}
 #| label: filter_meteorites
 #| message: false
 #| warning: false
 #| code-summary: "Filtering meteorites"
-
 
 # Adding a filter to classify the size of the meteorites
 filtered_data <- subset(meteorite_data_filtered, `mass (g)` > 1000 & fall == "Fell")
@@ -98,17 +96,14 @@ world_map <- ggplot() +
     legend.position = "bottom"
   )
 
-# Show the plot
+# View the plot
 print(world_map)
 
 ```
 
+### Static Plot to visualize meteorites recorded after falling 
 
-
-
-## Static Plot to visualize meteorites recorded after falling. 
-
-```{r meteorite_found, fig.alt= "World map showing the different recorded locations of meteorites before falling"}
+```{r meteorite_found, fig.align='center', fig.alt= "World map showing the different recorded locations of meteorites before falling"}
 #| label: meteorite_found
 #| message: false
 #| warning: false
@@ -146,17 +141,13 @@ world_map_not_fallen <- ggplot() +
     legend.position = "bottom"
   )
 
-# Show the plot
+# View the plot
 print(world_map_not_fallen)
-
-
 ```
-
-
 
 ## Leaflet plot
 
-```{r leaflet_plot}
+```{r leaflet_plot, fig.align='center', fig.alt= "Leaflet type World map showing the different cluster locations of meteorites distribution"}
 #| label: leaflet_plot
 #| message: false
 #| warning: false
@@ -171,15 +162,18 @@ map_plot <- leaflet(data = meteorite_data_filtered_fell) |>
   addTiles() |>
   addCircleMarkers(lat = ~reclat, lng = ~reclong,  popup = ~fall, color = "#51EE00", stroke = FALSE, fillOpacity = 0.8, radius = 1.5)
 
+# View the Plot
 map_plot
 ```
 
-
 ## Time series plot
 
-```{r}
-#| label: Time Series Plot
+```{r time_series_plot}
+#| label: time_series_plot
 #| eval: false
+#| message: false
+#| warning: false
+#| code-summary: "Time Series Plot"
 
 # # Load Google font
 font_add_google(name = "Lato", family = "Lato")
@@ -288,12 +282,14 @@ worldMapGif <- animate(worldMap,
         height = 1100)
 #anim_save("worldMapGif.gif")
 
-
 ```
 
 
-```{r}
-#| label: Print time series
+```{r print_time_series}
+#| label: print_time_series
+#| message: false
+#| warning: false
+#| code-summary: "Print time series"
 
 # Modify white space margins around plots
 linePlotGifImg <- image_read(here("images", "linePlotGif.gif"))

@@ -35,7 +35,6 @@ pacman::p_load(tidyverse,
                magick,
                sysfonts,
                showtext,
-               gridExtra,
                DT) 
 ```
 
@@ -54,7 +53,6 @@ The suggested idea introduces an interactive platform powered by Shiny app in an
 #| code-summary: "Loading and cleaning the Dataset"
 #| echo: false
 #| output: false
-
 
 # Read the CSV file
 meteorite_data <- read_csv(here("data/Meteorite_Landings.csv"))
@@ -81,16 +79,15 @@ meteorite_data_filtered <- meteorite_data_filtered |>
   rename(mass = `mass (g)`)
 ```
 
-## Question 1: What does the distribution of meteor impacts look like across the earth? - Which continents have accumulated the most total mass of meteors?
+## Question 1: What does the distribution of meteor impacts look like across the earth?
 
-## Static Plot to visualize meteorites that were recorded before falling.
+### Static Plot to visualize meteorites that were recorded before falling
 
-```{r filter_meteorites, fig.alt= "World map showing the different recorded locations where meteorites fell to Earth"}
+```{r filter_meteorites, fig.align='center', fig.alt= "World map showing the different recorded locations where meteorites fell to Earth"}
 #| label: filter_meteorites
 #| message: false
 #| warning: false
 #| code-summary: "Filtering meteorites"
-
 
 # Adding a filter to classify the size of the meteorites
 filtered_data <- subset(meteorite_data_filtered, mass > 1000 & fall == "Fell")
@@ -134,9 +131,9 @@ print(world_map)
 **Meteorite Density:** The density of the colored dots across various geographical regions reflects the frequency of meteorite landings in those areas. Regions with a greater density of dots have experienced more meteorite landings, suggesting higher meteorite activity.\
 In summary, this map provides an intriguing visualization of meteorite landings worldwide, offering insights into the distribution of meteorite sizes and their density across different geographical areas.
 
-## Static Plot to visualize meteorites recorded after falling.
+### Static Plot to visualize meteorites recorded after falling.
 
-```{r meteorite_found, fig.alt= "World map showing the different recorded locations of meteorites before falling"}
+```{r meteorite_found, fig.align='center', fig.alt= "World map showing the different recorded locations of meteorites before falling"}
 #| label: meteorite_found
 #| message: false
 #| warning: false
@@ -188,7 +185,13 @@ In summary, this map provides an intriguing visualization of meteorite not falle
 
 ### Leaflet
 
-```{r}
+```{r leaflet_plot, fig.align='center', fig.alt= "Leaflet type World map showing the different cluster locations of meteorites distribution"}
+#| label: leaflet_plot
+#| message: false
+#| warning: false
+#| code-summary: "Leaflet Plot for Fallen Meteorites"
+
+# Filtered Meteorite data for Fallen, Not Found
 meteorite_data_filtered_fell <- meteorite_data_filtered |>
   filter(meteorite_data_filtered$fall == "Fell")
 
@@ -208,10 +211,9 @@ map_plot <- leaflet(data = meteorite_data_filtered_fell) |>
                              iconWidth = 12, 
                              iconHeight = 12)) |>
   setView(lng = 0, lat = 0, zoom = 1)
-  
 
+# View the Plot
 map_plot
-
 ```
 
 The distribution of meteor observations across the Earth is depicted through an interactive leaflet map. This visualization allows users to navigate and explore specific regions of the world where meteorites have been observed to be falling, but not found. Using the `reclat` and `reclong` variables, which correspond to the latitude and longitude respectively, the map accurately plots the locations of meteorite observations. Using the several interactivity features of the `leaflet` package, users can engage with the map to retrieve detailed information about each meteor by clicking on it, including the year it fell , its mass, its classification characteristics, and its latitude and longitude. This interactive approach provides users with a dynamic and engaging means of exploring the distribution of meteor impacts, enabling them to gain deeper insights into the spatial patterns of meteorite landings across the globe.
@@ -226,9 +228,12 @@ A sample is shown below; filters include the year range, mass of meteorite, and 
 
 ## Question 2: How do historical events relate to the observations and discoveries of meteors?
 
-```{r}
-#| label: Creation of time series plot and world map
+```{r time_series_plot}
+#| label: time_series_plot
 #| eval: false
+#| message: false
+#| warning: false
+#| code-summary: "Time Series Plot"
 
 # # Load Google font
 font_add_google(name = "Lato", family = "Lato")
@@ -336,7 +341,6 @@ worldMapGif <- animate(worldMap,
         height = 1100)
 
 
-
 ### Putting animations together
 
 # Modify white space margins around plots
@@ -357,8 +361,11 @@ for (i in 2:100){
 
 ```
 
-```{r}
-#| label: Display question 2 plot
+```{r display_combined_plot, fig.align='center'}
+#| label: display_combined_plot
+#| message: false
+#| warning: false
+#| code-summary: "Display events combined plot"
 
 historyPlot <- image_read(here("images", "historyOfEvents.gif"))
 
@@ -374,7 +381,12 @@ This analysis not only enhances our understanding of the interplay between histo
 
 ## Question 3: Are trends observed in frequency, type, or location of meteors, related to known celestial events?
 
-```{r}
+```{r asteroid_meteor_plot}
+#| label: asteroid_meteor_plot
+#| message: false
+#| warning: false
+#| code-summary: "Asteroid Meteor Plot"
+
 # Load asteroid orbital data from NASA's Jet Propulsion Laboratory "Horizons" system.
 # https://ssd.jpl.nasa.gov/horizons/
 earth_orbit <- read.csv('shiny_asteroids/daily_orbitals/earth.csv')

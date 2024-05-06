@@ -20,7 +20,7 @@ execute:
   echo: false
 ---
 
-```{r}
+```{r setup, echo=FALSE}
 #| label: setup
 #| include: false
 
@@ -36,17 +36,7 @@ knitr::opts_chunk$set(
   )
 ```
 
-```{r}
-#| label: load-data
-#| include: false
-# Load data here
-#data(mtcars)
-#mtcars$speed <- mtcars$hp / mtcars$wt
-
-#data("penguins")
-```
-
-```{r load_pkgs}
+```{r load_pkgs, echo=FALSE}
 #| label: load_pkgs
 #| message: false
 #| warning: false
@@ -67,7 +57,7 @@ pacman::p_load(tidyverse,
                maps) 
 ```
 
-```{r load_dataset}
+```{r load_dataset, echo=FALSE}
 #| label: load_dataset
 #| message: false
 #| warning: false
@@ -76,7 +66,7 @@ pacman::p_load(tidyverse,
 meteorite_data <- read_csv(here("data/Meteorite_Landings.csv"))
 ```
 
-```{r data_cleaning}
+```{r data_cleaning, echo=FALSE}
 #| label: data_cleaning
 #| message: false
 #| warning: false
@@ -100,15 +90,16 @@ meteorite_data_filtered <- meteorite_data_filtered |>
   rename(mass = `mass (g)`)
 ```
 
-## Introduction:
+## Introduction {.smaller transition="slide-in convex-out"}
 
 -   This project aims to understand how meteorites impact historical events and celestial phenomena using data visualizations.
 -   A Shiny app has been made to visualize data, focusing on animated timelines, static maps, leaflet maps, and custom maps to analyze where meteorites land and their historical and celestial contexts.
 
-## Understanding the Dataset {transition="convex-in zoom-out"}
+## Understanding the Dataset {.smaller transition="slide-in convex-out"}
 
 -   The data set Meteorite_Landings.csv, has been sourced from NASA's Open Data Portal.
 -   The dimensions include 10 variables i.e. 6 numerical and 4 categorical variables.
+
 
 # Question 1 {.smaller transition="zoom-in concave-out"}
 
@@ -119,13 +110,11 @@ What does the distribution of meteor impacts look like across the earth? - Which
 ::: panel-tabset
 #### Plot A {.smaller}
 
-```{r filter_meteorites, fig.asp = 0.430, fig.alt= "World map showing the different recorded locations where meteorites fell to Earth"}
+```{r filter_meteorites, fig.asp = 0.430, fig.alt= "World map showing the different recorded locations where meteorites fell to Earth", echo=FALSE}
 #| label: filter_meteorites
 #| message: false
 #| warning: false
 #| code-summary: "Filtering meteorites"
-#| fig.height: 5
-#| fig.width: 10
 
 # Adding a filter to classify the size of the meteorites
 filtered_data <- subset(meteorite_data_filtered, mass > 1000 & fall == "Fell")
@@ -166,13 +155,11 @@ print(world_map)
 
 #### Plot B {.smaller}
 
-```{r meteorite_found, fig.asp = 0.430, fig.alt= "World map showing the different recorded locations of meteorites before falling"}
+```{r meteorite_found, fig.asp = 0.430, fig.alt= "World map showing the different recorded locations of meteorites before falling", echo=FALSE}
 #| label: meteorite_found
 #| message: false
 #| warning: false
 #| code-summary: "Plotting Found meteorites"
-#| fig.height: 5
-#| fig.width: 10
 
 # Filter the data for meteorites that have not fallen and classify mass
 filtered_data_not_fallen <- subset(meteorite_data_filtered, mass > 1000 & fall == "Found")
@@ -213,7 +200,7 @@ print(world_map_not_fallen)
 ```
 :::
 
-## Insights {.smaller auto-animate="true"}
+## Insights {.smaller transition="slide-in convex-out"}
 
 ::: incremental
 <div>
@@ -231,7 +218,7 @@ print(world_map_not_fallen)
 ::: panel-tabset
 #### Plot C {.smaller}
 
-```{r leaflet_plot, fig.asp = 0.160}
+```{r leaflet_plot, fig.asp = 0.160, echo=FALSE}
 #| label: leaflet_plot
 #| message: false
 #| warning: false
@@ -265,11 +252,12 @@ map_plot
 
 #### Insights from the Leaflet Plot
 
--   The continents that have accumulated the most total mass of meteors are Europe and North America.
--   Something
+- The map allows you to explore meteorite sightings across the entire world showcasing clustered concentrations in certain regions.
+- By clicking on individual meteor markers on the map, you can access detailed information about each meteorite(year it fell, its mass, its classification and position)
+- The continents that have accumulated the most total mass of meteors are Europe and Asia.
 :::
 
-# Question 2 {.smaller transition="zoom-in concave-out"}
+# Question 2 {.smaller transition="slide-in convex-out"}
 
 How do historical events relate to the observations and discoveries of meteors?
 
@@ -285,37 +273,35 @@ historyEvents <- image_read(here("images", "historyOfEventsHoriz.gif"))
 historyEvents
 ```
 
-#### Insights {.smaller auto-animate="true"}
+#### Insights {.smaller transition="slide-in convex-out"}
 :::
 
-# Question 3 {.smaller transition="zoom-in concave-out"}
+# Question 3 {.smaller transition="slide-in convex-out"}
 
 Are trends observed in frequency, type, or location of meteors, related to known celestial events?
 
 ## Question 3 - Plots {.smaller transition="slide-in convex-out"}
 
-# Shiny Asteroids
+## Shiny Asteroids
 
 [Shiny App for Asteroid Orbits](https://jgaiser.shinyapps.io/app1/)
 ![](images/shiny_asteroids_sample.png){fig-align="center"}
 
-# Shiny Meteorites
+## Shiny Meteorites
 
 [Shiny App for Meteor Landings](https://gmcginnis.shinyapps.io/MeteoriteMap/)
 ![](images/shiny_landings_sample.png){fig-align="center"}
 
-## Conclusion:
+## Conclusion
 
 ::: {smallerTxt}
--   We've created an easy-to-use platform using Shiny app technology, making it simple for anyone to explore meteorite data.
+-   Created an easy-to-use platform using Shiny app technology, making it simple for anyone to explore and visualize meteorite data.
 
 -   Our project helps uncover where meteorites land and what impact they have historically, providing clear insights into these phenomena.
 
 -   By analyzing historical data, we aim to predict future meteorite impact sites, potentially aiding decision-making processes and scientific discussions.
 
--   Our goal is to make meteorite research accessible to everyone, fostering curiosity and understanding in fields like geology and astronomy.
+-   Our goal was to make meteorite research accessible to everyone, fostering curiosity and understanding in fields like geology and astronomy.
 :::
 
-## Thank you
-
-![](images/thank-you.gif){fig-align="center"}
+# Thank you

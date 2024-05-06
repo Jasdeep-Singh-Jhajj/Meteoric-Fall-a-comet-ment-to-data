@@ -2,6 +2,12 @@
 
 Final project repo for INFO 526 - Spring 2024.
 
+## Shiny Apps
+
+[Shiny App for Asteroid Orbits](https://jgaiser.shinyapps.io/app1/)
+
+[Shiny App for Meteor Landings](https://gmcginnis.shinyapps.io/MeteoriteMap/)
+
 ## Introduction
 
 The goal of the project is to develop a Shiny app using the Meteorite Landings dataset, enabling users to explore and analyze meteorite landings data through dynamic visualizations. This README provides an overview of the project, its objectives, dataset information, key questions to be addressed, and potential insights.
