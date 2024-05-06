@@ -520,7 +520,7 @@ plot_distances <- function(min_date, max_date, asteroids_input) {
     xlim(min_date, max_date) +
     geom_line(linewidth=1) +
     theme_minimal() +
-    scale_y_continuous(labels = function(x){paste(round(x / 1e6, 2), 'K km', sep='') }) +
+    scale_y_continuous(labels = function(x){paste(round(x / 1e6, 2), 'M km', sep='') }) +
     theme(
       axis.text.x = element_text(
         size=10
@@ -570,6 +570,7 @@ plot_falls <- function(min_date, max_date, asteroids_input) {
 
 min_date <- as.Date('2000-01-01')
 max_date <- as.Date('2005-01-01')
+
 asteroid_list <- c('vesta', 'flora', 'hebe', 'itokawa')
 
 grid.arrange(plot_falls(min_date,
@@ -581,22 +582,26 @@ grid.arrange(plot_falls(min_date,
              nrow=2)
 ```
 
-To investigate the relationship between trends in meteor frequency, type, or location and known celestial events, we adopt a multifaceted approach that integrates meteor data analysis with insights from astronomical occurrences. Meteors, originating from neighboring celestial bodies within our solar system, are expected to exhibit patterns influenced by Earth's proximity to astronomical phenomena such as comets, planets, and the moon.
+When a meteorite arrives on earth, their entrance is marked by dramatic displays of flashes and fireballs as the space rock enters Earth's atmosphere. But where do these meteorites come from? By analyzing variables such as mineral composition and trajectory, scientists are able to hypothesize which heavenly bodies meteors originate from. Is there a relationship between these dramatic meteor-fall events and Eath's proximity to known parent bodies?
 
-Our analysis aims to identify statistically significant patterns in meteor data that may correlate with specific celestial events. For example, we anticipate observing increased meteor activity during annual meteor showers, such as the Lyrids, which result from Earth passing through the debris path of comets. Additionally, close encounters with planets or other celestial bodies may also influence meteor activity.
+To answer this question, we developed a Shiny application designed to analyze a specific subset of our meteor dataset, focusing on observed meteorite falls from 1980-2010 that are thought to originate from one of four asteroids: Vesta, 6 Hebe, 8 Flora, and Itokawa.
 
-To pinpoint such events, we analyse meteor data over time, identifying clusters of activity that deviate significantly from typical observations. We then cross-reference these periods of heightened activity with external data sources, such as NASA.gov, to ascertain if they coincide with known astronomical events.
+In addition to meteorite fall observations, positional asteroid data is used to determine parent body distance from earth, and allow spatial relationships to be visualized in 3D.
 
-These findings are integrated into our meteor impact visualizations to provide a comprehensive understanding of the relationship between meteor falls and celestial events. This may involve color-coding individual meteors to indicate the celestial event that triggered them or incorporating a map of the solar system to illustrate Earth's position relative to these events.
+To accomplish this, the dataset was filtered to include only meteorites that were observed falling, and not necessarily found. Of these meteorites, the four most frequent groups were selected, those being L, LL, and R chondrites, as well as the HED (howardite–eucrite–diogenite) class. Cursory research was then conducted on Wikipedia to identify which asteroid bodies the groups were thought to originate from. By definition, HED meteorites likely come from Vesta. L chondrites are likely to come from the Flora family (spatially represented by Flora 8), H chondrites from 6 Hebe. The theoretical provenance of LL chondrites maintains the least confidence of all meteor types, though its shared mineral composition with Itokawa hints that meteorites of this group may hail from the same region as this asteroid.
 
-By embedding this contextual information into our visualizations, we aim to elucidate the dynamic interplay between Earth and its celestial surroundings, showcasing how meteor falls are intricately connected to the broader cycles of space. This approach not only enhances our understanding of meteor phenomena but also highlights Earth's role within the solar system.
+Orbital locations for these four parent bodies acquired from NASA Jet Propulsion Laboratory Horizons System*.* This data was then used in conjunction with the original meteor dataset and additional month-of-meteorite-fall data manually retrieved from the Meteoritical Bulletin Database\*\*. All together, we were able to develp a shiny app comprising the following visualizations for a given time range: A bar plot indicating meteorite fall observations, grouped by theoretical parent body, a line plot indicating the distance between earth and each asteroid of interest, and a 3D representation of the orbital trajectory of earth and asteroids around the sun, as well as asteroid/earth locations at specific times, which was developed with basic functions of the RGL library.
 
-### Shiny Application
+A small date range for the 2D data plots is pictured above. While this is a small slice of data, it is representative in that one probably could not use visual analysis alone to claim a relationship between parent asteroid and resultant meteorite falls. If such a relationship does exist, it appears to require more sensitive statistical analysis than eyeballing it. Nevertheless, the resulting shiny app provides a novel, edifying interface for assessing and contextualizing meteorite events and earth's spatial relationship with meteorite producing bodies.
 
-To allow accessible exploration of the meteorite landing data, a Shiny application was also developed to visualize the asteroids. The application can be accessed [here](https://jgaiser.shinyapps.io/app1/).
+The application is pictured below, and may be accessed [here](https://jgaiser.shinyapps.io/app1/).
 
-[![A screenshot of the asteroids map application, including filtering options, outputted time series, and an interactive 3D orbital map.](images/shiny_asteroids_sample.png)](https://jgaiser.shinyapps.io/app1/)
+![](images/clipboard-621965383.png)
 
 ## Conculsion
 
 "Meteoric Fall: A Comet-ment to Data" embarked on a journey to unravel the mysteries of meteorite impacts by employing various data visualization techniques. Our project sought to explore the intricate relationships between Earth and space through dynamic visualizations, delving into questions surrounding meteorite distribution, historical events, and celestial phenomena. By leveraging interactive tools like leaflet maps, animated timelines, and density maps, we unearthed captivating insights into the geographic distribution of meteor impacts and their correlation with historical occurrences and known celestial events. From identifying continents with the highest meteorite accumulation to elucidating the interplay between Earth's proximity to astronomical phenomena, our analysis offers a nuanced understanding of meteorites. Through user-friendly visualizations, we aspire to ignite curiosity and foster deeper exploration in fields such as geology, astronomy, and data analytics, paving the way for future discoveries and scientific advancements.
+
+\*<https://ssd.jpl.nasa.gov/horizons/>
+
+\*\*<https://www.lpi.usra.edu/meteor/about.php>
