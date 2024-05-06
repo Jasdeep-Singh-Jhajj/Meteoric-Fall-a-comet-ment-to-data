@@ -16,6 +16,6 @@ This project was developed by **\[Team Viz Wizards\]** For [INFO 526 - Data Anal
 
 -   Team member 5: Nick Ferrante, is a 1st year graduate student in the Data Science program with the School of Information.
 
--   Team member 6: Jeremiah Gaiser, is a \_ student in the \_ program with the School of \_.
+-   Team member 6: Jeremiah Gaiser, is a PhD student in a computational pharmaceutical lab, formally with the School of Information.
 
 -   Team member 7: Mrunal Jadhav, is a 2nd year graduate student in the Information Science program with the School of Information.
