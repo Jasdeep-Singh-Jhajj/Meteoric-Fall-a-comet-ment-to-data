@@ -5,6 +5,6 @@ account: jgaiser
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 11892554
-bundleId: 8579255
+bundleId: 8582637
 url: https://jgaiser.shinyapps.io/app1/
 version: 1

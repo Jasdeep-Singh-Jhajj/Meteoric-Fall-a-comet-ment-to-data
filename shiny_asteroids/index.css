@@ -1,8 +1,45 @@
 .shiny-input-container:not(.shiny-input-container-inline)    {
-    width: 90%;
-    margin-left: 5%;
+    width: 98%;
+}
+
+#controlPanel {
+    padding-bottom: 25px;
 }
 
 canvas {
     border: 2px solid;
+}
+
+#plot3DText span {
+    display: inline-block;
+    padding: 5px;
+    border-radius: 8px;
+    color: black;
+    text-shadow: none;
+    border: 1px solid white;
+}
+
+span.hebe {
+    background-color: #ffc107;
+}
+
+span.flora {
+    background-color: #46d3e6;
+}
+
+span.itokawa {
+    background-color: #3bf082;
+}
+
+span.vesta {
+    background-color: #e83ab8;
+}
+
+span.earth {
+    background-color: #1b9ef2;
+}
+
+
+span.sun {
+    background-color: yellow;
 }

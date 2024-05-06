@@ -110,7 +110,7 @@ plot_orbit_distance <- function(min_date, max_date, asteroids_input) {
     xlim(min_date, max_date) +
     geom_line(linewidth=1) +
     theme_minimal() +
-    scale_y_continuous(labels = function(x){paste(round(x / 1e6, 2), 'K km', sep='') }) +
+    scale_y_continuous(labels = function(x){paste(round(x / 1e6, 2), 'M km', sep='') }) +
     theme(axis.text.y = element_text(
             color='white',
             size = 14
@@ -119,11 +119,12 @@ plot_orbit_distance <- function(min_date, max_date, asteroids_input) {
             color = 'white',
             size = 14, 
           ),
+          axis.title = element_blank(),
           legend.position = 'none') +
     scale_color_manual(values = c("vesta" = '#e83ab8',
                                  "flora" = '#46d3e6',
                                  "hebe" = '#ffc107',
-                                 "itokawa" = '#3bf082'))
+                                 "itokawa" = '#3bf082')) 
 }
 
 
@@ -140,7 +141,9 @@ plot_falls <- function(min_date, max_date, asteroids_input) {
     xlim(min_date, max_date) +
     geom_col(width=30) +
     theme_minimal() +
-    scale_y_continuous(labels = function(x){paste('            ', x, sep='') }) +
+    scale_y_continuous(
+      breaks = c(1,2,3,4),
+      labels = function(x){paste('            ', x, sep='') }) +
     theme(
       legend.position='top', 
       legend.justification='left',
@@ -153,8 +156,8 @@ plot_falls <- function(min_date, max_date, asteroids_input) {
         color='white',
         size = 14
       ),
+      axis.title = element_blank(),
       axis.text.x = element_blank(),
-      axis.title.x = element_blank(),
       plot.title = element_text(
         color='white',
         size = 20
@@ -163,63 +166,72 @@ plot_falls <- function(min_date, max_date, asteroids_input) {
     labs(
       title = "Observed Meteor Fall Events and Distance From Probable Asteroid Parent"
     ) +
-    scale_fill_manual(values = c("vesta" = "#e83ab8",
-                                  "flora" = "#46d3e6",
-                                  "hebe" = "#ffc107",
-                                  "itokawa" = "#3bf082"))
+    scale_fill_manual(
+      labels = c("6 Hebe", "8 Flora", "Itokawa", "Vesta"),
+      values = c("vesta" = "#e83ab8",
+                 "flora" = "#46d3e6",
+                 "hebe" = "#ffc107",
+                 "itokawa" = "#3bf082"))
 }
 
 
 # Load data --------------------------------------------------------------------
 
 # Define UI -------------------
-ui <- fluidPage(
+ui <- page_fluid(
   theme = bs_theme(version = 5, bootswatch = "vapor"),
-  tags$head(includeCSS("index.css")),
-  checkboxGroupInput(
-    "input_asteroids",
-    label = NULL,
-    choices = list(
-      "Vesta" = "vesta",
-      "Flora" = "flora",
-      "Hebe" = "hebe",
-      "Itokawa" = "itokawa",
-      'Show Asteroid Positions through Date Range' = 'show_pos'
+  layout_sidebar(
+    tags$head(includeCSS("index.css")),
+    titlePanel("Exploring the Source: Parent Asteroids"),
+    sidebar = sidebar(includeHTML("about.html")),
+    tags$div(class = NULL, id = 'controlPanel',
+      checkboxGroupInput(
+        "input_asteroids",
+        label = 'Show asteroid data for:',
+        choices = list(
+          "Vesta" = "vesta",
+          "8 Flora" = "flora",
+          "6 Hebe" = "hebe",
+          "Itokawa" = "itokawa"
+        ),
+        selected = c("vesta", "flora", 'hebe', 'itokawa'),
+        inline = TRUE
+      ),
+      sliderInput("dateRange",
+                  "Dates:",
+                  min = as.Date("1980-01-01","%Y-%m-%d"),
+                  max = as.Date("2010-01-01","%Y-%m-%d"),
+                  value=c(as.Date("1980-01-01"), c("2010-01-01")),
+                  timeFormat="%b-%Y"),
+      actionButton("update_filters", "Update Filters"),
     ),
-    selected = c("vesta", "flora", 'hebe', 'itokawa'),
-    inline = TRUE
-  ),
-  sliderInput("dateRange",
-              "Dates:",
-              min = as.Date("1980-01-01","%Y-%m-%d"),
-              max = as.Date("2010-01-01","%Y-%m-%d"),
-              value=c(as.Date("1980-01-01"), c("2010-01-01")),
-              timeFormat="%b-%Y"),
-  # actionButton("update", "Update Filters"),
-  plotOutput("barPlot"),
-  rglwidgetOutput("plot3D",  width = 800, height = 600)
+    plotOutput("dataDashboard"),
+    includeHTML("plot3D.html"),
+    checkboxInput('show_pos', 'Show Asteroid Positions through Date Range', value = FALSE, width = NULL),
+    rglwidgetOutput("plot3D",  width = 800, height = 600)
+  )
 )
 
 
 # Define server function -------------------
 server <- function(input, output, session) {
-  plot1 <- reactive({ 
+  plot1 <- eventReactive(input$update_filters, { 
     plot_falls(input$dateRange[1], input$dateRange[2], input$input_asteroids)
-  }) 
+  }, ignoreNULL = FALSE) 
   
-  plot2 <- reactive({ 
+  plot2 <- eventReactive(input$update_filters, {
     plot_orbit_distance(input$dateRange[1], input$dateRange[2], input$input_asteroids)
-  })
+  }, ignoreNULL = FALSE) 
   
-  m <- reactive({
+  m <- eventReactive(input$update_filters, {
     asteroid_traj |>
       filter(body %in% c('earth', input$input_asteroids)) |>
         mutate(current_traj = ifelse(
           date >= input$dateRange[1] & date <= input$dateRange[2]  , 1, 0)
           )
-  }) 
+  }, ignoreNULL = FALSE)  
   
-  output$barPlot <- renderPlot({
+  output$dataDashboard <- renderPlot({
     grid.arrange(plot1(), 
                  plot2(),
                  nrow=2)
@@ -239,7 +251,7 @@ server <- function(input, output, session) {
     
     points3d(traj_df$x, traj_df$y, traj_df$z, col=traj_df$c, alpha=0.5)
     
-    if ('show_pos' %in% input$input_asteroids) {
+    if (input$show_pos) {
       spheres3d(pos_df$x, pos_df$y, pos_df$z, radius=1.5e7, col=pos_df$c)
     }
     
