@@ -236,7 +236,7 @@ A sample is shown below; filters include the year range, mass of meteorite, and 
 #| warning: false
 #| code-summary: "Time Series Plot"
 
-# # Load Google font
+# Load Google font
 font_add_google(name = "Lato", family = "Lato")
 showtext_auto()
 
@@ -249,8 +249,20 @@ linePlot <- meteorite_data |>
   geom_line(linewidth = 1,
             color = "#607D8B") +
   annotate("segment",
+           x = 1955,
+           xend = 1955,
+           y = 0,
+           yend = 3500,
+           linetype = "dotted") +
+  annotate("segment",
            x = 1975,
            xend = 1975,
+           y = 0,
+           yend = 3500,
+           linetype = "dotted") +
+  annotate("segment",
+           x = 1979,
+           xend = 1979,
            y = 0,
            yend = 3500,
            linetype = "dotted") +
@@ -272,33 +284,41 @@ linePlot <- meteorite_data |>
            y = 0,
            yend = 3500,
            linetype = "dotted") +
-  annotate("segment",
-           x = 1955,
-           xend = 1955,
-           y = 0,
-           yend = 3500,
-           linetype = "dotted") +
-  annotate("text",
-           x = 1975,
-           y = 3700,
-           label = "End of the\nSpace race",
-           family = "Lato") +
-  annotate("text",
-           x = 2000,
-           y = 3650,
-           label = "Last Leonid Showers",
-           family = "Lato") +
   annotate("text",
            x = 1955,
-           y = 3700,
+           y = 3750,
            label = "Start of the\nSpace race",
-           family = "Lato") +
+           family = "Lato",
+           size = 4.5) +
+  annotate("text",
+           x = 1972,
+           y = 3750,
+           label = "End of the\nSpace race",
+           family = "Lato",
+           size = 4.5) +
+  annotate("text",
+           x = 1978,
+           y = 3750,
+           label = "Yamato Mountains\nExpedition",
+           family = "Lato",
+           hjust = 0,
+           size = 4.5) +
+  annotate("text",
+           x = 2002,
+           y = 3750,
+           label = "Last Leonid Showers",
+           family = "Lato",
+           size = 4.5) +
   coord_cartesian(ylim = c(150,3820)) +
   labs(x = "Year",
        y = "Number of Observations") +
   theme_classic() +
   theme(plot.title.position = "plot",
-        panel.grid.major.y = element_line()) +
+        panel.grid.major.y = element_line(),
+        axis.title = element_text(size = 17),
+        axis.title.y = element_text(margin = margin(0, 10, 0, 0)),
+        axis.title.x = element_text(margin = margin(10, 0, 0, 0)),
+        axis.text = element_text(size = 12)) +
   transition_reveal(year)
 
 # Animate Line plot
@@ -307,6 +327,8 @@ linePlotGif <- animate(linePlot,
                        nframes = 100,
                        width = 600,
                        height = 400)
+linePlotGif
+anim_save("linePlotGif.gif", linePlotGif)
 
 # Create world map
 worldMap <- meteorite_data |>
@@ -327,7 +349,8 @@ worldMap <- meteorite_data |>
   theme_void() +
   theme(panel.background = element_rect(fill = "skyblue"),
         plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust = 0.5)) +
+        plot.subtitle = element_text(hjust = 0.5),
+        text = element_text(size = 17)) +
   transition_states(year,
                     transition_length = 1,
                     state_length = 1) +
@@ -360,6 +383,8 @@ for (i in 2:100){
   finalPlot <- c(finalPlot, combined)
 }
 
+
+
 ```
 
 ```{r display_combined_plot, fig.align='center'}
@@ -368,7 +393,7 @@ for (i in 2:100){
 #| warning: false
 #| code-summary: "Display events combined plot"
 
-historyPlot <- image_read(here("images", "historyOfEvents.gif"))
+historyPlot <- image_read(here("images", "historyOfEventsVert.gif"))
 
 historyPlot
 
