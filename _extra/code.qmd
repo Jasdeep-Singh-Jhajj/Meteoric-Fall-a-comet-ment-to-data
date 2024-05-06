@@ -281,12 +281,9 @@ worldMap <- meteorite_data |>
                fill = "white") +
   coord_quickmap() +
   geom_point() +
-  labs(title = "Time Series of Meteor Observations by Year",
-       subtitle = "Current Year: {closest_state}") +
+  labs(title = "Current Year: {closest_state}") +
   theme_void() +
   theme(panel.background = element_rect(fill = "skyblue"),
-        plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust = 0.5),
         text = element_text(size = 17)) +
   transition_states(year,
                     transition_length = 1,
@@ -300,7 +297,7 @@ worldMapGif <- animate(worldMap,
         nframes = 100,
         width = 600,
         height = 1100)
-
+anim_save("worldMapGifPres.gif", worldMapGif)
 ```
 
 
@@ -312,20 +309,19 @@ worldMapGif <- animate(worldMap,
 
 # Modify white space margins around plots
 linePlotGifImg <- image_read(here("images", "linePlotGif.gif"))
-worldMapGifImg <- image_read(here("images", "worldMapGif.gif"))
+worldMapGifImg <- image_read(here("images", "worldMapGifPres.gif"))
 
 lpMGif <- image_border(image_trim(linePlotGifImg), "white", "20x20")
 wmMGif <- image_border(image_trim(worldMapGifImg), "white", "20x20")
 
 # Arrange plots on top of each other
-finalPlot <- image_append(c(wmMGif[1], lpMGif[1]),
-                       stack = TRUE)
+finalPlot <- image_append(c(lpMGif[1], wmMGif[1]))
 for (i in 2:100){
-  combined <- image_append(c(wmMGif[i], lpMGif[i]),
-                           stack = TRUE)
+  combined <- image_append(c(lpMGif[i], wmMGif[i]))
   finalPlot <- c(finalPlot, combined)
 }
 
 finalPlot
 
+anim_save("historyOfEventsHoriz.gif", finalPlot)
 ```
