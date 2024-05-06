@@ -385,6 +385,7 @@ This analysis not only enhances our understanding of the interplay between histo
 #| label: asteroid_meteor_plot
 #| message: false
 #| warning: false
+#| eval: false
 #| code-summary: "Asteroid Meteor Plot"
 
 # Load asteroid orbital data from NASA's Jet Propulsion Laboratory "Horizons" system.
