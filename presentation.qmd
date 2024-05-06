@@ -265,7 +265,7 @@ How do historical events relate to the observations and discoveries of meteors?
 
 ::: panel-tabset
 #### Plot A {.smaller}
-
+### Time Series of Meteor Observations by Year
 ```{r time_series_plot}
 
 historyEvents <- image_read(here("images", "historyOfEventsHoriz.gif"))
@@ -274,6 +274,10 @@ historyEvents
 ```
 
 #### Insights {.smaller transition="slide-in convex-out"}
+- Only slight increase in observations towards the end of the Space Race
+- Huge spike resulted in observations resulted from the Yamato Mountains Expedition
+- Also a large spike during and after the last Leonid showers
+- It does in fact seem to be the case that an increase in observations follows meteor showers
 :::
 
 # Question 3 {.smaller transition="slide-in convex-out"}
