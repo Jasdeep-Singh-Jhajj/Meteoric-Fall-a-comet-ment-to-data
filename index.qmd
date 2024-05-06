@@ -92,8 +92,8 @@ meteorite_data_filtered <- meteorite_data_filtered |>
 
 
 # Adding a filter to classify the size of the meteorites
-filtered_data <- subset(meteorite_data_filtered, `mass (g)` > 1000 & fall == "Fell")
-filtered_data$meteor_size <- cut(filtered_data$`mass (g)`,
+filtered_data <- subset(meteorite_data_filtered, mass > 1000 & fall == "Fell")
+filtered_data$meteor_size <- cut(filtered_data$mass,
                                  breaks = c(0, 10000, 100000, Inf),
                                  labels = c("light", "average mass", "heavy"))
 
@@ -142,8 +142,8 @@ In summary, this map provides an intriguing visualization of meteorite landings 
 #| code-summary: "Plotting Found meteorites"
 
 # Filter the data for meteorites that have not fallen and classify mass
-filtered_data_not_fallen <- subset(meteorite_data_filtered, `mass (g)` > 1000 & fall == "Found")
-filtered_data_not_fallen$meteor_size <- cut(filtered_data_not_fallen$`mass (g)`,
+filtered_data_not_fallen <- subset(meteorite_data_filtered, mass > 1000 & fall == "Found")
+filtered_data_not_fallen$meteor_size <- cut(filtered_data_not_fallen$mass,
                                             breaks = c(0, 10000, 100000, Inf), 
                                             labels = c("light", "average mass", "heavy"))
 
@@ -206,16 +206,14 @@ map_plot <- leaflet(data = meteorite_data_filtered_fell) |>
              icon = makeIcon("images/meteorite.png", 
                              iconWidth = 12, 
                              iconHeight = 12)) |>
-  setMaxBounds(lng1 = -180, lng2 = 180, lat1 = 90, lat2 = -90)
+  setView(lng = 0, lat = 0, zoom = 1)
   
 
 map_plot
 
 ```
 
-The distribution of meteor impacts across the Earth is depicted through an interactive leaflet map. This visualization allows users to navigate and explore specific regions of the world where meteorites have landed. By leveraging latitude and longitude coordinates, obtained from the reclat and reclog variables, the map accurately plots the locations of meteorite impacts. Users can interact with the map to retrieve detailed information about each meteor, including the year it fell or was found, its mass, and potentially its classification characteristics. This interactive approach provides users with a dynamic and engaging means of exploring the distribution of meteor impacts, enabling them to gain deeper insights into the spatial patterns of meteorite landings across the globe.\
-\
-To determine which continents have accumulated the most total mass of meteorites, we analyse the data by continent and consider both the frequency of meteor observations and the mass of each meteor. By aggregating the mass of meteorites on each continent, we create a density map that visually illustrates the distribution of total mass across continents. This density map enables us to identify continents with the highest accumulation of meteorite mass. By examining the density of meteorite mass across continents, we can discern patterns and trends regarding the geographical distribution of meteorite impacts. This analysis provides valuable insights into the relative significance of different continents in terms of meteorite accumulation, facilitating a better understanding of the global distribution of meteorite impacts and their implications for scientific research and exploration.
+The distribution of meteor observations across the Earth is depicted through an interactive leaflet map. This visualization allows users to navigate and explore specific regions of the world where meteorites have been observed to be falling, but not found. Using the `reclat` and `reclong` variables, which correspond to the latitude and longitude respectively, the map accurately plots the locations of meteorite observations. Using the several interactivity features of the `leaflet` package, users can engage with the map to retrieve detailed information about each meteor by clicking on it, including the year it fell , its mass, its classification characteristics, and its latitude and longitude. This interactive approach provides users with a dynamic and engaging means of exploring the distribution of meteor impacts, enabling them to gain deeper insights into the spatial patterns of meteorite landings across the globe.
 
 ### Shiny application
 
