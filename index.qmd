@@ -373,6 +373,179 @@ This analysis not only enhances our understanding of the interplay between histo
 
 ## Question 3: Are trends observed in frequency, type, or location of meteors, related to known celestial events?
 
+```{r}
+
+
+# Load asteroid orbital data from NASA's Jet Propulsion Laboratory "Horizons" system.
+# https://ssd.jpl.nasa.gov/horizons/
+earth_orbit <- read.csv('daily_orbitals/earth.csv')
+flora_orbit <- read.csv('daily_orbitals/8flora.csv')
+hebe_orbit <- read.csv('daily_orbitals/6hebe.csv')
+vesta_orbit <- read.csv('daily_orbitals/4vesta.csv')
+itokawa_orbit <- read.csv('daily_orbitals/itokawa.csv')
+
+
+asteroid_orbits <- rbind(flora_orbit, hebe_orbit, vesta_orbit, itokawa_orbit, earth_orbit) |>
+  mutate(c = case_when(
+    body == '8flora' ~ '#46d3e6',
+    body == '6hebe'~ '#ffc107',
+    body == '4vesta'~ '#e83ab8',
+    body == 'itokawa'~ '#3bf082',
+    body == 'earth' ~ '#1c9ff3'
+  ),
+  date = as.Date(paste(year,month,day,sep='-')),
+  body = case_when(
+    body == '8flora' ~ 'flora',
+    body == '6hebe'~ 'hebe',
+    body == '4vesta'~ 'vesta',
+    body == 'itokawa'~ 'itokawa',
+    body == 'earth' ~ 'earth'
+  )) |>
+  filter(date > as.Date("1980-01-01"))
+
+
+# Load augmented meteorite data 
+# Filtered to only include meteorites:
+#     > thought to come from one of four asteroids
+#     > observed since 1980
+#     > fall observed (not found)
+# 
+# Month of fall data obtained from The Meteorological Society
+# https://www.lpi.usra.edu/meteor/
+
+dated_recents <- read.csv('data/dated_recents.csv') |> 
+  drop_na(month) |> 
+  mutate(parent_body = case_when(
+    parent_body == '4vesta' ~ 'vesta',
+    parent_body == '8flora' ~ 'flora',
+    parent_body == '6hebe' ~ 'hebe',
+    TRUE ~ parent_body
+  ))
+
+get_orbital_colnames <- function(prefix) {
+  c(paste(rep(prefix, 3), c('x', 'y', 'z'), sep=''))
+}
+
+# Distance function
+euc_dist <- function(a, b) {
+  sqrt(sum((a - b) ^ 2))
+}
+
+orbital_data <- cbind(earth_orbit,
+                      flora_orbit[c('x','y','z')],
+                      hebe_orbit[c('x','y','z')],
+                      vesta_orbit[c('x','y','z')],
+                      itokawa_orbit[c('x','y','z')])
+
+colnames(orbital_data) <- c(
+  colnames(earth_orbit),
+  get_orbital_colnames('flora_'),
+  get_orbital_colnames('hebe_'),
+  get_orbital_colnames('vesta_'),
+  get_orbital_colnames('itokawa_')
+)
+
+recent_orbits <- orbital_data |>
+  filter(year >= 1980) |>
+  rowwise() |>
+  mutate(flora_dist = euc_dist(c(flora_x, flora_y, flora_z),
+                               c(x, y, z))) |>
+  mutate(hebe_dist = euc_dist(c(hebe_x, hebe_y, hebe_z),
+                              c(x, y, z))) |>
+  mutate(vesta_dist = euc_dist(c(vesta_x, vesta_y, vesta_z),
+                               c(x, y, z))) |>
+  mutate(itokawa_dist = euc_dist(c(itokawa_x, itokawa_y, itokawa_z),
+                                 c(x, y, z))) 
+
+# Inputs: date range (min_date, max_date) and asteroids of interest (asteroids_input)
+# Outputs: Line plot of asteroid distance from earth over date range
+plot_orbit_distance <- function(min_date, max_date, asteroids_input) {
+  orbit_range <- recent_orbits |> 
+    filter(as.Date(paste(year, month, day, sep='-')) >= min_date & 
+           as.Date(paste(year, month, day, sep='-')) <= max_date) |>
+    mutate(ym = as.Date(paste(year, month, '01', sep ='-'))) |>
+    group_by(ym) |>
+    summarise(
+      min_flora = mean(flora_dist),
+      min_hebe = mean(hebe_dist),
+      min_vesta = mean(vesta_dist),
+      min_itokawa = mean(itokawa_dist)) |>
+    ungroup() |>
+    pivot_longer(
+      cols = -ym,
+      names_to = 'asteroid',
+      values_to = 'min_dist',
+      names_prefix = 'min_',
+    ) |>
+    filter(asteroid %in% asteroids_input)
+  
+  orbit_range |>
+    mutate(asteroid = fct_relevel(asteroid, c('vesta', 'flora', 'hebe', 'itokawa'))) |>
+    ggplot(aes(x=ym, y=min_dist, group=asteroid, color=asteroid)) +
+    xlim(min_date, max_date) +
+    geom_line(linewidth=1) +
+    theme_minimal() +
+    scale_y_continuous(labels = function(x){paste(round(x / 1e6, 2), 'K km', sep='') }) +
+    theme(axis.text.y = element_text(
+            color='white',
+            size = 14
+          ),
+          axis.text.x = element_text(
+            color = 'white',
+            size = 14, 
+          ),
+          legend.position = 'none') +
+    scale_color_manual(values = c("vesta" = '#e83ab8',
+                                 "flora" = '#46d3e6',
+                                 "hebe" = '#ffc107',
+                                 "itokawa" = '#3bf082'))
+}
+
+
+# Inputs: date range (min_date, max_date) and asteroids of interest (asteroids_input)
+# Outputs: Bar plot indicating number of meteorites probably from asteroids of interest over date range
+plot_falls <- function(min_date, max_date, asteroids_input) {
+  dated_recents |>
+    mutate(ym = as.Date(paste(year, month, '01', sep ='-'))) |>
+    filter(ym >= min_date & ym <= max_date) |>
+    group_by(ym, group, parent_body) |>
+    summarise(n=n()) |>
+    mutate(parent_body = fct_relevel(parent_body, c('vesta', 'flora', 'hebe', 'itokawa'))) |> 
+    filter(parent_body %in% asteroids_input) |>
+    ggplot(aes(x=ym, y=n, xmin=min_date, xmax=max_date, fill=parent_body)) +
+    xlim(min_date, max_date) +
+    geom_col(width=30) +
+    theme_minimal() +
+    scale_y_continuous(labels = function(x){paste('            ', x, sep='') }) +
+    theme(
+      legend.position='top', 
+      legend.justification='left',
+      legend.text = element_text(
+        color='white',
+        size=12
+      ),
+      legend.title  = element_blank(),
+      axis.text.y = element_text(
+        color='white',
+        size = 14
+      ),
+      axis.text.x = element_blank(),
+      axis.title.x = element_blank(),
+      plot.title = element_text(
+        color='white',
+        size = 20
+      )
+    ) +
+    labs(
+      title = "Observed Meteor Fall Events and Distance From Probable Asteroid Parent"
+    ) +
+    scale_fill_manual(values = c("vesta" = "#e83ab8",
+                                  "flora" = "#46d3e6",
+                                  "hebe" = "#ffc107",
+                                  "itokawa" = "#3bf082"))
+}
+```
+
 To investigate the relationship between trends in meteor frequency, type, or location and known celestial events, we adopt a multifaceted approach that integrates meteor data analysis with insights from astronomical occurrences. Meteors, originating from neighboring celestial bodies within our solar system, are expected to exhibit patterns influenced by Earth's proximity to astronomical phenomena such as comets, planets, and the moon.
 
 Our analysis aims to identify statistically significant patterns in meteor data that may correlate with specific celestial events. For example, we anticipate observing increased meteor activity during annual meteor showers, such as the Lyrids, which result from Earth passing through the debris path of comets. Additionally, close encounters with planets or other celestial bodies may also influence meteor activity.
