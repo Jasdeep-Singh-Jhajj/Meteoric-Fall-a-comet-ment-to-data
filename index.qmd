@@ -35,7 +35,7 @@ pacman::p_load(tidyverse,
                magick,
                sysfonts,
                showtext,
-               gridExtra
+               gridExtra,
                DT) 
 ```
 
