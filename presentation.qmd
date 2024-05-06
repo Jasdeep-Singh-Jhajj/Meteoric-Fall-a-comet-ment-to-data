@@ -284,24 +284,24 @@ historyEvents
 
 Are trends observed in frequency, type, or location of meteors, related to known celestial events?
 
-## Shiny Asteroids
+## [Shiny Asteroids](https://jgaiser.shinyapps.io/app1/)
 
-[Shiny App for Asteroid Orbits](https://jgaiser.shinyapps.io/app1/)
+<!-- [Shiny App for Asteroid Orbits](https://jgaiser.shinyapps.io/app1/) -->
 ![](images/shiny_asteroids_sample.png){fig-align="center"}
 
-## Shiny Meteorites
+## [Shiny Meteorites](https://gmcginnis.shinyapps.io/MeteoriteMap/)
 
-[Shiny App for Meteor Landings](https://gmcginnis.shinyapps.io/MeteoriteMap/)
+<!-- [Shiny App for Meteor Landings](https://gmcginnis.shinyapps.io/MeteoriteMap/) -->
 ![](images/shiny_landings_sample.png){fig-align="center"}
 
 ## Conclusion
 
-::: {smallerTxt}
+::: {#smallerTxt}
 -   Created an easy-to-use platform using Shiny app technology, making it simple for anyone to explore and visualize meteorite data.
 
--   Our project helps uncover where meteorites land and what impact they have historically, providing clear insights into these phenomena.
+<!-- -   Our project helps uncover where meteorites land and what impact they have historically, providing clear insights into these phenomena. -->
 
--   By analyzing historical data, we aim to predict future meteorite impact sites, potentially aiding decision-making processes and scientific discussions.
+-   By analyzing historical data, we aim to visualize historical meteorite impact sites, potentially aiding decision-making processes and scientific discussions.
 
 -   Our goal was to make meteorite research accessible to everyone, fostering curiosity and understanding in fields like geology and astronomy.
 :::
