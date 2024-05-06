@@ -5,7 +5,7 @@ author:
   - name: "**Viz Wizards** - Nick Ferrante, Jeremiah Gaiser, Tanya Evita George,<br> Mrunal Jadhav, Jasdeep Singh Jhajj, Gillian McGinnis, Agastya Deshraju"
     affiliations:
       - name: "School of Information, University of Arizona"
-description: "Developing a Shiny app to explore and analyze meteorite landings data, unraveling patterns and insights into meteor impact distribution and historical events"
+description: "Investigating geo-spatialtemporal meteorite data to visualize insights of impact distributions."
 format:
    html:
     code-tools: true

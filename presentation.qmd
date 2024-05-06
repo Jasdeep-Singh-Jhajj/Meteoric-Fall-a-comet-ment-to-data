@@ -284,8 +284,6 @@ historyEvents
 
 Are trends observed in frequency, type, or location of meteors, related to known celestial events?
 
-## Question 3 - Plots {.smaller transition="slide-in convex-out"}
-
 ## Shiny Asteroids
 
 [Shiny App for Asteroid Orbits](https://jgaiser.shinyapps.io/app1/)
