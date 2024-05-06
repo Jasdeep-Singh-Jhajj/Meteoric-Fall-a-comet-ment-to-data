@@ -294,20 +294,19 @@ Are trends observed in frequency, type, or location of meteors, related to known
 
 ## Question 3 - Plots {.smaller transition="slide-in convex-out"}
 
-::: panel-tabset
-#### Plot A {.smaller}
+# Shiny Asteroids
 
-#### Insights {.smaller auto-animate="true"}
-:::
+[Shiny App for Asteroid Orbits](https://jgaiser.shinyapps.io/app1/)
+![](images/shiny_asteroids_sample.png){fig-align="center"}
 
-# R Shiny application:
+# Shiny Meteorites
 
 [Shiny App for Meteor Landings](https://gmcginnis.shinyapps.io/MeteoriteMap/)
+![](images/shiny_landings_sample.png){fig-align="center"}
 
 ## Conclusion:
 
 ::: {smallerTxt}
-
 -   We've created an easy-to-use platform using Shiny app technology, making it simple for anyone to explore meteorite data.
 
 -   Our project helps uncover where meteorites land and what impact they have historically, providing clear insights into these phenomena.
@@ -315,7 +314,6 @@ Are trends observed in frequency, type, or location of meteors, related to known
 -   By analyzing historical data, we aim to predict future meteorite impact sites, potentially aiding decision-making processes and scientific discussions.
 
 -   Our goal is to make meteorite research accessible to everyone, fostering curiosity and understanding in fields like geology and astronomy.
-
 :::
 
 ## Thank you

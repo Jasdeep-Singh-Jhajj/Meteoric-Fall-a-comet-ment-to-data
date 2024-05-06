@@ -373,11 +373,6 @@ This analysis not only enhances our understanding of the interplay between histo
 
 ## Question 3: Are trends observed in frequency, type, or location of meteors, related to known celestial events?
 
-```{r}
-# back in a minute
-
-```
-
 To investigate the relationship between trends in meteor frequency, type, or location and known celestial events, we adopt a multifaceted approach that integrates meteor data analysis with insights from astronomical occurrences. Meteors, originating from neighboring celestial bodies within our solar system, are expected to exhibit patterns influenced by Earth's proximity to astronomical phenomena such as comets, planets, and the moon.
 
 Our analysis aims to identify statistically significant patterns in meteor data that may correlate with specific celestial events. For example, we anticipate observing increased meteor activity during annual meteor showers, such as the Lyrids, which result from Earth passing through the debris path of comets. Additionally, close encounters with planets or other celestial bodies may also influence meteor activity.
@@ -387,6 +382,12 @@ To pinpoint such events, we analyse meteor data over time, identifying clusters 
 These findings are integrated into our meteor impact visualizations to provide a comprehensive understanding of the relationship between meteor falls and celestial events. This may involve color-coding individual meteors to indicate the celestial event that triggered them or incorporating a map of the solar system to illustrate Earth's position relative to these events.
 
 By embedding this contextual information into our visualizations, we aim to elucidate the dynamic interplay between Earth and its celestial surroundings, showcasing how meteor falls are intricately connected to the broader cycles of space. This approach not only enhances our understanding of meteor phenomena but also highlights Earth's role within the solar system.
+
+### Shiny Application
+
+To allow accessible exploration of the meteorite landing data, a Shiny application was also developed to visualize the asteroids. The application can be accessed [here](https://jgaiser.shinyapps.io/app1/).
+
+[![A screenshot of the asteroids map application, including filtering options, outputted time series, and an interactive 3D orbital map.](images/shiny_asteroids_sample.png)](https://jgaiser.shinyapps.io/app1/)
 
 ## Conculsion
 
